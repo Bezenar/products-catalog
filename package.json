@@ -11,14 +11,23 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "lint:stage": "lint-staged --verbose",
     "preview": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run --bail=1 --passWithNoTests",
     "test:watch": "vitest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "sb": "npm run sb -w packages/lib",
     "sb:build": "npm run sb:build -w packages/lib",
+    "husky:init": "husky init && git checkout origin/main ./.husky",
     "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{json,jsonc,css,scss,sass,md,mdx,html,yml,yaml}": "prettier --write"
   },
   "dependencies": {
     "react": "^19.2.8",
@@ -40,6 +49,7 @@
     "globals": "^17.12.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
+    "lint-staged": "^17.6.0",
     "prettier": "^3.9.10",
     "sass-embedded": "^1.105.1",
     "typescript": "~6.0.2",

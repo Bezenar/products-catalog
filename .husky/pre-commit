@@ -1,5 +1,2 @@
-printf '\n[pre-commit] Running Prettier...\n'
-npm run format || exit $?
-
-printf '\n[pre-commit] Running ESLint autofix...\n'
-npm run lint:fix
+printf '\n[pre-commit] Formatting and linting staged files...\n'
+npm run lint:stage
