@@ -1,122 +1,73 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 <Meta title="Utilities/createServiceFn" />
 
-# createServiceFn
+<Title>createServiceFn</Title>
 
-`createServiceFn` wraps an asynchronous service function with lifecycle callbacks and optional response adaptation. It preserves the wrapped function's argument types and infers the `onSuccess` value from the adapter's return type.
+`createServiceFn` wraps a function in a service runner. It forwards the function's arguments, awaits its result, and reports success or failure through callbacks. The wrapper infers argument and result types from the function you pass in.
 
-## Parameters
+## Types
 
-<table>
-  <thead>
-    <tr>
-      <th>Parameter</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>fn</code>
-      </td>
-      <td>The service function to call. Its arguments and resolved result are inferred.</td>
-    </tr>
-    <tr>
-      <td>
-        <code>args</code>
-      </td>
-      <td>
-        Arguments passed to <code>fn</code>, as a tuple.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>options</code>
-      </td>
-      <td>Success, error, lifecycle, and optional adapter callbacks.</td>
-    </tr>
-  </tbody>
-</table>
+```ts
+createServiceFn<Args extends unknown[], Result>(
+	fn: (...args: Args) => Result,
+): (
+	args: Args,
+	options: T_ServiceOptions<Awaited<Result>, Adapted>,
+) => Promise<void>
+```
 
-## Options
+- **`fn`** accepts any function whose parameters are captured as the tuple `Args`. It may return a value directly or a `Promise`.
+- **`args`** is a tuple matching the parameters of `fn`, in order. For a function `(id: number, includeDetails: boolean) => ...`, pass `[7, true]`.
+- **`options`** requires `onSuccess` and `onError`. `adapter`, `onBeforeRequest`, and `onComplete` are optional.
+- **`Result`** is the function's return type. `Awaited<Result>` is the resolved value used by the callbacks.
+- **`Adapted`** is inferred from the adapter's return type when an adapter is provided. Without an adapter, `onSuccess` receives the original resolved result.
+- **Return value:** the runner returns `Promise<void>`; the result is delivered to `onSuccess`, not returned from the promise.
 
-<table>
-  <thead>
-    <tr>
-      <th>Option</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <code>adapter</code>
-      </td>
-      <td>Optional function that transforms the resolved service result.</td>
-    </tr>
-    <tr>
-      <td>
-        <code>onSuccess</code>
-      </td>
-      <td>
-        Called with the adapter result when supplied; otherwise called with the original result.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <code>onError</code>
-      </td>
-      <td>Called with a service error. The error is handled and not rethrown.</td>
-    </tr>
-    <tr>
-      <td>
-        <code>onBeforeRequest</code>
-      </td>
-      <td>Optional callback invoked before the service function.</td>
-    </tr>
-    <tr>
-      <td>
-        <code>onComplete</code>
-      </td>
-      <td>Optional callback invoked after success or failure.</td>
-    </tr>
-  </tbody>
-</table>
+The lifecycle is `onBeforeRequest` → function call → `onSuccess` or `onError` → `onComplete`. A rejected function call is passed to `onError` and is not rethrown by the runner.
 
-## Adapt a response
+## Pass through a result
+
+Use this when the consumer needs the full resolved response. The callback parameters are inferred from the wrapped function:
 
 ```ts
 import { createServiceFn } from 'lib';
 
-const getProductNames = createServiceFn((category: string) => api.getProducts(category));
+type Product = {
+  id: number;
+  name: string;
+};
 
-await getProductNames(['routers'], {
-  adapter: (products) => products.map((product) => product.name),
-  onSuccess: (names) => {
-    // names is inferred as string[]
-    console.log(names);
+const fetchProduct = async (id: number): Promise<Product> => ({
+  id,
+  name: 'Gateway',
+});
+
+const getProduct = createServiceFn(fetchProduct);
+
+await getProduct([7], {
+  onSuccess: (product) => {
+    // product is inferred as Product
+    console.log(product.name);
   },
   onError: (error) => {
     console.error(error);
   },
-  onBeforeRequest: () => {
-    console.log('Loading products');
-  },
-  onComplete: () => {
-    console.log('Request finished');
-  },
 });
 ```
 
-## Pass through the response
+## Adapt a result
 
-Omit `adapter` to receive the original resolved result in `onSuccess`:
+An adapter transforms the resolved value before `onSuccess`. The success callback is inferred from the adapter's return type:
 
 ```ts
-await getProductNames(['routers'], {
-  onSuccess: (products) => {
-    console.log(products);
+const getProductName = createServiceFn(fetchProduct);
+
+await getProductName([7], {
+  adapter: (product) => product.name,
+  onSuccess: (name) => {
+    // name is inferred as string
+    console.log(name.toUpperCase());
   },
   onError: (error) => {
     console.error(error);
@@ -124,4 +75,35 @@ await getProductNames(['routers'], {
 });
 ```
 
-The callback order is `onBeforeRequest`, service function, `onSuccess` or `onError`, then `onComplete`.
+## Wrap a synchronous function
+
+Synchronous return values are also supported. The runner still returns a promise and sends the value to `onSuccess`:
+
+```ts
+const double = createServiceFn((value: number) => value * 2);
+
+await double([21], {
+  onSuccess: (result) => {
+    // result is inferred as number
+    console.log(result);
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+});
+```
+
+## Lifecycle callbacks
+
+```ts
+await getProduct([7], {
+  onBeforeRequest: () => console.log('Loading'),
+  onSuccess: (product) => console.log(product),
+  onError: (error) => console.error(error),
+  onComplete: () => console.log('Finished'),
+});
+```
+
+`onError` receives `unknown`, so narrow or inspect the error before using error-specific properties. `onBeforeRequest` and `onComplete` are optional.
+
+# createServiceFn

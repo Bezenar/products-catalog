@@ -1,0 +1,117 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Utilities/TypeGuard" />
+
+<Title>TypeGuard</Title>
+
+`TypeGuard` provides static predicates for checking common JavaScript value categories. Each predicate accepts `unknown` and narrows the value's TypeScript type when it returns `true`.
+
+<table>
+  <thead>
+    <tr>
+      <th>Predicate</th>
+      <th>Returns true for</th>
+      <th>Narrowed type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>TypeGuard.isString(value)</code>
+      </td>
+      <td>Primitive strings</td>
+      <td>
+        <code>string</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>TypeGuard.isBoolean(value)</code>
+      </td>
+      <td>
+        <code>true</code> or <code>false</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>TypeGuard.isArray(value)</code>
+      </td>
+      <td>Arrays, including empty arrays</td>
+      <td>
+        <code>unknown[]</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>TypeGuard.isObject(value)</code>
+      </td>
+      <td>
+        Non-null, non-array objects, including instances such as <code>Date</code>
+      </td>
+      <td>
+        <code>object</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Usage
+
+Import the class from the library package:
+
+```ts
+import { TypeGuard } from 'lib';
+```
+
+### Check strings
+
+```ts
+function formatLabel(value: unknown): string {
+  if (TypeGuard.isString(value)) {
+    return value.trim().toUpperCase();
+  }
+
+  return 'UNKNOWN';
+}
+```
+
+### Check booleans
+
+```ts
+function describeFlag(value: unknown): string {
+  if (TypeGuard.isBoolean(value)) {
+    return value ? 'Enabled' : 'Disabled';
+  }
+
+  return 'Not a boolean';
+}
+```
+
+### Check arrays
+
+```ts
+function itemCount(value: unknown): number {
+  if (TypeGuard.isArray(value)) {
+    return value.length;
+  }
+
+  return 0;
+}
+```
+
+### Check objects
+
+```ts
+function objectKeys(value: unknown): string[] {
+  if (TypeGuard.isObject(value)) {
+    return Object.keys(value);
+  }
+
+  return [];
+}
+```
+
+`isObject` only checks the broad JavaScript object category. It does not verify an object's properties or guarantee a specific interface; validate the shape separately before relying on particular fields.
