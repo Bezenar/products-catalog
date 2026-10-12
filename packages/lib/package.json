@@ -10,6 +10,7 @@
       "import": "./src/index.ts"
     },
     "./assets/styles/index.scss": "./src/assets/styles/index.scss",
+    "./SCSSvariables.scss": "./src/assets/styles/SCSSVariablesInJS.module.scss",
     "./api": {
       "types": "./src/api/index.ts",
       "import": "./src/api/index.ts"

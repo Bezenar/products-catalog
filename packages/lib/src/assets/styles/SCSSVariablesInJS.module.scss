@@ -1,0 +1,72 @@
+$brandPrimary: #006fff;
+$brandPrimaryActive: #0059cc;
+
+$surfaceCanvas: #ffffff;
+$surfaceSubtle: #f9fafa;
+$surfaceMuted: #f4f5f6;
+$surfaceSearch: #f6f6f8;
+$surfaceOverlay: rgba(255, 255, 255, 0.85);
+
+$borderDefault: #ededf0;
+$borderControl: #b6b9c4;
+
+$textPrimary: rgba(0, 0, 0, 0.85);
+$textSecondary: rgba(0, 0, 0, 0.65);
+$textTertiary: rgba(0, 0, 0, 0.45);
+$textStrong: #212327;
+$textMuted: #808893;
+$textPlaceholder: #808893;
+
+$iconDefault: #838691;
+$iconStrong: #50565e;
+
+$neutralBlack: #000000;
+
+$actionDestructive: #f03a3e;
+$actionDestructiveMuted: #f9b0b2;
+
+:root {
+  --brand-primary: #{$brandPrimary};
+  --brand-primary-active: #{$brandPrimaryActive};
+  --surface-canvas: #{$surfaceCanvas};
+  --surface-subtle: #{$surfaceSubtle};
+  --surface-muted: #{$surfaceMuted};
+  --surface-search: #{$surfaceSearch};
+  --surface-overlay: #{$surfaceOverlay};
+  --border-default: #{$borderDefault};
+  --border-control: #{$borderControl};
+  --text-primary: #{$textPrimary};
+  --text-secondary: #{$textSecondary};
+  --text-tertiary: #{$textTertiary};
+  --text-strong: #{$textStrong};
+  --text-muted: #{$textMuted};
+  --text-placeholder: #{$textPlaceholder};
+  --icon-default: #{$iconDefault};
+  --icon-strong: #{$iconStrong};
+  --neutral-black: #{$neutralBlack};
+  --action-destructive: #{$actionDestructive};
+  --action-destructive-muted: #{$actionDestructiveMuted};
+}
+
+:export {
+  brandPrimary: $brandPrimary;
+  brandPrimaryActive: $brandPrimaryActive;
+  surfaceCanvas: $surfaceCanvas;
+  surfaceSubtle: $surfaceSubtle;
+  surfaceMuted: $surfaceMuted;
+  surfaceSearch: $surfaceSearch;
+  surfaceOverlay: $surfaceOverlay;
+  borderDefault: $borderDefault;
+  borderControl: $borderControl;
+  textPrimary: $textPrimary;
+  textSecondary: $textSecondary;
+  textTertiary: $textTertiary;
+  textStrong: $textStrong;
+  textMuted: $textMuted;
+  textPlaceholder: $textPlaceholder;
+  iconDefault: $iconDefault;
+  iconStrong: $iconStrong;
+  neutralBlack: $neutralBlack;
+  actionDestructive: $actionDestructive;
+  actionDestructiveMuted: $actionDestructiveMuted;
+}

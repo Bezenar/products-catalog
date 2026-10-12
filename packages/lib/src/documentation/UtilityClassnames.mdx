@@ -19,6 +19,7 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
     - [gap](#gap)
 - [Widths](#widths)
 - [Margin & Padding](#margin--padding)
+- [Colors](#colors)
 
 # Spacing step
 
@@ -213,4 +214,499 @@ Classname structure
 <div class="pa-3"></div> <!-- padding: 12px; -->
 <div class="mt-1 ml-3 mr-4"></div> <!-- margin-top: 4px; margin-left: 12px; margin-right: 16px; -->
 <div class="ma-2 pa-2"></div> <!-- margin: 8px; padding: 8px -->
+```
+
+# Colors
+
+Color utilities apply CSS custom properties declared in `SCSSVariablesInJS.module.scss`. Load the token stylesheet and utility stylesheet in the application entry point before using these classes:
+
+```ts
+import 'lib/SCSSvariables.scss';
+import 'lib/assets/styles/index.scss';
+```
+
+## Color palette
+
+These swatches use the CSS custom properties from `SCSSVariablesInJS.module.scss`.
+The same values are available as global CSS variables, so they can be used directly in component styles with the `var()` function.
+
+```css
+.callout {
+  color: var(--text-primary);
+  background-color: var(--surface-subtle);
+  border: 1px solid var(--border-default);
+}
+```
+
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '12px' }}>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--brand-primary)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--brand-primary</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--brand-primary-active)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--brand-primary-active</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--surface-canvas)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--surface-canvas</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--surface-subtle)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--surface-subtle</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--surface-muted)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--surface-muted</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--surface-search)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--surface-search</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--surface-overlay)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--surface-overlay</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--border-default)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--border-default</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--border-control)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--border-control</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-primary)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-primary</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-secondary)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-secondary</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-tertiary)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-tertiary</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-strong)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-strong</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-muted)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-muted</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--text-placeholder)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--text-placeholder</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--icon-default)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--icon-default</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--icon-strong)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--icon-strong</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--neutral-black)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--neutral-black</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--action-destructive)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--action-destructive</code>
+  </div>
+  <div>
+    <span
+      aria-hidden="true"
+      style={{
+        display: 'block',
+        height: '64px',
+        backgroundColor: 'var(--action-destructive-muted)',
+        border: '1px solid var(--border-control)',
+        borderRadius: '4px',
+      }}
+    />
+    <code>--action-destructive-muted</code>
+  </div>
+</div>
+
+## Text colors
+
+Each class sets the `color` property.
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>CSS variable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>text--primary</code>
+      </td>
+      <td>
+        <code>--text-primary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--secondary</code>
+      </td>
+      <td>
+        <code>--text-secondary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--tertiary</code>
+      </td>
+      <td>
+        <code>--text-tertiary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--strong</code>
+      </td>
+      <td>
+        <code>--text-strong</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--muted</code>
+      </td>
+      <td>
+        <code>--text-muted</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--placeholder</code>
+      </td>
+      <td>
+        <code>--text-placeholder</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--brand-primary</code>
+      </td>
+      <td>
+        <code>--brand-primary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--brand-primary-active</code>
+      </td>
+      <td>
+        <code>--brand-primary-active</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Background colors
+
+Each class sets the `background-color` property.
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>CSS variable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>bg--canvas</code>
+      </td>
+      <td>
+        <code>--surface-canvas</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--subtle</code>
+      </td>
+      <td>
+        <code>--surface-subtle</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--muted</code>
+      </td>
+      <td>
+        <code>--surface-muted</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--search</code>
+      </td>
+      <td>
+        <code>--surface-search</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--overlay</code>
+      </td>
+      <td>
+        <code>--surface-overlay</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--brand-primary</code>
+      </td>
+      <td>
+        <code>--brand-primary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>bg--brand-primary-active</code>
+      </td>
+      <td>
+        <code>--brand-primary-active</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Border colors
+
+Each class sets only `border-color`; add a border width and style separately.
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>CSS variable</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>border--default</code>
+      </td>
+      <td>
+        <code>--border-default</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>border--control</code>
+      </td>
+      <td>
+        <code>--border-control</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>border--brand-primary</code>
+      </td>
+      <td>
+        <code>--brand-primary</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>border--brand-primary-active</code>
+      </td>
+      <td>
+        <code>--brand-primary-active</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Examples
+
+```html
+<h2 class="text--primary">Primary text</h2>
+<p class="text--secondary">Supporting text</p>
+
+<section class="bg--subtle">Subtle surface</section>
+
+<button class="bg--brand-primary text--brand-primary-active">Action</button>
+
+<input class="border--control" style="border: 1px solid" />
 ```

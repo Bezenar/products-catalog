@@ -1,0 +1,51 @@
+$textColors: (
+  primary: var(--text-primary),
+  secondary: var(--text-secondary),
+  tertiary: var(--text-tertiary),
+  strong: var(--text-strong),
+  muted: var(--text-muted),
+  placeholder: var(--text-placeholder),
+  'brand-primary': var(--brand-primary),
+  'brand-primary-active': var(--brand-primary-active),
+);
+
+$bgColors: (
+  canvas: var(--surface-canvas),
+  subtle: var(--surface-subtle),
+  muted: var(--surface-muted),
+  search: var(--surface-search),
+  overlay: var(--surface-overlay),
+  'brand-primary': var(--brand-primary),
+  'brand-primary-active': var(--brand-primary-active),
+);
+
+$borderColors: (
+  default: var(--border-default),
+  control: var(--border-control),
+  'brand-primary': var(--brand-primary),
+  'brand-primary-active': var(--brand-primary-active),
+);
+
+.text {
+  @each $key, $color in $textColors {
+    &--#{$key} {
+      color: $color;
+    }
+  }
+}
+
+.bg {
+  @each $key, $color in $bgColors {
+    &--#{$key} {
+      background-color: $color;
+    }
+  }
+}
+
+.border {
+  @each $key, $color in $borderColors {
+    &--#{$key} {
+      border-color: $color;
+    }
+  }
+}
