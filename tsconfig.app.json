@@ -22,5 +22,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "packages/lib"]
+  "include": ["src", "packages/lib", "testUtils/setup.ts"]
 }
