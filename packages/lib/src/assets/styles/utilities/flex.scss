@@ -1,108 +1,107 @@
-@use "variables.scss" as *;
+@use 'variables.scss' as *;
 
 $flex-dir: (
-    row: row,
-    col: column,
-    row-rev: row-reverse,
-    col-rev: column-reverse,
+  row: row,
+  col: column,
+  row-rev: row-reverse,
+  col-rev: column-reverse,
 );
 
 $jc: (
-    start: flex-start,
-    end: flex-end,
-    center: center,
-    sb: space-between,
-    sa: space-around,
-    se: space-evenly,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  sb: space-between,
+  sa: space-around,
+  se: space-evenly,
 );
 
 $ai: (
-    start: flex-start,
-    end: flex-end,
-    center: center,
-    stretch: stretch,
-    baseline: baseline,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  baseline: baseline,
 );
 
 $ac: (
-    start: flex-start,
-    end: flex-end,
-    center: center,
-    stretch: stretch,
-    sb: space-between,
-    sa: space-around,
-    se: space-evenly,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  sb: space-between,
+  sa: space-around,
+  se: space-evenly,
 );
 
 $as: (
-    start: flex-start,
-    end: flex-end,
-    center: center,
-    stretch: stretch,
-    baseline: baseline,
+  start: flex-start,
+  end: flex-end,
+  center: center,
+  stretch: stretch,
+  baseline: baseline,
 );
 $grow: 1, 2, 3, 4, 5;
 $shrink: 1, 2, 3, 4, 5;
 
 .flex {
-    display: flex;
+  display: flex;
 
-    &.gap {
-        @each $step in $steps {
-            &-#{$step} {
-                gap: $step * $stepValue;
-            }
-        }
+  &.gap {
+    @each $step in $steps {
+      &-#{$step} {
+        gap: $step * $stepValue;
+      }
     }
+  }
 
-    .wrap {
-        flex-wrap: wrap;
-    }
+  .wrap {
+    flex-wrap: wrap;
+  }
 
-    @each $dirKey, $dirValue in $flex-dir {
-        &-#{$dirKey} {
-            flex-direction: $dirValue;
-        }
+  @each $dirKey, $dirValue in $flex-dir {
+    &-#{$dirKey} {
+      flex-direction: $dirValue;
     }
+  }
 
-    @each $jcKey, $jcValue in $jc {
-        &-jc-#{$jcKey} {
-            justify-content: $jcValue;
-        }
+  @each $jcKey, $jcValue in $jc {
+    &-jc-#{$jcKey} {
+      justify-content: $jcValue;
     }
+  }
 
-    @each $aiKey, $aiValue in $ai {
-        &-ai-#{$aiKey} {
-            align-items: $aiValue;
-        }
+  @each $aiKey, $aiValue in $ai {
+    &-ai-#{$aiKey} {
+      align-items: $aiValue;
     }
+  }
 
-    @each $acKey, $acValue in $ac {
-        &-ac-#{$acKey} {
-            align-content: $acValue;
-        }
+  @each $acKey, $acValue in $ac {
+    &-ac-#{$acKey} {
+      align-content: $acValue;
     }
+  }
 
-    @each $asKey, $asValue in $as {
-        &-as-#{$asKey} {
-            align-self: $asValue;
-        }
+  @each $asKey, $asValue in $as {
+    &-as-#{$asKey} {
+      align-self: $asValue;
     }
+  }
 
-    .grow {
-        @each $step in $grow {
-            &-#{$step} {
-                flex-grow: $step;
-            }
-        }
+  .grow {
+    @each $step in $grow {
+      &-#{$step} {
+        flex-grow: $step;
+      }
     }
+  }
 
-    .shrink {
-        @each $step in $shrink {
-            &-#{$step} {
-                flex-shrink: $step;
-            }
-        }
+  .shrink {
+    @each $step in $shrink {
+      &-#{$step} {
+        flex-shrink: $step;
+      }
     }
+  }
 }
-

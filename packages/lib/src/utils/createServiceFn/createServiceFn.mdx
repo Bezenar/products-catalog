@@ -7,6 +7,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 `createServiceFn` wraps an asynchronous service function with lifecycle callbacks and optional response adaptation. It preserves the wrapped function's argument types and infers the `onSuccess` value from the adapter's return type.
 
 ## Parameters
+
 <table>
   <thead>
     <tr>
@@ -16,15 +17,23 @@ import { Meta } from '@storybook/addon-docs/blocks';
   </thead>
   <tbody>
     <tr>
-      <td><code>fn</code></td>
+      <td>
+        <code>fn</code>
+      </td>
       <td>The service function to call. Its arguments and resolved result are inferred.</td>
     </tr>
     <tr>
-      <td><code>args</code></td>
-      <td>Arguments passed to <code>fn</code>, as a tuple.</td>
+      <td>
+        <code>args</code>
+      </td>
+      <td>
+        Arguments passed to <code>fn</code>, as a tuple.
+      </td>
     </tr>
     <tr>
-      <td><code>options</code></td>
+      <td>
+        <code>options</code>
+      </td>
       <td>Success, error, lifecycle, and optional adapter callbacks.</td>
     </tr>
   </tbody>
@@ -41,23 +50,35 @@ import { Meta } from '@storybook/addon-docs/blocks';
   </thead>
   <tbody>
     <tr>
-      <td><code>adapter</code></td>
+      <td>
+        <code>adapter</code>
+      </td>
       <td>Optional function that transforms the resolved service result.</td>
     </tr>
     <tr>
-      <td><code>onSuccess</code></td>
-      <td>Called with the adapter result when supplied; otherwise called with the original result.</td>
+      <td>
+        <code>onSuccess</code>
+      </td>
+      <td>
+        Called with the adapter result when supplied; otherwise called with the original result.
+      </td>
     </tr>
     <tr>
-      <td><code>onError</code></td>
+      <td>
+        <code>onError</code>
+      </td>
       <td>Called with a service error. The error is handled and not rethrown.</td>
     </tr>
     <tr>
-      <td><code>onBeforeRequest</code></td>
+      <td>
+        <code>onBeforeRequest</code>
+      </td>
       <td>Optional callback invoked before the service function.</td>
     </tr>
     <tr>
-      <td><code>onComplete</code></td>
+      <td>
+        <code>onComplete</code>
+      </td>
       <td>Optional callback invoked after success or failure.</td>
     </tr>
   </tbody>
@@ -68,9 +89,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 ```ts
 import { createServiceFn } from 'lib';
 
-const getProductNames = createServiceFn((category: string) =>
-  api.getProducts(category),
-);
+const getProductNames = createServiceFn((category: string) => api.getProducts(category));
 
 await getProductNames(['routers'], {
   adapter: (products) => products.map((product) => product.name),

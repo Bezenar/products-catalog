@@ -2,15 +2,15 @@ $width: 25, 50, 75, 100;
 $floated-width: 33, 66;
 
 .wid {
-    @each $w in $width {
-        &-#{$w} {
-            width: #{$w + '%'};
-        }
+  @each $w in $width {
+    &-#{$w} {
+      width: #{$w + '%'};
     }
+  }
 
-    @each $w in $floated-width {
-        &-float-#{$w} {
-            width: #{$w + '%'};
-        }
+  @each $w in $floated-width {
+    &-float-#{$w} {
+      width: #{$w + '%'};
     }
+  }
 }

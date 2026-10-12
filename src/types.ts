@@ -13,40 +13,40 @@ export interface I_DeviceCompliance {
 }
 
 export interface I_DeviceIcon {
-    id: string;
-    resolutions: Array<[number, number]>
+  id: string;
+  resolutions: Array<[number, number]>;
 }
 
 export interface I_DeviceImages {
-    defaul: string;
-    nopadding: string;
-    topology: string;
+  defaul: string;
+  nopadding: string;
+  topology: string;
 }
 
 export interface I_DeviceLine {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }
 
 export interface I_DeviceProduct {
-    name: string;
-    abbrev: string;
+  name: string;
+  abbrev: string;
 }
 
 export interface I_DeviceTriplet {
-    [k: string]: string;
+  [k: string]: string;
 }
 
 export interface I_Firmware {
-    board: Array<string>;
-    platform: string;
+  board: Array<string>;
+  platform: string;
 }
 
 export interface I_DeviceUISP {
-    bleServices: Record<PropertyKey, unknown>;
-    firmware: I_Firmware;
-    line: string;
-    nameLegacy: Array<string>;
+  bleServices: Record<PropertyKey, unknown>;
+  firmware: I_Firmware;
+  line: string;
+  nameLegacy: Array<string>;
 }
 
 export interface I_DeviceItem {
@@ -55,7 +55,7 @@ export interface I_DeviceItem {
   deviceTypes: Array<string>;
   guids: Array<unknown>;
   icon: I_DeviceIcon;
-  id: string
+  id: string;
   images: I_DeviceImages;
   line: I_DeviceLine;
   product: I_DeviceProduct;
@@ -64,11 +64,11 @@ export interface I_DeviceItem {
   sysid: string;
   sysids: Array<string>;
   triplets: Array<I_DeviceTriplet>;
-  "uisp": I_DeviceUISP;
-  videos: Record<PropertyKey, unknown>
+  uisp: I_DeviceUISP;
+  videos: Record<PropertyKey, unknown>;
 }
 
 export interface I_GetDevicesRes {
-    devices: Array<I_DeviceItem>;
-    version: string;
+  devices: Array<I_DeviceItem>;
+  version: string;
 }

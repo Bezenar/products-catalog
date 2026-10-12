@@ -1,39 +1,39 @@
-@use "variables.scss" as *;
+@use 'variables.scss' as *;
 
 .m {
-    @each $dirKey, $dirValue in $directions {
-        &#{$dirKey} {
-            @each $step in $steps {
-                &-#{$step} {
-                    margin-#{$dirValue}: $step * $stepValue;
-                }
-            }
+  @each $dirKey, $dirValue in $directions {
+    &#{$dirKey} {
+      @each $step in $steps {
+        &-#{$step} {
+          margin-#{$dirValue}: $step * $stepValue;
         }
+      }
     }
+  }
 
-    &x {
-        @each $step in $steps {
-            &-#{$step} {
-                margin-left: $step * $stepValue;
-                margin-right: $step * $stepValue;
-            }
-        }
+  &x {
+    @each $step in $steps {
+      &-#{$step} {
+        margin-left: $step * $stepValue;
+        margin-right: $step * $stepValue;
+      }
     }
+  }
 
-    &y {
-        @each $step in $steps {
-            &-#{$step} {
-                margin-top: $step * $stepValue;
-                margin-bottom: $step * $stepValue;
-            }
-        }
+  &y {
+    @each $step in $steps {
+      &-#{$step} {
+        margin-top: $step * $stepValue;
+        margin-bottom: $step * $stepValue;
+      }
     }
+  }
 
-    &a {
-        @each $step in $steps {
-            &-#{$step} {
-                margin: $step * $stepValue;
-            }
-        }
+  &a {
+    @each $step in $steps {
+      &-#{$step} {
+        margin: $step * $stepValue;
+      }
     }
+  }
 }

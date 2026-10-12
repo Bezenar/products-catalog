@@ -66,10 +66,7 @@ describe('BaseApi', () => {
   });
 
   it('throws when the response is not successful', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn().mockResolvedValue({ ok: false, status: 503 }),
-    );
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 503 }));
 
     await expect(new TestBaseApi().send({ path: '/products' })).rejects.toThrow(
       'Request failed with status 503',

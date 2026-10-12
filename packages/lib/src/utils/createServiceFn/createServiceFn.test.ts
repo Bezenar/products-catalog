@@ -1,7 +1,7 @@
 import createServiceFn from './index';
 
 describe('lib/utils/createServiceFn', () => {
-  const mockedApi = vi.fn()
+  const mockedApi = vi.fn();
   const mockOnSuccess = vi.fn();
   const mockOnError = vi.fn();
   const mockOnComplete = vi.fn();
@@ -24,7 +24,7 @@ describe('lib/utils/createServiceFn', () => {
       onComplete: mockOnComplete,
       onBeforeRequest: mockOnBeforeRequest,
     });
-    
+
     expect(mockOnBeforeRequest).toHaveBeenCalled();
   });
 
@@ -37,7 +37,7 @@ describe('lib/utils/createServiceFn', () => {
       onComplete: mockOnComplete,
       onBeforeRequest: mockOnBeforeRequest,
     });
-    
+
     expect(mockedApi).toHaveBeenCalled();
   });
 
@@ -95,7 +95,10 @@ describe('lib/utils/createServiceFn', () => {
   });
 
   it('Calling the created function should call the adapter function if provided', async () => {
-    mockedApi.mockResolvedValue([{ id: 1, name: 'Product 1' }, { id: 2, name: 'Product 2' }]);
+    mockedApi.mockResolvedValue([
+      { id: 1, name: 'Product 1' },
+      { id: 2, name: 'Product 2' },
+    ]);
     const serviceFn = createServiceFn(mockedApi);
     const mockAdapter = vi.fn((result) => result);
 
@@ -113,10 +116,13 @@ describe('lib/utils/createServiceFn', () => {
   it('Calling the created function should return adapted data if adapter is provided', async () => {
     type Product = { id: number; name: string };
 
-    const mockedResponse: Product[] = [{ id: 1, name: 'Product 1' }, { id: 2, name: 'Product 2' }];
+    const mockedResponse: Product[] = [
+      { id: 1, name: 'Product 1' },
+      { id: 2, name: 'Product 2' },
+    ];
 
     mockedApi.mockResolvedValue(mockedResponse);
-    
+
     const serviceFn = createServiceFn(mockedApi);
     const mockAdapter = vi.fn((result) => result.map((i: Product) => i.id));
 
