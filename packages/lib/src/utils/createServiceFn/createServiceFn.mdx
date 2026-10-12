@@ -1,0 +1,108 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Utilities/createServiceFn" />
+
+# createServiceFn
+
+`createServiceFn` wraps an asynchronous service function with lifecycle callbacks and optional response adaptation. It preserves the wrapped function's argument types and infers the `onSuccess` value from the adapter's return type.
+
+## Parameters
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>fn</code></td>
+      <td>The service function to call. Its arguments and resolved result are inferred.</td>
+    </tr>
+    <tr>
+      <td><code>args</code></td>
+      <td>Arguments passed to <code>fn</code>, as a tuple.</td>
+    </tr>
+    <tr>
+      <td><code>options</code></td>
+      <td>Success, error, lifecycle, and optional adapter callbacks.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Options
+
+<table>
+  <thead>
+    <tr>
+      <th>Option</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>adapter</code></td>
+      <td>Optional function that transforms the resolved service result.</td>
+    </tr>
+    <tr>
+      <td><code>onSuccess</code></td>
+      <td>Called with the adapter result when supplied; otherwise called with the original result.</td>
+    </tr>
+    <tr>
+      <td><code>onError</code></td>
+      <td>Called with a service error. The error is handled and not rethrown.</td>
+    </tr>
+    <tr>
+      <td><code>onBeforeRequest</code></td>
+      <td>Optional callback invoked before the service function.</td>
+    </tr>
+    <tr>
+      <td><code>onComplete</code></td>
+      <td>Optional callback invoked after success or failure.</td>
+    </tr>
+  </tbody>
+</table>
+
+## Adapt a response
+
+```ts
+import { createServiceFn } from 'lib';
+
+const getProductNames = createServiceFn((category: string) =>
+  api.getProducts(category),
+);
+
+await getProductNames(['routers'], {
+  adapter: (products) => products.map((product) => product.name),
+  onSuccess: (names) => {
+    // names is inferred as string[]
+    console.log(names);
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+  onBeforeRequest: () => {
+    console.log('Loading products');
+  },
+  onComplete: () => {
+    console.log('Request finished');
+  },
+});
+```
+
+## Pass through the response
+
+Omit `adapter` to receive the original resolved result in `onSuccess`:
+
+```ts
+await getProductNames(['routers'], {
+  onSuccess: (products) => {
+    console.log(products);
+  },
+  onError: (error) => {
+    console.error(error);
+  },
+});
+```
+
+The callback order is `onBeforeRequest`, service function, `onSuccess` or `onError`, then `onComplete`.

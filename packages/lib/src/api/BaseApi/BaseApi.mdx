@@ -1,0 +1,54 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="API/BaseApi" />
+
+# BaseApi
+
+`BaseApi` provides a protected `request` method for subclasses. It sends requests with the Fetch API, parses successful responses as JSON, and throws when the response status is not successful.
+
+## Request options
+
+- `path`: URL passed to `fetch`.
+- `method`: `GET`, `POST`, `PUT`, or `DELETE`; defaults to `GET`.
+- `headers`: request headers forwarded to `fetch`.
+- `body`: optional value serialized with `JSON.stringify` when truthy.
+
+`BaseApi` does not add headers automatically. Set `Content-Type: application/json` when sending a JSON body if the server expects it.
+
+## Extend BaseApi
+
+`request` is protected, so expose application-specific methods from a subclass:
+
+```ts
+import { BaseApi } from 'lib';
+
+interface Product {
+  id: number;
+  name: string;
+}
+
+interface CreateProduct {
+  name: string;
+}
+
+class ProductsApi extends BaseApi {
+  getProduct(id: number): Promise<Product> {
+    return this.request<Product>({
+      path: `/api/products/${id}`,
+    });
+  }
+
+  createProduct(input: CreateProduct): Promise<Product> {
+    return this.request<Product, CreateProduct>({
+      path: '/api/products',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: input,
+    });
+  }
+}
+```
+
+## Response and errors
+
+The `Res` generic describes the value returned by `response.json()` to TypeScript; it does not validate the response at runtime. For a non-OK response, `request` throws an error with the status, such as `Request failed with status 503`. Network errors from `fetch` and JSON parsing errors are also allowed to propagate.
