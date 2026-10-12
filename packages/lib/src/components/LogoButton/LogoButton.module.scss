@@ -1,0 +1,26 @@
+.button {
+  padding: 15px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: var(--surface-muted);
+  transition:
+    background 0.3s ease,
+    border 0.3s ease;
+
+  :global(.path) {
+    transition: fill 0.3s ease;
+  }
+
+  &:focus,
+  &:focus-visible {
+    border: 1px solid var(--brand-primary);
+  }
+
+  &:hover {
+    background-color: var(--surface-canvas);
+    :global(.path) {
+      fill: var(--brand-primary);
+    }
+  }
+}
