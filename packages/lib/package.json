@@ -6,12 +6,12 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --config vite.config.ts --root ../.. packages/lib"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^10.6.1",
     "@storybook/addon-docs": "^10.6.1",
     "@storybook/react-vite": "^10.6.1",
-    "@storybook/addon-a11y": "^10.6.1",
     "storybook": "^10.6.1"
   }
 }
