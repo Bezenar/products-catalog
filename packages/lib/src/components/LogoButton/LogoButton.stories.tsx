@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn } from 'storybook/test';
-import LogoButton from '.';
+import LogoButton from './index';
 
 const meta = {
   title: 'Components/LogoButton',
