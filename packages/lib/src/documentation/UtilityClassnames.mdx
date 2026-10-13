@@ -20,6 +20,7 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 - [Widths](#widths)
 - [Margin & Padding](#margin--padding)
 - [Colors](#colors)
+- [Fonts](#fonts)
 
 # Spacing step
 
@@ -218,16 +219,16 @@ Classname structure
 
 # Colors
 
-Color utilities apply CSS custom properties declared in `SCSSVariablesInJS.module.scss`. Load the token stylesheet and utility stylesheet in the application entry point before using these classes:
+Color utilities apply CSS custom properties declared in `tokens.module.scss`. Load the token stylesheet and utility stylesheet in the application entry point before using these classes:
 
 ```ts
-import 'lib/SCSSvariables.scss';
+import 'lib/tokens.scss';
 import 'lib/assets/styles/index.scss';
 ```
 
 ## Color palette
 
-These swatches use the CSS custom properties from `SCSSVariablesInJS.module.scss`.
+These swatches use the CSS custom properties from `tokens.module.scss`.
 The same values are available as global CSS variables, so they can be used directly in component styles with the `var()` function.
 
 ```css
@@ -709,4 +710,151 @@ Each class sets only `border-color`; add a border width and style separately.
 <button class="bg--brand-primary text--brand-primary-active">Action</button>
 
 <input class="border--control" style="border: 1px solid" />
+```
+
+# Fonts
+
+The font utilities are loaded by `assets/styles/utilities/fonts.scss`. They set the Lato font family with `Arial` and `sans-serif` fallbacks. Lato is requested from Google Fonts, so the web font requires network access; the fallback stack is used if it cannot load.
+
+## Font family
+
+- `.ff` applies `"Lato", Arial, sans-serif`.
+
+## Font size
+
+The `.ts--*` classes set font size:
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Font size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>ts--xxl</code>
+      </td>
+      <td>36px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ts--xl</code>
+      </td>
+      <td>20px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ts--md</code>
+      </td>
+      <td>14px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ts--sm</code>
+      </td>
+      <td>12px</td>
+    </tr>
+  </tbody>
+</table>
+
+## Line height
+
+The `.ln--*` classes set line height:
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Line height</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>ln--xxl</code>
+      </td>
+      <td>48px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ln--xl</code>
+      </td>
+      <td>28px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ln--md</code>
+      </td>
+      <td>20px</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ln--sm</code>
+      </td>
+      <td>16px</td>
+    </tr>
+  </tbody>
+</table>
+
+## Font weight
+
+The `.fw--*` classes set the numeric `font-weight`. Supported values are `100`, `300`, `400`, `700`, and `900`.
+
+## Text presets
+
+Each `.text--*` class combines the Lato font family, font size, line height, and weight:
+
+<table>
+  <thead>
+    <tr>
+      <th>Class</th>
+      <th>Size</th>
+      <th>Line height</th>
+      <th>Weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>text--sm</code>
+      </td>
+      <td>12px</td>
+      <td>16px</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--md</code>
+      </td>
+      <td>14px</td>
+      <td>20px</td>
+      <td>500</td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--xl</code>
+      </td>
+      <td>20px</td>
+      <td>28px</td>
+      <td>700</td>
+    </tr>
+    <tr>
+      <td>
+        <code>text--xxl</code>
+      </td>
+      <td>36px</td>
+      <td>48px</td>
+      <td>700</td>
+    </tr>
+  </tbody>
+</table>
+
+## Examples
+
+```html
+<p class="ff ts--md ln--md fw--400">Custom typography</p>
+<h1 class="text--xxl">Page title</h1>
+<p class="text--sm">Compact supporting text</p>
 ```

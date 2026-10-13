@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+$sizes: (
+  'xxl': 36px,
+  'xl': 20px,
+  'md': 14px,
+  'sm': 12px,
+);
+$line-height: (
+  'xxl': 48px,
+  'xl': 28px,
+  'md': 20px,
+  'sm': 16px,
+);
+$font-weight: 100, 300, 400, 700, 900;
+$font-family: 'Lato', Arial, sans-serif;
+$text: 'sm', 'md', 'xl', 'xxl';
+$text-weight: (
+  'xxl': 700,
+  'xl': 700,
+  'md': 500,
+  'sm': 500,
+);
+
+.ts {
+  @each $key, $size in $sizes {
+    &--#{$key} {
+      font-size: $size;
+    }
+  }
+}
+
+.ln {
+  @each $key, $size in $line-height {
+    &--#{$key} {
+      line-height: $size;
+    }
+  }
+}
+
+.fw {
+  @each $size in $font-weight {
+    &--#{$size} {
+      font-weight: $size;
+    }
+  }
+}
+
+.ff {
+  font-family: $font-family;
+}
+
+.text {
+  @each $textSize in $text {
+    &--#{$textSize} {
+      font-family: $font-family;
+      font-size: map-get($sizes, $textSize);
+      line-height: map-get($line-height, $textSize);
+      font-weight: map-get($text-weight, $textSize);
+    }
+  }
+}
