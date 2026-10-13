@@ -10,9 +10,9 @@
       "import": "./src/index.ts"
     },
     "./assets/styles/index.scss": "./src/assets/styles/index.scss",
-    "./SCSSvariables.scss": {
-      "types": "./src/assets/styles/SCSSVariablesInJS.module.scss.d.ts",
-      "import": "./src/assets/styles/SCSSVariablesInJS.module.scss"
+    "./tokens.module.scss": {
+      "types": "./src/assets/styles/tokens.module.scss.d.ts",
+      "import": "./src/assets/styles/tokens.module.scss"
     },
     "./api": {
       "types": "./src/api/index.ts",

@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import '../src/assets/styles/SCSSVariablesInJS.module.scss';
+import '../src/assets/styles/tokens.module.scss';
 import '../src/assets/styles/index.scss';
 
 const preview = {
