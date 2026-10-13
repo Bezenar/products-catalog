@@ -1,3 +1,4 @@
+@use 'sass:map';
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 $sizes: (
@@ -54,9 +55,9 @@ $text-weight: (
   @each $textSize in $text {
     &--#{$textSize} {
       font-family: $font-family;
-      font-size: map-get($sizes, $textSize);
-      line-height: map-get($line-height, $textSize);
-      font-weight: map-get($text-weight, $textSize);
+      font-size: map.get($sizes, $textSize);
+      line-height: map.get($line-height, $textSize);
+      font-weight: map.get($text-weight, $textSize);
     }
   }
 }
