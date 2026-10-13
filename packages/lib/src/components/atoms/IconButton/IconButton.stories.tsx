@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, expect } from 'storybook/test';
-import { GridIcon, ListIcon } from '../../assets/icons';
+import { GridIcon, ListIcon } from '../../../assets/icons';
 import IconButton from './index';
 
 const meta = {

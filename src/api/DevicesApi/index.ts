@@ -1,4 +1,4 @@
-import { BaseApi } from 'lib';
+import BaseApi from 'lib/utils/BaseApi';
 import type { T_DeepPartial } from '../../../packages/lib/utilityTypes';
 import type { I_GetDevicesRes } from '../../types';
 

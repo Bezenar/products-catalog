@@ -2,29 +2,24 @@
   "name": "lib",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
   "types": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
-    },
     "./assets/styles/index.scss": "./src/assets/styles/index.scss",
     "./tokens.module.scss": {
       "types": "./src/assets/styles/tokens.module.scss.d.ts",
       "import": "./src/assets/styles/tokens.module.scss"
     },
-    "./api": {
-      "types": "./src/api/index.ts",
-      "import": "./src/api/index.ts"
+    "./icons/*": {
+      "types": "./src/assets/icons/*/index.tsx",
+      "import": "./src/assets/icons/*/index.tsx"
     },
-    "./utils": {
-      "types": "./src/utils/index.ts",
-      "import": "./src/utils/index.ts"
+    "./utils/*": {
+      "types": "./src/utils/*/index.ts",
+      "import": "./src/utils/*/index.ts"
     },
-    "./components": {
-      "types": "./src/components/index.ts",
-      "import": "./src/components/index.ts"
+    "./atoms/*": {
+      "types": "./src/components/atoms/*/index.tsx",
+      "import": "./src/components/atoms/*/index.tsx"
     }
   },
   "scripts": {

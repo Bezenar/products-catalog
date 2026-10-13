@@ -1,4 +1,4 @@
-import { cn } from '../../utils';
+import cn from '../../../utils/cn';
 import Logo from '../Logo';
 import s from './LogoButton.module.scss';
 

@@ -1,4 +1,4 @@
-import { cn } from '../../utils';
+import cn from '../../../utils/cn';
 import s from './IconButton.module.scss';
 
 export interface IIconButton extends Required<React.PropsWithChildren> {
