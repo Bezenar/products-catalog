@@ -4,6 +4,7 @@ const Logo: React.FC = () => {
   return (
     <svg
       preserveAspectRatio="none"
+      role="presentation"
       overflow="visible"
       width="20"
       height="20.1558"

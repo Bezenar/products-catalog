@@ -2,7 +2,14 @@ import tokens from '../../styles/tokens.module.scss';
 
 const ListIcon: React.FC = () => {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      role="presentation"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <mask id="path-1-inside-1_2_850" fill={tokens.surfaceCanvas}>
         <path
           className="path"
