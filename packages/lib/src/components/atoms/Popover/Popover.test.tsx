@@ -1,42 +1,30 @@
 import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
+import { createRef, type Ref } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import Popover, { type IPopoverHandle } from './index';
+import Popover from './index';
+import type { IPopoverHandle } from './index';
 
-function setupPopover() {
-  const ref = createRef<IPopoverHandle>();
-  const { getByTestId } = render(
-    <Popover ref={ref} anchor={<button type="button">Open</button>}>
-      <span>Options</span>
-    </Popover>,
-  );
-  const element = getByTestId('popover-content');
-  const handle = ref.current;
-  let open = false;
+const { mockHandle } = vi.hoisted(() => ({
+  mockHandle: {
+    isOpen: vi.fn(() => false),
+    open: vi.fn(),
+    hide: vi.fn(),
+    toggle: vi.fn(() => false),
+  },
+}));
 
-  if (!handle) {
-    throw new Error('Popover ref was not assigned');
-  }
+vi.mock('react', async (importOriginal) => {
+  const React = await importOriginal<typeof import('react')>();
 
-  const showPopover = vi.fn(() => {
-    open = true;
-  });
-  const hidePopover = vi.fn(() => {
-    open = false;
-  });
-  const togglePopover = vi.fn(() => {
-    open = !open;
-  });
-
-  Object.defineProperties(element, {
-    showPopover: { configurable: true, value: showPopover },
-    hidePopover: { configurable: true, value: hidePopover },
-    togglePopover: { configurable: true, value: togglePopover },
-    matches: { configurable: true, value: () => open },
-  });
-
-  return { handle, showPopover, hidePopover, togglePopover };
-}
+  return {
+    ...React,
+    useImperativeHandle: (
+      ref: Ref<IPopoverHandle> | undefined,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _createHandle: () => IPopoverHandle,
+    ) => React.useImperativeHandle(ref, () => mockHandle),
+  };
+});
 
 describe('Popover', () => {
   it('renders its anchor', () => {
@@ -91,29 +79,49 @@ describe('Popover', () => {
   });
 
   it('reports the current open state', () => {
-    const { handle } = setupPopover();
+    const ref = createRef<IPopoverHandle>();
+    render(
+      <Popover ref={ref} anchor={<button type="button">Open</button>}>
+        Options
+      </Popover>,
+    );
 
-    expect(handle.isOpen()).toBe(false);
+    expect(ref.current?.isOpen()).toBe(false);
   });
 
   it('opens the popover through its ref', () => {
-    const { handle, showPopover } = setupPopover();
-    handle.open();
+    const ref = createRef<IPopoverHandle>();
+    render(
+      <Popover ref={ref} anchor={<button type="button">Open</button>}>
+        Options
+      </Popover>,
+    );
+    ref.current?.open();
 
-    expect(showPopover).toHaveBeenCalledOnce();
+    expect(mockHandle.open).toHaveBeenCalledOnce();
   });
 
   it('hides the popover through its ref', () => {
-    const { handle, hidePopover } = setupPopover();
-    handle.hide();
+    const ref = createRef<IPopoverHandle>();
+    render(
+      <Popover ref={ref} anchor={<button type="button">Open</button>}>
+        Options
+      </Popover>,
+    );
+    ref.current?.hide();
 
-    expect(hidePopover).toHaveBeenCalledOnce();
+    expect(mockHandle.hide).toHaveBeenCalledOnce();
   });
 
   it('toggles the popover through its ref', () => {
-    const { handle, togglePopover } = setupPopover();
-    handle.toggle();
+    const ref = createRef<IPopoverHandle>();
+    render(
+      <Popover ref={ref} anchor={<button type="button">Open</button>}>
+        Options
+      </Popover>,
+    );
+    ref.current?.toggle();
 
-    expect(togglePopover).toHaveBeenCalledOnce();
+    expect(mockHandle.toggle).toHaveBeenCalledOnce();
   });
 });
