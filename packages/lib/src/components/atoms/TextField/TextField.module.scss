@@ -1,0 +1,38 @@
+.wrapper {
+  background-color: var(--surface-search);
+  display: inline-flex;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  cursor: text;
+
+  :focus {
+    border-color: red;
+  }
+
+  &.focused {
+    border-color: var(--brand-primary);
+  }
+
+  &:hover {
+    background-color: var(--border-default);
+    .input {
+      background-color: var(--border-default);
+    }
+  }
+}
+
+.input {
+  border: none;
+  outline: none;
+  color: var(--text-strong);
+  background-color: var(--surface-search);
+  caret-color: var(--text-tertiary);
+
+  &:placeholder {
+    color: var(--text-tertiary);
+  }
+}
