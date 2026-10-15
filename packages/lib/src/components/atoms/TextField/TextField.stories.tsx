@@ -15,6 +15,14 @@ const meta = {
         type: { summary: 'string' },
       },
     },
+    label: {
+      control: 'text',
+      description: 'Accessible label for the text field',
+      type: { name: 'string', required: true },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     icon: {
       control: 'select',
       options: ['Search icon', 'none'],
@@ -73,9 +81,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     onChange: fn(),
   },
   play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('should use value prop correctly', async () => {
       await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
@@ -85,7 +98,7 @@ export const Default: Story = {
     });
 
     await step('should not display icon', () => {
-      expect(canvas.getByRole('textbox').previousSibling).toBeNull();
+      expect(canvas.queryByTestId('text-field-icon')).not.toBeInTheDocument();
     });
 
     await step('On change should trigger onChange callback', async () => {
@@ -99,10 +112,15 @@ export const Default: Story = {
 export const WithPlaceholder: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: 'Enter text',
     onChange: fn(),
   },
   play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('should use value prop correctly', async () => {
       await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
@@ -112,7 +130,7 @@ export const WithPlaceholder: Story = {
     });
 
     await step('should not display icon', () => {
-      expect(canvas.getByRole('textbox').previousSibling).toBeNull();
+      expect(canvas.queryByTestId('text-field-icon')).not.toBeInTheDocument();
     });
 
     await step('On change should trigger onChange callback', async () => {
@@ -126,11 +144,16 @@ export const WithPlaceholder: Story = {
 export const WithIcon: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     icon: <SearchIcon />,
     placeholder: 'Enter text',
     onChange: fn(),
   },
   play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('should use value prop correctly', async () => {
       await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
@@ -140,7 +163,7 @@ export const WithIcon: Story = {
     });
 
     await step('should display icon', () => {
-      expect(canvas.getByRole('textbox').previousSibling).toContainHTML('<svg');
+      expect(canvas.getByTestId('text-field-icon')).toContainHTML('<svg');
     });
 
     await step('On change should trigger onChange callback', async () => {
@@ -154,11 +177,16 @@ export const WithIcon: Story = {
 export const WithCustomWidth: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: '320px wide',
     width: '320px',
     onChange: fn(),
   },
   play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('Should apply custom width', async () => {
       expect(canvas.getByTestId('text-field')).toHaveStyle({ width: args.width });
     });
@@ -172,7 +200,7 @@ export const WithCustomWidth: Story = {
     });
 
     await step('should not display icon', () => {
-      expect(canvas.getByRole('textbox').previousSibling).toBeNull();
+      expect(canvas.queryByTestId('text-field-icon')).not.toBeInTheDocument();
     });
 
     await step('On change should trigger onChange callback', async () => {
@@ -186,11 +214,16 @@ export const WithCustomWidth: Story = {
 export const Debounced: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: 'Type to search',
     debounceMs: 300,
     onChange: fn(),
   },
   play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('should use value prop correctly', async () => {
       await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
@@ -200,7 +233,7 @@ export const Debounced: Story = {
     });
 
     await step('should not display icon', () => {
-      expect(canvas.getByRole('textbox').previousSibling).toBeNull();
+      expect(canvas.queryByTestId('text-field-icon')).not.toBeInTheDocument();
     });
 
     await step('On change should trigger onChange callback with debounce', async () => {

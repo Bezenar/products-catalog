@@ -5,6 +5,7 @@ import TextField from '../../atoms/TextField';
 
 export interface ISearch<T> {
   value: string;
+  label: string;
   placeholder: string;
   debounceMs?: number;
   popoverWidth?: React.CSSProperties['width'];
@@ -16,6 +17,7 @@ export interface ISearch<T> {
 
 function Search<T extends { id: React.Key }>({
   value,
+  label,
   placeholder,
   debounceMs = 300,
   popoverWidth,
@@ -43,6 +45,7 @@ function Search<T extends { id: React.Key }>({
         anchor={
           <TextField
             value={value}
+            label={label}
             placeholder={placeholder}
             debounceMs={debounceMs}
             onChange={onChange}

@@ -66,6 +66,7 @@ afterEach(() => {
 });
 
 describe('Search', () => {
+  const label = 'Search devices';
   const options = [{ id: 1, name: 'Dream Router' }];
   const optionRenderer = (option: (typeof options)[number]) => <span>{option.name}</span>;
 
@@ -73,6 +74,7 @@ describe('Search', () => {
     const { container } = render(
       <Search
         value=""
+        label={label}
         placeholder="Search devices"
         options={options}
         optionRenderer={optionRenderer}
@@ -81,7 +83,7 @@ describe('Search', () => {
     );
 
     expect({
-      placeholder: screen.getByRole('textbox').getAttribute('placeholder'),
+      placeholder: screen.getByRole('textbox', { name: label }).getAttribute('placeholder'),
       options: container.querySelector('[data-testid="popover-content"]')?.textContent,
     }).toEqual({ placeholder: 'Search devices', options: 'Dream Router' });
   });
@@ -90,6 +92,7 @@ describe('Search', () => {
     const { container } = render(
       <Search
         value="router"
+        label={label}
         placeholder="Search devices"
         options={options}
         optionRenderer={optionRenderer}
@@ -104,6 +107,7 @@ describe('Search', () => {
 
   it('hides the popover when the value becomes empty', () => {
     const props = {
+      label,
       placeholder: 'Search devices',
       options,
       optionRenderer,
@@ -123,6 +127,7 @@ describe('Search', () => {
     render(
       <Search
         value=""
+        label={label}
         placeholder="Search devices"
         debounceMs={0}
         options={options}
@@ -131,7 +136,9 @@ describe('Search', () => {
       />,
     );
 
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'router' } });
+    fireEvent.change(screen.getByRole('textbox', { name: label }), {
+      target: { value: 'router' },
+    });
 
     expect(onChange).toHaveBeenCalledWith('router');
   });
@@ -140,6 +147,7 @@ describe('Search', () => {
     const { container } = render(
       <Search
         value=""
+        label={label}
         placeholder="Search devices"
         options={options}
         optionRenderer={optionRenderer}

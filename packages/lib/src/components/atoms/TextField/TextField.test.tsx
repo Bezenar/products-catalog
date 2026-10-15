@@ -7,9 +7,16 @@ describe('TextField', () => {
     vi.useRealTimers();
   });
 
-  it('renders the controlled value and placeholder', () => {
-    render(<TextField value="Router" placeholder="Search devices" onChange={() => {}} />);
-    const input = screen.getByRole('textbox');
+  it('renders the accessible label, controlled value, and placeholder', () => {
+    render(
+      <TextField
+        value="Router"
+        label="Device search"
+        placeholder="Search devices"
+        onChange={() => {}}
+      />,
+    );
+    const input = screen.getByRole('textbox', { name: 'Device search' });
 
     expect({
       value: input.getAttribute('value'),
@@ -26,14 +33,14 @@ describe('TextField', () => {
     { label: 'numeric pixel width', width: 320, expected: '320px' },
     { label: 'percentage width', width: '50%', expected: '50%' },
   ])('applies the $label', ({ width, expected }) => {
-    render(<TextField value="" onChange={() => {}} width={width} />);
+    render(<TextField value="" label="Search devices" onChange={() => {}} width={width} />);
 
     expect(screen.getByRole('textbox').parentElement?.style.width).toBe(expected);
   });
 
   it('reports the changed input value', () => {
     const onChange = vi.fn();
-    render(<TextField value="" onChange={onChange} />);
+    render(<TextField value="" label="Search devices" onChange={onChange} />);
 
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Gateway' } });
 
@@ -42,7 +49,7 @@ describe('TextField', () => {
 
   it('keeps the typed value visible while the callback is debounced', () => {
     const onChange = vi.fn();
-    render(<TextField value="" onChange={onChange} debounceMs={250} />);
+    render(<TextField value="" label="Search devices" onChange={onChange} debounceMs={250} />);
     const input = screen.getByRole<HTMLInputElement>('textbox');
 
     fireEvent.change(input, { target: { value: 'Gateway' } });
@@ -53,7 +60,7 @@ describe('TextField', () => {
   it('waits for the debounce delay and only reports the latest value', () => {
     vi.useFakeTimers();
     const onChange = vi.fn();
-    render(<TextField value="" onChange={onChange} debounceMs={250} />);
+    render(<TextField value="" label="Search devices" onChange={onChange} debounceMs={250} />);
     const input = screen.getByRole('textbox');
 
     fireEvent.change(input, { target: { value: 'Gate' } });
@@ -69,8 +76,32 @@ describe('TextField', () => {
     });
   });
 
+  it('clears a pending debounce when the controlled value changes', () => {
+    vi.useFakeTimers();
+    const onChange = vi.fn();
+    const props = { label: 'Search devices', debounceMs: 250, onChange };
+    const { rerender } = render(<TextField {...props} value="" />);
+    const input = screen.getByRole<HTMLInputElement>('textbox');
+
+    fireEvent.change(input, { target: { value: 'stale value' } });
+    rerender(<TextField {...props} value="updated externally" />);
+    vi.advanceTimersByTime(250);
+
+    expect({ value: input.value, calls: onChange.mock.calls }).toEqual({
+      value: 'updated externally',
+      calls: [],
+    });
+  });
+
   it('focuses the input when its wrapper is clicked', () => {
-    render(<TextField value="" placeholder="Search devices" onChange={() => {}} />);
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+      />,
+    );
     const input = screen.getByRole('textbox');
     const wrapper = input.parentElement;
 
@@ -84,7 +115,14 @@ describe('TextField', () => {
   });
 
   it('hides its placeholder when focused', () => {
-    render(<TextField value="" placeholder="Search devices" onChange={() => {}} />);
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+      />,
+    );
     const input = screen.getByRole<HTMLInputElement>('textbox');
 
     fireEvent.focus(input);
@@ -93,7 +131,14 @@ describe('TextField', () => {
   });
 
   it('restores its placeholder when blurred', () => {
-    render(<TextField value="" placeholder="Search devices" onChange={() => {}} />);
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+      />,
+    );
     const input = screen.getByRole('textbox');
 
     fireEvent.focus(input);
@@ -103,7 +148,14 @@ describe('TextField', () => {
   });
 
   it('renders the optional icon', () => {
-    render(<TextField value="" onChange={() => {}} icon={<span>Search icon</span>} />);
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        onChange={() => {}}
+        icon={<span>Search icon</span>}
+      />,
+    );
 
     expect(screen.getByText('Search icon')).toBeTruthy();
   });

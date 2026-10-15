@@ -16,7 +16,7 @@ const Checkbox: React.FC<ICheckbox> = ({ label, onChange, isChecked }) => {
   };
 
   return (
-    <label tabIndex={1} className={cn(s.label, 'flex ai-center gap-2')} htmlFor={id}>
+    <label tabIndex={0} className={cn(s.label, 'flex ai-center gap-2')} htmlFor={id}>
       <input
         id={id}
         checked={isChecked}

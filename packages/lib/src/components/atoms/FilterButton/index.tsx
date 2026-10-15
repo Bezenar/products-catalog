@@ -1,5 +1,5 @@
-import s from './FilterButton.module.scss';
 import cn from '../../../utils/cn';
+import s from './FilterButton.module.scss';
 
 interface IFilterButton {
   label: string;

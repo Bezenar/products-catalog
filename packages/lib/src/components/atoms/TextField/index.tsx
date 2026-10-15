@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import cn from '../../../utils/cn';
 import s from './TextField.module.scss';
 
 interface ITextField {
   value: string;
+  label: string;
   icon?: React.ReactNode;
   placeholder?: string;
   debounceMs?: number;
@@ -13,12 +14,14 @@ interface ITextField {
 
 const TextField: React.FC<ITextField> = ({
   value,
+  label,
   placeholder,
   onChange,
   icon,
   debounceMs,
   width = '100%',
 }) => {
+  const id = useId();
   const ref = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState(value);
@@ -65,9 +68,18 @@ const TextField: React.FC<ITextField> = ({
       style={{ width }}
       onClick={() => ref.current?.focus()}
     >
-      {icon && <span className="flex ai-center jc-center">{icon}</span>}
+      {icon && (
+        <span data-testid="text-field-icon" className="flex ai-center jc-center">
+          {icon}
+        </span>
+      )}
+
+      <label htmlFor={id} className="visually-hidden">
+        {label}
+      </label>
 
       <input
+        id={id}
         ref={ref}
         className={s.input}
         type="text"

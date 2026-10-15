@@ -30,6 +30,12 @@ const meta = {
       type: { name: 'string', required: true },
       table: { type: { summary: 'string' } },
     },
+    label: {
+      control: 'text',
+      description: 'Accessible label for the search field.',
+      type: { name: 'string', required: true },
+      table: { type: { summary: 'string' } },
+    },
     placeholder: {
       control: 'text',
       description: 'Placeholder shown while the search field is empty and unfocused.',
@@ -92,6 +98,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: 'Search...',
     options: [{ id: 1, name: 'Option 1' }],
     optionRenderer: (option) => <span data-testid="option">{option.name}</span>,
@@ -99,12 +106,19 @@ export const Default: Story = {
   },
   render: (args) => <StatefulSearch {...args} />,
   play: async ({ args, canvas, step, userEvent }) => {
+    await step('Should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('Should render with provided value', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveValue(args.value);
     });
 
     await step('Should render with provided placeholder', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveAttribute('placeholder', args.placeholder);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveAttribute(
+        'placeholder',
+        args.placeholder,
+      );
     });
 
     await step('With empty value should hide options', async () => {
@@ -112,13 +126,13 @@ export const Default: Story = {
     });
 
     await step('Should forward changed text to onChange', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await waitFor(() => expect(args.onChange).toHaveBeenCalledWith('New value'));
     });
 
     await step('With non-empty value should show options', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await expect(canvas.getByTestId('popover-content')).toBeVisible();
     });
@@ -136,6 +150,7 @@ export const Default: Story = {
 export const WithCustomMaxHeight: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: 'Search...',
     options: [{ id: 1, name: 'Option 1' }],
     optionRenderer: (option) => <span data-testid="option">{option.name}</span>,
@@ -144,12 +159,19 @@ export const WithCustomMaxHeight: Story = {
   },
   render: (args) => <StatefulSearch {...args} />,
   play: async ({ args, canvas, step, userEvent }) => {
+    await step('Should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('Should render with provided value', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveValue(args.value);
     });
 
     await step('Should render with provided placeholder', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveAttribute('placeholder', args.placeholder);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveAttribute(
+        'placeholder',
+        args.placeholder,
+      );
     });
 
     await step('With empty value should hide options', async () => {
@@ -157,13 +179,13 @@ export const WithCustomMaxHeight: Story = {
     });
 
     await step('Should forward changed text to onChange', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await waitFor(() => expect(args.onChange).toHaveBeenCalledWith('New value'));
     });
 
     await step('With non-empty value should show options', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await expect(canvas.getByTestId('popover-content')).toBeVisible();
     });
@@ -181,6 +203,7 @@ export const WithCustomMaxHeight: Story = {
 export const WithCustomPopoverWidth: Story = {
   args: {
     value: '',
+    label: 'Search devices',
     placeholder: 'Search...',
     options: [{ id: 1, name: 'Option 1' }],
     optionRenderer: (option) => <span data-testid="option">{option.name}</span>,
@@ -189,12 +212,19 @@ export const WithCustomPopoverWidth: Story = {
   },
   render: (args) => <StatefulSearch {...args} />,
   play: async ({ args, canvas, step, userEvent }) => {
+    await step('Should expose the provided accessible label', async () => {
+      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
     await step('Should render with provided value', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveValue(args.value);
     });
 
     await step('Should render with provided placeholder', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveAttribute('placeholder', args.placeholder);
+      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveAttribute(
+        'placeholder',
+        args.placeholder,
+      );
     });
 
     await step('With empty value should hide options', async () => {
@@ -202,13 +232,13 @@ export const WithCustomPopoverWidth: Story = {
     });
 
     await step('Should forward changed text to onChange', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await waitFor(() => expect(args.onChange).toHaveBeenCalledWith('New value'));
     });
 
     await step('With non-empty value should show options', async () => {
-      await userEvent.type(canvas.getByRole('textbox'), 'New value');
+      await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'New value');
 
       await expect(canvas.getByTestId('popover-content')).toBeVisible();
     });

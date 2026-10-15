@@ -1,30 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { createRef, type Ref } from 'react';
+import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import Popover from './index';
 import type { IPopoverHandle } from './index';
-
-const { mockHandle } = vi.hoisted(() => ({
-  mockHandle: {
-    isOpen: vi.fn(() => false),
-    open: vi.fn(),
-    hide: vi.fn(),
-    toggle: vi.fn(() => false),
-  },
-}));
-
-vi.mock('react', async (importOriginal) => {
-  const React = await importOriginal<typeof import('react')>();
-
-  return {
-    ...React,
-    useImperativeHandle: (
-      ref: Ref<IPopoverHandle> | undefined,
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      _createHandle: () => IPopoverHandle,
-    ) => React.useImperativeHandle(ref, () => mockHandle),
-  };
-});
 
 describe('Popover', () => {
   it('renders its anchor', () => {
@@ -85,6 +63,11 @@ describe('Popover', () => {
         Options
       </Popover>,
     );
+    const matches = vi.fn(() => false);
+    Object.defineProperty(screen.getByTestId('popover-content'), 'matches', {
+      configurable: true,
+      value: matches,
+    });
 
     expect(ref.current?.isOpen()).toBe(false);
   });
@@ -96,9 +79,14 @@ describe('Popover', () => {
         Options
       </Popover>,
     );
+    const showPopover = vi.fn();
+    Object.defineProperty(screen.getByTestId('popover-content'), 'showPopover', {
+      configurable: true,
+      value: showPopover,
+    });
     ref.current?.open();
 
-    expect(mockHandle.open).toHaveBeenCalledOnce();
+    expect(showPopover).toHaveBeenCalledOnce();
   });
 
   it('hides the popover through its ref', () => {
@@ -108,9 +96,14 @@ describe('Popover', () => {
         Options
       </Popover>,
     );
+    const hidePopover = vi.fn();
+    Object.defineProperty(screen.getByTestId('popover-content'), 'hidePopover', {
+      configurable: true,
+      value: hidePopover,
+    });
     ref.current?.hide();
 
-    expect(mockHandle.hide).toHaveBeenCalledOnce();
+    expect(hidePopover).toHaveBeenCalledOnce();
   });
 
   it('toggles the popover through its ref', () => {
@@ -120,8 +113,13 @@ describe('Popover', () => {
         Options
       </Popover>,
     );
+    const togglePopover = vi.fn();
+    Object.defineProperty(screen.getByTestId('popover-content'), 'togglePopover', {
+      configurable: true,
+      value: togglePopover,
+    });
     ref.current?.toggle();
 
-    expect(mockHandle.toggle).toHaveBeenCalledOnce();
+    expect(togglePopover).toHaveBeenCalledOnce();
   });
 });

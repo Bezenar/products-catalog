@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import FilterButton from './index';
 import styles from './FilterButton.module.scss';
+import FilterButton from './index';
 
 describe('FilterButton', () => {
   it('renders the provided label as a button', () => {
@@ -21,9 +21,7 @@ describe('FilterButton', () => {
   it('applies the active class when isActive is true', () => {
     render(<FilterButton label="Unread" isActive onClick={() => {}} />);
 
-    expect(screen.getByRole('button', { name: 'Unread' }).classList.contains(styles.active)).toBe(
-      true,
-    );
+    expect(screen.getByRole('button', { name: 'Unread' })).toHaveClass('active');
   });
 
   it('calls onClick when clicked', () => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import FilterButton from './index';
 import { fn, expect } from 'storybook/test';
+import FilterButton from './index';
 
 const meta: Meta<typeof FilterButton> = {
   title: 'Components/Atoms/FilterButton',
