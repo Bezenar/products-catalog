@@ -1,0 +1,21 @@
+.button {
+  outline: none;
+  background: transparent;
+  padding: 6px 2px;
+  cursor: pointer;
+  border: 1px solid;
+  border-color: transparent;
+  border-radius: 4px;
+  color: var(--brand-primary);
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+
+  &:hover {
+    color: var(--brand-primary-active);
+  }
+
+  &:focus-visible {
+    border-color: var(--brand-primary);
+  }
+}
