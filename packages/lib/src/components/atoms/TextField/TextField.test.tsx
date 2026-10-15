@@ -20,6 +20,17 @@ describe('TextField', () => {
     });
   });
 
+  it.each([
+    { label: 'default width', width: undefined, expected: '100%' },
+    { label: 'pixel width', width: '320px', expected: '320px' },
+    { label: 'numeric pixel width', width: 320, expected: '320px' },
+    { label: 'percentage width', width: '50%', expected: '50%' },
+  ])('applies the $label', ({ width, expected }) => {
+    render(<TextField value="" onChange={() => {}} width={width} />);
+
+    expect(screen.getByRole('textbox').parentElement?.style.width).toBe(expected);
+  });
+
   it('reports the changed input value', () => {
     const onChange = vi.fn();
     render(<TextField value="" onChange={onChange} />);

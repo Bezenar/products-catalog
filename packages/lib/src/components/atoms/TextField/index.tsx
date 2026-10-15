@@ -7,10 +7,18 @@ interface ITextField {
   icon?: React.ReactNode;
   placeholder?: string;
   debounceMs?: number;
+  width?: React.CSSProperties['width'];
   onChange: (value: string) => void;
 }
 
-const TextField: React.FC<ITextField> = ({ value, placeholder, onChange, icon, debounceMs }) => {
+const TextField: React.FC<ITextField> = ({
+  value,
+  placeholder,
+  onChange,
+  icon,
+  debounceMs,
+  width = '100%',
+}) => {
   const ref = useRef<HTMLInputElement>(null);
   const [isFocused, setIsFocused] = useState(false);
   const [inputValue, setInputValue] = useState(value);
@@ -51,7 +59,12 @@ const TextField: React.FC<ITextField> = ({ value, placeholder, onChange, icon, d
   };
 
   return (
-    <div className={cn(s.wrapper, { [s.focused]: isFocused })} onClick={() => ref.current?.focus()}>
+    <div
+      data-testid="text-field"
+      className={cn(s.wrapper, { [s.focused]: isFocused })}
+      style={{ width }}
+      onClick={() => ref.current?.focus()}
+    >
       {icon && <span className="flex ai-center jc-center">{icon}</span>}
 
       <input

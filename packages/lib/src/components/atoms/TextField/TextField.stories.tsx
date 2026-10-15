@@ -45,6 +45,15 @@ const meta = {
         defaultValue: { summary: 'undefined (immediate)' },
       },
     },
+    width: {
+      control: 'text',
+      description: 'CSS width value, such as 320px, 50%, or auto.',
+      type: { name: 'other', value: 'React.CSSProperties["width"]', required: false },
+      table: {
+        type: { summary: 'React.CSSProperties["width"]' },
+        defaultValue: { summary: '100%' },
+      },
+    },
     onChange: {
       action: 'changed',
       control: false,
@@ -132,6 +141,38 @@ export const WithIcon: Story = {
 
     await step('should display icon', () => {
       expect(canvas.getByRole('textbox').previousSibling).toContainHTML('<svg');
+    });
+
+    await step('On change should trigger onChange callback', async () => {
+      await userEvent.type(canvas.getByRole('textbox'), 'Hello');
+
+      await expect(args.onChange).toHaveBeenCalledWith('Hello');
+    });
+  },
+};
+
+export const WithCustomWidth: Story = {
+  args: {
+    value: '',
+    placeholder: '320px wide',
+    width: '320px',
+    onChange: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    await step('Should apply custom width', async () => {
+      expect(canvas.getByTestId('text-field')).toHaveStyle({ width: args.width });
+    });
+
+    await step('should use value prop correctly', async () => {
+      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+    });
+
+    await step('should display placeholder', () => {
+      expect(canvas.getByRole('textbox')).toHaveAttribute('placeholder', args.placeholder);
+    });
+
+    await step('should not display icon', () => {
+      expect(canvas.getByRole('textbox').previousSibling).toBeNull();
     });
 
     await step('On change should trigger onChange callback', async () => {
