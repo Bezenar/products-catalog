@@ -47,7 +47,7 @@ const meta = {
       },
     },
     onClick: {
-      control: undefined,
+      control: false,
       type: { name: 'function', required: true },
       description: 'Callback invoked when the button is clicked.',
       table: {

@@ -23,7 +23,7 @@ const meta = {
       },
     },
     onChange: {
-      control: undefined,
+      control: false,
       description: 'Fired function on checkbox change',
       table: {
         type: { summary: '(nextValue: boolean) => void' },

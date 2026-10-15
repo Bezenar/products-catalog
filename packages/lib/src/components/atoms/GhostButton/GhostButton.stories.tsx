@@ -16,7 +16,7 @@ const meta = {
     },
     onClick: {
       action: 'clicked',
-      control: undefined,
+      control: false,
       description: 'The onClick handler for the GhostButton',
       type: { name: 'function', required: true },
       table: {

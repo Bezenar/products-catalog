@@ -24,7 +24,7 @@ const meta = {
     },
     onClick: {
       action: 'clicked',
-      control: undefined,
+      control: false,
       description: 'Click handler for the search list item',
       type: { name: 'function', required: false },
       table: {

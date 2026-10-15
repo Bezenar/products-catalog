@@ -47,7 +47,7 @@ const meta = {
     },
     onChange: {
       action: 'changed',
-      control: undefined,
+      control: false,
       description: 'Callback function when the value changes',
       type: { name: 'function', required: true },
       table: {

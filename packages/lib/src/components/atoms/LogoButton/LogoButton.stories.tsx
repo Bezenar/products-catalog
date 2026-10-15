@@ -16,7 +16,7 @@ const meta = {
       },
     },
     onClick: {
-      control: undefined,
+      control: false,
       type: { name: 'function', required: true },
       description: 'Fired function on button click',
       table: {
