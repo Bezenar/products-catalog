@@ -66,25 +66,25 @@ $shrink: 1, 2, 3, 4, 5;
   }
 
   @each $jcKey, $jcValue in $jc {
-    &-jc-#{$jcKey} {
+    &.jc-#{$jcKey} {
       justify-content: $jcValue;
     }
   }
 
   @each $aiKey, $aiValue in $ai {
-    &-ai-#{$aiKey} {
+    &.ai-#{$aiKey} {
       align-items: $aiValue;
     }
   }
 
   @each $acKey, $acValue in $ac {
-    &-ac-#{$acKey} {
+    &.ac-#{$acKey} {
       align-content: $acValue;
     }
   }
 
   @each $asKey, $asValue in $as {
-    &-as-#{$asKey} {
+    &.as-#{$asKey} {
       align-self: $asValue;
     }
   }

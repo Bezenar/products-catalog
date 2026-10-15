@@ -18,7 +18,7 @@
     background-color: var(--surface-muted);
   }
 
-  &:focus {
+  &:focus-visible {
     border-color: var(--brand-primary);
   }
 }

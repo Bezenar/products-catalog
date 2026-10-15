@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import IconButton from './index';
 
-describe('IconButton', () => {
+describe('lib/components/atoms/IconButton', () => {
   it('renders its accessible label and children', () => {
     render(
       <IconButton ariaLabel="Grid view" onClick={() => {}}>

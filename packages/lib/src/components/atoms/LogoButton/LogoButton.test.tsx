@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import LogoButton from './index';
 
-describe('lib/components/LogoButton', () => {
+describe('lib/components/atoms/LogoButton', () => {
   const mockOnClick = vi.fn();
 
   it('renders a button with the provided accessible label', () => {

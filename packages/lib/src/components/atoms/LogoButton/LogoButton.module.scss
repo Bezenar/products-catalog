@@ -12,7 +12,7 @@
     transition: fill 0.3s ease;
   }
 
-  &:focus {
+  &:focus-visible {
     border: 1px solid var(--brand-primary);
   }
 

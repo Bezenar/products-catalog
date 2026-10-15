@@ -4,7 +4,7 @@ import { GridIcon, ListIcon } from '../../../assets/icons';
 import IconButton from './index';
 
 const meta = {
-  title: 'Components/IconButton',
+  title: 'Components/Atoms/IconButton',
   component: IconButton,
   argTypes: {
     ariaLabel: {

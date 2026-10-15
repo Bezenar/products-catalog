@@ -3,7 +3,7 @@ import { expect, fn } from 'storybook/test';
 import LogoButton from './index';
 
 const meta = {
-  title: 'Components/LogoButton',
+  title: 'Components/Atoms/LogoButton',
   parameters: { layout: 'centered' },
   component: LogoButton,
   argTypes: {
