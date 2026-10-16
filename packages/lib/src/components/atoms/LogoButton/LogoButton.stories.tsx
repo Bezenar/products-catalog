@@ -37,6 +37,6 @@ export const Default: Story = {
   },
   play: async ({ args, canvas, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Logo button' }));
-    await expect(args.onClick).toHaveBeenCalledOnce();
+    expect(args.onClick).toHaveBeenCalledOnce();
   },
 };

@@ -37,13 +37,13 @@ export const Default: Story = {
   },
   play: async ({ args, userEvent, canvas, step }) => {
     await step('Should render button label', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeInTheDocument();
+      expect(canvas.getByRole('button', { name: args.label })).toBeInTheDocument();
     });
 
     await step('Click the GhostButton', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(args.onClick).toHaveBeenCalled();
+      expect(args.onClick).toHaveBeenCalled();
     });
   },
 };

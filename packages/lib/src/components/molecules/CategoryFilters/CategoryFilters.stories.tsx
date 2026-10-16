@@ -68,21 +68,21 @@ export const Default: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('Should render the filter button', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
+      expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {
-      await expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
     });
 
     await step('Should not render the reset button', async () => {
-      await expect(canvas.queryByTestId('category-filter-reset')).not.toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-reset')).not.toBeInTheDocument();
     });
   },
 };
@@ -100,21 +100,21 @@ export const WithListHeading: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('Should render the filter button', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
+      expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should render the heading', async () => {
-      await expect(canvas.queryByTestId('category-filter-heading')).toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-heading')).toBeInTheDocument();
     });
 
     await step('Should not render the reset button', async () => {
-      await expect(canvas.queryByTestId('category-filter-reset')).not.toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-reset')).not.toBeInTheDocument();
     });
   },
 };
@@ -135,27 +135,27 @@ export const WithActiveResetButton: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('Should render the filter button', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
+      expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {
-      await expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
     });
 
     await step('Should render the reset button', async () => {
-      await expect(canvas.getByTestId('category-filter-reset')).toBeInTheDocument();
+      expect(canvas.getByTestId('category-filter-reset')).toBeInTheDocument();
     });
 
     await step('Click on reset button should call onReset.onClick', async () => {
       await userEvent.click(canvas.getByTestId('category-filter-reset'));
 
-      await expect(args.onReset!.onClick).toHaveBeenCalled();
+      expect(args.onReset!.onClick).toHaveBeenCalled();
     });
   },
 };
@@ -176,31 +176,31 @@ export const WithDisabledResetButton: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('Should render the filter button', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
+      expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {
-      await expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
+      expect(canvas.queryByTestId('category-filter-heading')).not.toBeInTheDocument();
     });
 
     await step('Should render the reset button', async () => {
-      await expect(canvas.getByTestId('category-filter-reset')).toBeInTheDocument();
+      expect(canvas.getByTestId('category-filter-reset')).toBeInTheDocument();
     });
 
     await step('Should render the reset button as disabled', async () => {
-      await expect(canvas.getByTestId('category-filter-reset')).toBeDisabled();
+      expect(canvas.getByTestId('category-filter-reset')).toBeDisabled();
     });
 
     await step('Click on reset button should not call onReset.onClick', async () => {
       await userEvent.click(canvas.getByTestId('category-filter-reset'));
 
-      await expect(args.onReset!.onClick).not.toHaveBeenCalled();
+      expect(args.onReset!.onClick).not.toHaveBeenCalled();
     });
   },
 };

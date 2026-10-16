@@ -2,6 +2,29 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import Popover, { type IPopover } from './index';
 
+const useRefMock = vi.hoisted(() => vi.fn());
+const useRefState = vi.hoisted(() => ({ returnNullOnNextCall: false }));
+
+vi.mock('react', async (importOriginal) => {
+  const React = await importOriginal<typeof import('react')>();
+  useRefMock.mockImplementation((initialValue) => {
+    const ref = React.useRef(initialValue);
+    if (useRefState.returnNullOnNextCall) {
+      useRefState.returnNullOnNextCall = false;
+      return {
+        get current() {
+          return null;
+        },
+        set current(_value) {},
+      };
+    }
+
+    return ref;
+  });
+
+  return { ...React, useRef: useRefMock };
+});
+
 type TAnchorBounds = Pick<DOMRect, 'x' | 'y' | 'width' | 'height'>;
 
 function mockAnchorBounds(...bounds: TAnchorBounds[]) {
@@ -65,6 +88,14 @@ describe('Popover', () => {
     renderPopover();
 
     expect(screen.getByText('Popover content').parentElement).toHaveClass('bottom-left');
+  });
+
+  it('skips coordinate calculation when the anchor ref is null', () => {
+    useRefState.returnNullOnNextCall = true;
+
+    renderPopover();
+
+    expect(screen.getByTestId('popover-content').style.top).toBe('');
   });
 
   it.each([

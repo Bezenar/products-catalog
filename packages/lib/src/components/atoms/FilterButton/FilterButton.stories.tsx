@@ -46,16 +46,16 @@ export const Default: Story = {
   },
   play: async ({ args, step, canvas, userEvent }) => {
     await step('Should render provided label', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('Should not be active', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).not.toHaveClass('active');
+      expect(canvas.getByRole('button', { name: args.label })).not.toHaveClass('active');
     });
 
     await step('Click the filter button should trigger onClick', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
-      await expect(args.onClick).toHaveBeenCalled();
+      expect(args.onClick).toHaveBeenCalled();
     });
   },
 };
@@ -68,16 +68,16 @@ export const Active: Story = {
   },
   play: async ({ args, step, canvas, userEvent }) => {
     await step('Should render provided label', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('button', { name: args.label })).toBeTruthy();
     });
 
     await step('Should be active', async () => {
-      await expect(canvas.getByRole('button', { name: args.label })).toHaveClass('active');
+      expect(canvas.getByRole('button', { name: args.label })).toHaveClass('active');
     });
 
     await step('Click the filter button should trigger onClick', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
-      await expect(args.onClick).toHaveBeenCalled();
+      expect(args.onClick).toHaveBeenCalled();
     });
   },
 };

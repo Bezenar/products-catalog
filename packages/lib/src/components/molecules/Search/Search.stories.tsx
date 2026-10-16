@@ -83,22 +83,22 @@ export const Default: Story = {
   },
   play: async ({ args, canvas, step, userEvent }) => {
     await step('Should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('Should render with provided value', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox', { name: args.label })).toHaveValue(args.value);
     });
 
     await step('Should render with provided placeholder', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toHaveAttribute(
+      expect(canvas.getByRole('textbox', { name: args.label })).toHaveAttribute(
         'placeholder',
         args.placeholder,
       );
     });
 
     await step('With empty value should hide options', async () => {
-      await expect(canvas.getByTestId('popover-content')).not.toBeVisible();
+      expect(canvas.getByTestId('popover-content')).not.toBeVisible();
     });
 
     await step('With non-empty value should show options', async () => {
@@ -108,13 +108,13 @@ export const Default: Story = {
     });
 
     await step('Should show matching product name and shortname', async () => {
-      await expect(canvas.getByTestId('primary-text')).toHaveTextContent('Dream Router');
+      expect(canvas.getByTestId('primary-text')).toHaveTextContent('Dream Router');
     });
 
     await step('Should notify when a result is selected', async () => {
       await userEvent.click(canvas.getByTestId('primary-text'));
 
-      await expect(args.onChange).toHaveBeenCalledWith('Dream Router');
+      expect(args.onChange).toHaveBeenCalledWith('Dream Router');
     });
 
     await step('Should close the results after selection', async () => {

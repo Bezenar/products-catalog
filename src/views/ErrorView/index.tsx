@@ -4,7 +4,6 @@ import s from './ErrorView.module.scss';
 
 const ErrorView: React.FC = () => {
   const { code } = useParams();
-  console.log('CODE >>>> ', code);
 
   const renderError = () => {
     switch (code) {

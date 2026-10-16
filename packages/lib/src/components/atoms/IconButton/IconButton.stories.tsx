@@ -72,7 +72,7 @@ export const Default: Story = {
     await step('Calls onClick when the button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: 'Grid icon label' }));
 
-      await expect(args.onClick).toHaveBeenCalledOnce();
+      expect(args.onClick).toHaveBeenCalledOnce();
     });
 
     await step('Does not apply activeClass when isActive is falsy', async () => {
@@ -97,7 +97,7 @@ export const Active: Story = {
     await step('Calls onClick when the button is clicked', async () => {
       await userEvent.click(canvas.getByRole('button', { name: 'List icon label' }));
 
-      await expect(args.onClick).toHaveBeenCalledOnce();
+      expect(args.onClick).toHaveBeenCalledOnce();
     });
 
     await step('Applies activeClass when isActive is true', async () => {

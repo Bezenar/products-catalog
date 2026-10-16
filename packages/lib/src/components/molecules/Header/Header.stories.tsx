@@ -47,19 +47,19 @@ export const Default: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('Should render title', async () => {
-      await expect(canvas.getByText(args.title)).toBeInTheDocument();
+      expect(canvas.getByText(args.title)).toBeInTheDocument();
     });
     await step('Should render author', async () => {
-      await expect(canvas.getByText(args.author as string)).toBeInTheDocument();
+      expect(canvas.getByText(args.author as string)).toBeInTheDocument();
     });
 
     await step('Should render logo button', async () => {
-      await expect(canvas.getByRole('button', { name: args.logoAriaLabel })).toBeInTheDocument();
+      expect(canvas.getByRole('button', { name: args.logoAriaLabel })).toBeInTheDocument();
     });
 
     await step('Should expose and handle the logo button', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.logoAriaLabel }));
-      await expect(args.onLogoClick).toHaveBeenCalledOnce();
+      expect(args.onLogoClick).toHaveBeenCalledOnce();
     });
   },
 };

@@ -86,11 +86,11 @@ export const Default: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('should use value prop correctly', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
 
     await step('should not display placeholder', () => {
@@ -104,7 +104,7 @@ export const Default: Story = {
     await step('On change should trigger onChange callback', async () => {
       await userEvent.type(canvas.getByRole('textbox'), 'Hello');
 
-      await expect(args.onChange).toHaveBeenCalledWith('Hello');
+      expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
   },
 };
@@ -118,11 +118,11 @@ export const WithPlaceholder: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('should use value prop correctly', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
 
     await step('should display placeholder', () => {
@@ -136,7 +136,7 @@ export const WithPlaceholder: Story = {
     await step('On change should trigger onChange callback', async () => {
       await userEvent.type(canvas.getByRole('textbox'), 'Hello');
 
-      await expect(args.onChange).toHaveBeenCalledWith('Hello');
+      expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
   },
 };
@@ -151,11 +151,11 @@ export const WithIcon: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('should use value prop correctly', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
 
     await step('should display placeholder', () => {
@@ -169,7 +169,7 @@ export const WithIcon: Story = {
     await step('On change should trigger onChange callback', async () => {
       await userEvent.type(canvas.getByRole('textbox'), 'Hello');
 
-      await expect(args.onChange).toHaveBeenCalledWith('Hello');
+      expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
   },
 };
@@ -184,7 +184,7 @@ export const WithCustomWidth: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('Should apply custom width', async () => {
@@ -192,7 +192,7 @@ export const WithCustomWidth: Story = {
     });
 
     await step('should use value prop correctly', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
 
     await step('should display placeholder', () => {
@@ -206,7 +206,7 @@ export const WithCustomWidth: Story = {
     await step('On change should trigger onChange callback', async () => {
       await userEvent.type(canvas.getByRole('textbox'), 'Hello');
 
-      await expect(args.onChange).toHaveBeenCalledWith('Hello');
+      expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
   },
 };
@@ -221,11 +221,11 @@ export const Debounced: Story = {
   },
   play: async ({ args, canvas, userEvent, step }) => {
     await step('should expose the provided accessible label', async () => {
-      await expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
     });
 
     await step('should use value prop correctly', async () => {
-      await expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
     });
 
     await step('should display placeholder', () => {

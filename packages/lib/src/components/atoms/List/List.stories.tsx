@@ -47,16 +47,16 @@ export const Default: Story = {
   play: async ({ args, canvas, step }) => {
     await step('should render the list items correctly', async () => {
       for (const item of args.items) {
-        await expect(canvas.getByText(item.name)).toBeInTheDocument();
+        expect(canvas.getByText(item.name)).toBeInTheDocument();
       }
     });
 
     await step('should call renderItem for each item', async () => {
-      await expect(args.renderItem).toHaveBeenCalledTimes(3);
+      expect(args.renderItem).toHaveBeenCalledTimes(3);
     });
 
     await step('should render content by provided renderItem function', async () => {
-      await expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
+      expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
     });
   },
 };
@@ -74,20 +74,20 @@ export const WithClassName: Story = {
   play: async ({ args, canvas, step }) => {
     await step('should render the list items correctly', async () => {
       for (const item of args.items) {
-        await expect(canvas.getByText(item.name)).toBeInTheDocument();
+        expect(canvas.getByText(item.name)).toBeInTheDocument();
       }
     });
 
     await step('should call renderItem for each item', async () => {
-      await expect(args.renderItem).toHaveBeenCalledTimes(3);
+      expect(args.renderItem).toHaveBeenCalledTimes(3);
     });
 
     await step('should render content by provided renderItem function', async () => {
-      await expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
+      expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
     });
 
     await step('should apply the custom class name to the list container', async () => {
-      await expect(canvas.getByRole('list')).toHaveClass('custom-class');
+      expect(canvas.getByRole('list')).toHaveClass('custom-class');
     });
   },
 };

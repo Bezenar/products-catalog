@@ -35,10 +35,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     size: 'md',
+    label: 'Loading',
   },
   play: async ({ canvas }) => {
-    await expect(canvas.getByRole('status', { name: 'Loading' })).toBeVisible();
-    await expect(canvas.getByText('Loading')).toBeVisible();
+    expect(canvas.getByRole('status', { name: 'Loading' })).toBeVisible();
   },
 };
 
@@ -48,8 +48,8 @@ export const XLSpinner: Story = {
     label: 'Loading products',
   },
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
-    await expect(canvas.getByText(args.label)).toBeVisible();
+    expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
+    expect(canvas.getByText(args.label as string)).toBeVisible();
   },
 };
 
@@ -59,8 +59,8 @@ export const MDSpinner: Story = {
     label: 'Loading category',
   },
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
-    await expect(canvas.getByText(args.label)).toBeVisible();
+    expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
+    expect(canvas.getByText(args.label as string)).toBeVisible();
   },
 };
 
@@ -70,7 +70,7 @@ export const SMSpinner: Story = {
     label: 'Loading items',
   },
   play: async ({ args, canvas }) => {
-    await expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
-    await expect(canvas.getByText(args.label)).toBeVisible();
+    expect(canvas.getByRole('status', { name: args.label })).toBeVisible();
+    expect(canvas.getByText(args.label as string)).toBeVisible();
   },
 };

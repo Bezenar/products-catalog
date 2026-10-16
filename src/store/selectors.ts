@@ -3,11 +3,12 @@ import type { T_AdaptedDeviceLine } from '../types';
 import type { T_RootState } from '.';
 
 export const selectFilters = (state: T_RootState) => state.filters;
+export const selectSearchValue = (state: T_RootState) => state.filters.searchValue;
 export const selectDevices = (state: T_RootState) => state.products.devices;
 
 export const selectFiltersData = createSelector(
-  [selectFilters, selectDevices],
-  (filters, devices) => ({
+  [selectSearchValue, selectFilters, selectDevices],
+  (searchValue, filters, devices) => ({
     ...filters,
     categories: devices.reduce<Array<T_AdaptedDeviceLine>>((acc, device) => {
       const line = device.line;
@@ -19,5 +20,6 @@ export const selectFiltersData = createSelector(
     }, []),
     totalDevices: devices.length,
     devices: devices,
+    searchValue,
   }),
 );

@@ -24,6 +24,10 @@
     "./molecules/*": {
       "types": "./src/components/molecules/*/index.tsx",
       "import": "./src/components/molecules/*/index.tsx"
+    },
+    "./utilityTypes": {
+      "types": "./src/utilityTypes.ts",
+      "import": "./src/utilityTypes.ts"
     }
   },
   "scripts": {

@@ -11,7 +11,7 @@ const slice = createAppSlice({
   name: 'filters',
   initialState,
   reducers: (create) => ({
-    setSearch: create.reducer((state, action: PayloadAction<string>) => {
+    setSearchValue: create.reducer((state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     }),
     setSelectedCategories: create.reducer(
@@ -31,6 +31,6 @@ const slice = createAppSlice({
   }),
 });
 
-export const { setSearch, setSelectedCategories, clearSelectedCategories } = slice.actions;
+export const { setSearchValue, setSelectedCategories, clearSelectedCategories } = slice.actions;
 
 export default slice;

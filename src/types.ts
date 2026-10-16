@@ -1,4 +1,4 @@
-import type { T_DeepPartial } from '../packages/lib/utilityTypes';
+import type { T_DeepPartial } from 'lib/utilityTypes';
 
 export interface I_DeviceCompliance {
   fcc: string;

@@ -10,7 +10,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}', 'packages/**/*.{test,spec}.{ts,tsx}'],
     setupFiles: './testUtils/setup.ts',
     coverage: {
-      exclude: ['**/*.module.scss'],
+      exclude: ['**/*.module.scss', '**/assets/icons/**'],
     },
   },
   build: {

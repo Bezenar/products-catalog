@@ -45,7 +45,7 @@ export const Default: Story = {
   },
   play: async ({ userEvent, args, canvas, step }) => {
     await step('should render provided primary text', async () => {
-      await expect(canvas.getByText(args.primaryText)).toBeInTheDocument();
+      expect(canvas.getByText(args.primaryText)).toBeInTheDocument();
     });
 
     await step('should trigger onClick when clicked', async () => {
@@ -64,11 +64,11 @@ export const WithSecondaryText: Story = {
   },
   play: async ({ userEvent, args, canvas, step }) => {
     await step('should render provided primary text', async () => {
-      await expect(canvas.getByText(args.primaryText)).toBeInTheDocument();
+      expect(canvas.getByText(args.primaryText)).toBeInTheDocument();
     });
 
     await step('should render provided secondary text', async () => {
-      await expect(canvas.getByText(args.secondaryText!)).toBeInTheDocument();
+      expect(canvas.getByText(args.secondaryText!)).toBeInTheDocument();
     });
 
     await step('should trigger onClick when clicked', async () => {
