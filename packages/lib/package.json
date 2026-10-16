@@ -20,6 +20,10 @@
     "./atoms/*": {
       "types": "./src/components/atoms/*/index.tsx",
       "import": "./src/components/atoms/*/index.tsx"
+    },
+    "./molecules/*": {
+      "types": "./src/components/molecules/*/index.tsx",
+      "import": "./src/components/molecules/*/index.tsx"
     }
   },
   "scripts": {
