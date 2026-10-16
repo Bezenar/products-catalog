@@ -14,11 +14,17 @@ const SearchListItem: React.FC<ISearchListItem> = ({ primaryText, secondaryText,
       className={cn('flex ai-center jc-sb wid-100 gap-2', s.row, s.clickable)}
       onClick={onClick}
     >
-      <span data-testid="primary-text" className={cn('text--md', s.primaryText)}>
+      <span
+        data-testid="primary-text"
+        className={cn('text--md', s.primaryText, s.overflowEllipses)}
+      >
         {primaryText}
       </span>
       {!!secondaryText && (
-        <span data-testid="secondary-text" className="text--tertiary text--md">
+        <span
+          data-testid="secondary-text"
+          className={cn('text--tertiary text--md', s.overflowEllipses)}
+        >
           {secondaryText}
         </span>
       )}

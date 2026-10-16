@@ -18,6 +18,12 @@
   }
 }
 
+.overflowEllipses {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .primaryText {
   color: var(--text-secondary, #50565e);
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import SearchIcon from '../../../assets/icons/SearchIcon';
 import List from '../../atoms/List';
 import Popover, { type IPopoverHandle } from '../../atoms/Popover';
 import TextField from '../../atoms/TextField';
@@ -44,6 +45,8 @@ function Search<T extends { id: React.Key }>({
         popoverMaxHeight={popoverMaxHeight}
         anchor={
           <TextField
+            icon={<SearchIcon />}
+            width="20rem"
             value={value}
             label={label}
             placeholder={placeholder}
