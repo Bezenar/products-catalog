@@ -33,10 +33,7 @@ function CategoryFilters<T extends { id: string }>({
           <FilterButton
             label={label}
             isActive={isBtnActive}
-            onClick={() => {
-              console.log('Filter button clicked');
-              setIsBtnActive((prev) => !prev);
-            }}
+            onClick={() => setIsBtnActive((prev) => !prev)}
           />
         </span>
       }

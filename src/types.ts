@@ -78,6 +78,7 @@ export interface I_GetDevicesRes {
 export type T_AdaptedDeviceItem = Omit<T_DeepPartial<I_DeviceItem>, 'id' | 'product'> & {
   id: string;
   product: Omit<T_DeepPartial<I_DeviceProduct>, 'name'> & { name: string };
+  shortnames?: Array<string>;
 };
 
 export interface I_AdaptedGetDevicesRes {

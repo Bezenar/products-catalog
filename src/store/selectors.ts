@@ -18,5 +18,6 @@ export const selectFiltersData = createSelector(
       return acc;
     }, []),
     totalDevices: devices.length,
+    devices: devices,
   }),
 );

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn } from 'storybook/test';
 import CategoryFilters from './index';
 
-type CategoryOption = { id: React.Key; name: string };
+type CategoryOption = { id: string; name: string };
 
 const meta = {
   title: 'Components/Molecules/CategoryFilters',
@@ -60,9 +60,9 @@ export const Default: Story = {
   args: {
     label: 'Category',
     options: [
-      { id: 1, name: 'Routers' },
-      { id: 2, name: 'Switches' },
-      { id: 3, name: 'Access points' },
+      { id: '1', name: 'Routers' },
+      { id: '2', name: 'Switches' },
+      { id: '3', name: 'Access points' },
     ],
     renderOption: (option) => <span data-testid="category-filter-option">{option.name}</span>,
   },
@@ -92,9 +92,9 @@ export const WithListHeading: Story = {
     label: 'Category',
     listHeading: 'Available Categories',
     options: [
-      { id: 1, name: 'Routers' },
-      { id: 2, name: 'Switches' },
-      { id: 3, name: 'Access points' },
+      { id: '1', name: 'Routers' },
+      { id: '2', name: 'Switches' },
+      { id: '3', name: 'Access points' },
     ],
     renderOption: (option) => <span data-testid="category-filter-option">{option.name}</span>,
   },
@@ -123,9 +123,9 @@ export const WithActiveResetButton: Story = {
   args: {
     label: 'Category',
     options: [
-      { id: 1, name: 'Routers' },
-      { id: 2, name: 'Switches' },
-      { id: 3, name: 'Access points' },
+      { id: '1', name: 'Routers' },
+      { id: '2', name: 'Switches' },
+      { id: '3', name: 'Access points' },
     ],
     renderOption: (option) => <span data-testid="category-filter-option">{option.name}</span>,
     onReset: {
@@ -164,9 +164,9 @@ export const WithDisabledResetButton: Story = {
   args: {
     label: 'Category',
     options: [
-      { id: 1, name: 'Routers' },
-      { id: 2, name: 'Switches' },
-      { id: 3, name: 'Access points' },
+      { id: '1', name: 'Routers' },
+      { id: '2', name: 'Switches' },
+      { id: '3', name: 'Access points' },
     ],
     renderOption: (option) => <span data-testid="category-filter-option">{option.name}</span>,
     onReset: {

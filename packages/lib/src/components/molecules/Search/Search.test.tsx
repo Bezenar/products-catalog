@@ -1,166 +1,126 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useState } from 'react';
+import { describe, expect, it, vi } from 'vitest';
 import Search from './index';
 
-const popoverMethods = ['showPopover', 'hidePopover', 'togglePopover'] as const;
-const originalPopoverMethods = Object.fromEntries(
-  popoverMethods.map((method) => [
-    method,
-    Object.getOwnPropertyDescriptor(HTMLElement.prototype, method),
-  ]),
-);
-const originalMatches = HTMLElement.prototype.matches;
-const openPopovers = new WeakSet<HTMLElement>();
+const options = [
+  { id: 'router', name: 'Router', product: { name: 'Dream Router' }, shortnames: ['UDR'] },
+  { id: 'switch', name: 'Switch', product: { name: 'Switch 8' } },
+];
 
-beforeEach(() => {
-  Object.defineProperties(HTMLElement.prototype, {
-    showPopover: {
-      configurable: true,
-      value: function (this: HTMLElement) {
-        openPopovers.add(this);
-      },
-    },
-    hidePopover: {
-      configurable: true,
-      value: function (this: HTMLElement) {
-        openPopovers.delete(this);
-      },
-    },
-    togglePopover: {
-      configurable: true,
-      value: function (this: HTMLElement) {
-        if (openPopovers.has(this)) {
-          openPopovers.delete(this);
-        } else {
-          openPopovers.add(this);
-        }
-      },
-    },
-    matches: {
-      configurable: true,
-      value: function (this: HTMLElement, selector: string) {
-        return selector === ':popover-open'
-          ? openPopovers.has(this)
-          : originalMatches.call(this, selector);
-      },
-    },
-  });
-});
-
-afterEach(() => {
-  for (const method of popoverMethods) {
-    const descriptor = originalPopoverMethods[method];
-    if (descriptor) {
-      Object.defineProperty(HTMLElement.prototype, method, descriptor);
-    } else {
-      Reflect.deleteProperty(HTMLElement.prototype, method);
-    }
-  }
-
-  Object.defineProperty(HTMLElement.prototype, 'matches', {
-    configurable: true,
-    writable: true,
-    value: originalMatches,
-  });
-  vi.restoreAllMocks();
-});
+function renderSearch(value = '', onChange = vi.fn()) {
+  return render(
+    <Search
+      value={value}
+      label="Search devices"
+      placeholder="Search..."
+      debounceMs={0}
+      options={options}
+      onChange={onChange}
+    />,
+  );
+}
 
 describe('Search', () => {
-  const label = 'Search devices';
-  const options = [{ id: 1, name: 'Dream Router' }];
-  const optionRenderer = (option: (typeof options)[number]) => <span>{option.name}</span>;
+  it('renders the accessible label and placeholder', () => {
+    renderSearch();
 
-  it('renders the placeholder and matching options', () => {
-    const { container } = render(
-      <Search
-        value=""
-        label={label}
-        placeholder="Search devices"
-        options={options}
-        optionRenderer={optionRenderer}
-        onChange={() => {}}
-      />,
+    expect(screen.getByRole('textbox', { name: 'Search devices' })).toHaveAttribute(
+      'placeholder',
+      'Search...',
     );
-
-    expect({
-      placeholder: screen.getByRole('textbox', { name: label }).getAttribute('placeholder'),
-      options: container.querySelector('[data-testid="popover-content"]')?.textContent,
-    }).toEqual({ placeholder: 'Search devices', options: 'Dream Router' });
   });
 
-  it('opens the popover when the value is non-empty', () => {
-    const { container } = render(
-      <Search
-        value="router"
-        label={label}
-        placeholder="Search devices"
-        options={options}
-        optionRenderer={optionRenderer}
-        onChange={() => {}}
-      />,
-    );
+  it('hides results when the search query is empty', () => {
+    renderSearch();
 
-    expect(
-      container.querySelector('[data-testid="popover-content"]')?.matches(':popover-open'),
-    ).toBe(true);
+    expect(screen.getByTestId('popover-content')).not.toBeVisible();
   });
 
-  it('hides the popover when the value becomes empty', () => {
-    const props = {
-      label,
-      placeholder: 'Search devices',
-      options,
-      optionRenderer,
-      onChange: () => {},
-    };
-    const { container, rerender } = render(<Search {...props} value="router" />);
+  it('shows matching product names for a case-insensitive query', () => {
+    renderSearch();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'dream' },
+    });
 
-    rerender(<Search {...props} value="" />);
-
-    expect(
-      container.querySelector('[data-testid="popover-content"]')?.matches(':popover-open'),
-    ).toBe(false);
+    expect(screen.getByTestId('primary-text')).toHaveTextContent('Dream Router');
   });
 
-  it('forwards the changed text to onChange', () => {
+  it('hides results when there are no matching product names', () => {
+    renderSearch();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'tablet' },
+    });
+
+    expect(screen.getByTestId('popover-content')).not.toBeVisible();
+  });
+
+  it('shows only product names matching the query', () => {
+    renderSearch();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'switch' },
+    });
+
+    expect(screen.getAllByTestId('primary-text')).toHaveLength(1);
+  });
+
+  it('uses the fallback secondary label when no shortname is provided', () => {
+    renderSearch();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'switch' },
+    });
+
+    expect(screen.getByTestId('secondary-text')).toHaveTextContent('---');
+  });
+
+  it('calls onChange with the selected product name', () => {
     const onChange = vi.fn();
-    render(
-      <Search
-        value=""
-        label={label}
-        placeholder="Search devices"
-        debounceMs={0}
-        options={options}
-        optionRenderer={optionRenderer}
-        onChange={onChange}
-      />,
-    );
-
-    fireEvent.change(screen.getByRole('textbox', { name: label }), {
-      target: { value: 'router' },
+    renderSearch('', onChange);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'dream' },
     });
 
-    expect(onChange).toHaveBeenCalledWith('router');
+    fireEvent.click(screen.getByTestId('primary-text'));
+
+    expect(onChange).toHaveBeenCalledWith('Dream Router');
   });
 
-  it('forwards the popover sizing options', () => {
-    const { container } = render(
-      <Search
-        value=""
-        label={label}
-        placeholder="Search devices"
-        options={options}
-        optionRenderer={optionRenderer}
-        onChange={() => {}}
-        popoverWidth="24rem"
-        popoverMaxHeight="12rem"
-      />,
-    );
-    const popover = container.querySelector<HTMLElement>('[data-testid="popover-content"]');
+  it('closes the results after selecting an option', () => {
+    function StatefulSearch({ onChange }: { onChange: (value: string) => void }) {
+      const [value, setValue] = useState('');
 
-    expect({ width: popover?.style.width, maxHeight: popover?.style.maxHeight }).toEqual({
-      width: '24rem',
-      maxHeight: '12rem',
+      return (
+        <Search
+          value={value}
+          label="Search devices"
+          placeholder="Search..."
+          debounceMs={0}
+          options={options}
+          onChange={(selectedValue) => {
+            setValue(selectedValue);
+            onChange(selectedValue);
+          }}
+        />
+      );
+    }
+    render(<StatefulSearch onChange={vi.fn()} />);
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'dream' },
     });
+
+    fireEvent.click(screen.getByTestId('primary-text'));
+
+    expect(screen.getByTestId('popover-content')).not.toBeVisible();
+  });
+
+  it('closes the results after clicking outside', () => {
+    renderSearch();
+    fireEvent.change(screen.getByRole('textbox', { name: 'Search devices' }), {
+      target: { value: 'dream' },
+    });
+
+    fireEvent.mouseDown(document.body);
+
+    expect(screen.getByTestId('popover-content')).not.toBeVisible();
   });
 });

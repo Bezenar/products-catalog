@@ -88,6 +88,7 @@ const TextField: React.FC<ITextField> = ({
         onChange={(e) => handleChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        autoComplete="off"
       />
     </div>
   );

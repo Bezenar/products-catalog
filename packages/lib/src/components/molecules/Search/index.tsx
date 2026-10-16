@@ -1,61 +1,80 @@
-import { useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import SearchIcon from '../../../assets/icons/SearchIcon';
 import List from '../../atoms/List';
-import Popover, { type IPopoverHandle } from '../../atoms/Popover';
+import Popover from '../../atoms/Popover';
+import SearchListItem from '../../atoms/SearchListItem';
 import TextField from '../../atoms/TextField';
+import s from './Search.module.scss';
 
 export interface ISearch<T> {
-  value: string;
   label: string;
+  value?: string;
   placeholder: string;
   debounceMs?: number;
   popoverWidth?: React.CSSProperties['width'];
   popoverMaxHeight?: React.CSSProperties['maxHeight'];
   options: Array<T>;
-  optionRenderer: (option: T) => React.ReactNode;
   onChange: (value: string) => void;
 }
 
-function Search<T extends { id: React.Key }>({
-  value,
+function Search<T extends { id: string; product: { name: string }; shortnames?: string[] }>({
+  value = '',
   label,
   placeholder,
   debounceMs = 300,
-  popoverWidth,
-  popoverMaxHeight = 320,
   options,
-  optionRenderer,
   onChange,
 }: ISearch<T>): React.ReactElement {
-  const anchorRef = useRef<IPopoverHandle>(null);
+  const [searchValue, setSearchValue] = useState<string>(value);
+  const [isListVisible, setIsListVisible] = useState<boolean>(false);
+  const filteredOptions = useMemo<Array<T>>(() => {
+    if (!searchValue || value === searchValue) return [];
+
+    return options.filter((option) =>
+      option.product.name.toLowerCase().includes(searchValue.toLowerCase()),
+    );
+  }, [searchValue, options]);
 
   useEffect(() => {
-    if (!!value.length && !anchorRef.current?.isOpen()) {
-      anchorRef.current?.open();
-    } else if (!value.length && anchorRef.current?.isOpen()) {
-      anchorRef.current?.hide();
+    if (filteredOptions.length >= 1 && value !== searchValue) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsListVisible(true);
     }
-  }, [value]);
+  }, [filteredOptions.length, value, searchValue]);
 
   return (
     <>
       <Popover
-        ref={anchorRef}
-        popoverWidth={popoverWidth}
-        popoverMaxHeight={popoverMaxHeight}
+        isContentVisible={isListVisible}
+        onOutsideClick={() => setIsListVisible(false)}
         anchor={
           <TextField
             icon={<SearchIcon />}
             width="20rem"
-            value={value}
+            value={searchValue}
             label={label}
             placeholder={placeholder}
             debounceMs={debounceMs}
-            onChange={onChange}
+            onChange={setSearchValue}
           />
         }
       >
-        <List<T> items={options} renderItem={optionRenderer} />
+        <div className={s.listWrapper}>
+          <List<T>
+            items={filteredOptions}
+            renderItem={(option) => (
+              <SearchListItem
+                primaryText={option.product.name}
+                secondaryText={option.shortnames?.[0] ?? '---'}
+                onClick={() => {
+                  setSearchValue(option.product.name);
+                  setIsListVisible(false);
+                  onChange(option.product.name);
+                }}
+              />
+            )}
+          />
+        </div>
       </Popover>
     </>
   );
