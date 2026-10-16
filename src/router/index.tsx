@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet } from 'react-router';
 import PageTemplate from '../components/PageTemplate';
 import { APP_ROUTE } from '../constants';
+import ErrorView from '../views/ErrorView';
 import Product from '../views/Product';
 import ProductsList from '../views/ProductsList';
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
         element: <Product />,
       },
     ],
+  },
+  {
+    path: APP_ROUTE.ERROR,
+    element: <ErrorView />,
   },
 ]);
 
