@@ -39,4 +39,21 @@ describe('lib/components/atoms/List', () => {
 
     expect(renderItem.mock.calls).toEqual([[items[0]], [items[1]]]);
   });
+
+  it('applies the custom class name to the list container', () => {
+    const items: Device[] = [
+      { id: 1, name: 'Dream Router' },
+      { id: 2, name: 'Switch 8' },
+    ];
+
+    render(
+      <List
+        items={items}
+        renderItem={(item) => <span>{item.name}</span>}
+        className="custom-class"
+      />,
+    );
+
+    expect(screen.getByRole('list')).toHaveClass('custom-class');
+  });
 });

@@ -55,13 +55,15 @@ $shrink: 1, 2, 3, 4, 5;
     }
   }
 
-  .wrap {
+  &.wrap {
     flex-wrap: wrap;
   }
 
-  @each $dirKey, $dirValue in $flex-dir {
-    &-#{$dirKey} {
-      flex-direction: $dirValue;
+  &.dir {
+    @each $dirKey, $dirValue in $flex-dir {
+      &-#{$dirKey} {
+        flex-direction: $dirValue;
+      }
     }
   }
 

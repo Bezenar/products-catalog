@@ -21,6 +21,13 @@ const meta = {
         type: { summary: '(item: T) => React.ReactNode' },
       },
     },
+    className: {
+      control: 'text',
+      description: 'Additional class name for the list container',
+      table: {
+        type: { summary: 'string' },
+      },
+    },
   },
 } satisfies Meta<typeof List<{ id: number; name: string }>>;
 
@@ -50,6 +57,37 @@ export const Default: Story = {
 
     await step('should render content by provided renderItem function', async () => {
       await expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
+    });
+  },
+};
+
+export const WithClassName: Story = {
+  args: {
+    items: [
+      { id: 1, name: 'Item 1' },
+      { id: 2, name: 'Item 2' },
+      { id: 3, name: 'Item 3' },
+    ],
+    className: 'custom-class',
+    renderItem: fn((item) => <span data-testid="mocked">{item.name}</span>),
+  },
+  play: async ({ args, canvas, step }) => {
+    await step('should render the list items correctly', async () => {
+      for (const item of args.items) {
+        await expect(canvas.getByText(item.name)).toBeInTheDocument();
+      }
+    });
+
+    await step('should call renderItem for each item', async () => {
+      await expect(args.renderItem).toHaveBeenCalledTimes(3);
+    });
+
+    await step('should render content by provided renderItem function', async () => {
+      await expect(canvas.getAllByTestId('mocked')).toHaveLength(args.items.length);
+    });
+
+    await step('should apply the custom class name to the list container', async () => {
+      await expect(canvas.getByRole('list')).toHaveClass('custom-class');
     });
   },
 };
