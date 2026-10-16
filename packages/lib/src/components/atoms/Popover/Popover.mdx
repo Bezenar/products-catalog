@@ -1,0 +1,93 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/Atoms/Popover/Usage" />
+
+<Title>Popover</Title>
+
+Popover displays content relative to an anchor. Its visibility is controlled by the
+`isContentVisible` prop, and `onOutsideClick` lets the owning component decide how to close it.
+
+## Usage
+
+```tsx
+<Popover
+  anchor={<button type="button">Open options</button>}
+  isContentVisible={isOpen}
+  onOutsideClick={() => setIsOpen(false)}
+  position="bottom-left"
+>
+  <div>Popover content</div>
+</Popover>
+```
+
+## Props
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>anchor</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>Element used as the positioning anchor.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>children</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>Content shown inside the popover.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>isContentVisible</code>
+      </td>
+      <td>
+        <code>boolean</code>
+      </td>
+      <td>Controls content visibility.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>onOutsideClick</code>
+      </td>
+      <td>
+        <code>() =&gt; void</code>
+      </td>
+      <td>Called on a mouse down outside the popover.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>position</code>
+      </td>
+      <td>
+        <code>PopoverPosition</code>
+      </td>
+      <td>
+        Placement class; defaults to <code>bottom-left</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+Supported position values are `bottom-left`, `bottom-right`, `bottom-center`, `top-left`,
+`top-right`, `top-center`, `left-top`, `left-center`, `left-bottom`, `right-top`, `right-center`,
+and `right-bottom`.
+
+## Positioning Note
+
+Popover coordinates are calculated from the anchor's `getBoundingClientRect()` and updated on
+window scroll. Storybook renders stories inside an iframe, whose viewport can produce different
+fixed-position coordinates than the consuming application. This page intentionally documents the
+API without embedding a live preview; verify final placement in the application viewport.

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import FilterButton from '../../atoms/FilterButton';
 import List from '../../atoms/List';
-import Popover, { type IPopoverHandle } from '../../atoms/Popover';
+import Popover from '../../atoms/Popover';
 import s from './CategoryFilters.module.scss';
 
 interface IFilters<T extends { id: React.Key }> {
@@ -22,32 +22,26 @@ function CategoryFilters<T extends { id: React.Key }>({
   renderOption,
   onReset,
 }: IFilters<T>): React.ReactElement {
-  const popoverRef = useRef<IPopoverHandle>(null);
   const buttonWrapperRef = useRef<HTMLSpanElement>(null);
   const [isBtnActive, setIsBtnActive] = useState(false);
-
-  const handleClick = () => {
-    setIsBtnActive((prev) => !prev);
-    popoverRef.current?.toggle();
-  };
-
-  // eslint-disable-next-line react-hooks/refs
-  const popoverWidth = (buttonWrapperRef.current?.getBoundingClientRect().width || 0) * 3;
 
   return (
     <Popover
       anchor={
         <span ref={buttonWrapperRef}>
-          <FilterButton label={label} isActive={isBtnActive} onClick={handleClick} />
+          <FilterButton
+            label={label}
+            isActive={isBtnActive}
+            onClick={() => {
+              console.log('Filter button clicked');
+              setIsBtnActive((prev) => !prev);
+            }}
+          />
         </span>
       }
-      ref={popoverRef}
-      popoverWidth={popoverWidth}
-      subscribeForBeforeToggleEvent={(_, next) => {
-        if (next === 'closed' && isBtnActive) {
-          setIsBtnActive(false);
-        }
-      }}
+      isContentVisible={isBtnActive}
+      onOutsideClick={() => isBtnActive && setIsBtnActive(false)}
+      position="bottom-right"
     >
       <div className="flex dir-col gap-4 pa-4">
         {!!listHeading && (

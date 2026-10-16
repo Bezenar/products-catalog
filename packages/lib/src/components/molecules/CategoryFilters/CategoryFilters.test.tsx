@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import CategoryFilters from './index';
 
@@ -7,16 +7,6 @@ const options = [
   { id: 2, name: 'Switches' },
 ];
 const renderOption = (option: (typeof options)[number]) => <span>{option.name}</span>;
-
-function stubPopoverToggle() {
-  const togglePopover = vi.fn();
-  Object.defineProperty(screen.getByTestId('popover-content'), 'togglePopover', {
-    configurable: true,
-    value: togglePopover,
-  });
-
-  return togglePopover;
-}
 
 describe('CategoryFilters', () => {
   it('renders its filter button', () => {
@@ -56,7 +46,6 @@ describe('CategoryFilters', () => {
     { clicks: 2, isActive: false },
   ])('sets active state after $clicks click(s)', ({ clicks, isActive }) => {
     render(<CategoryFilters label="Category" options={options} renderOption={renderOption} />);
-    stubPopoverToggle();
     const button = screen.getByRole('button', { name: 'Category' });
 
     for (let click = 0; click < clicks; click += 1) {
@@ -66,44 +55,23 @@ describe('CategoryFilters', () => {
     expect(button.classList.contains('active')).toBe(isActive);
   });
 
-  it('toggles the popover when the filter button is clicked', () => {
+  it('shows options when the filter button is clicked', () => {
     render(<CategoryFilters label="Category" options={options} renderOption={renderOption} />);
-    const togglePopover = stubPopoverToggle();
     const button = screen.getByRole('button', { name: 'Category' });
 
     fireEvent.click(button);
 
-    expect(togglePopover).toHaveBeenCalledOnce();
+    expect(screen.getByText('Routers')).toBeVisible();
   });
 
-  it.each([
-    { scenario: 'closes while active', clicks: 1, newState: 'closed', isActive: false },
-    { scenario: 'opens while active', clicks: 1, newState: 'open', isActive: true },
-    { scenario: 'closes while inactive', clicks: 0, newState: 'closed', isActive: false },
-  ] as const)(
-    'handles beforetoggle when the popover $scenario',
-    ({ clicks, newState, isActive }) => {
-      render(<CategoryFilters label="Category" options={options} renderOption={renderOption} />);
-      stubPopoverToggle();
-      const button = screen.getByRole('button', { name: 'Category' });
-      const popover = screen.getByTestId('popover-content');
+  it('closes options after a mouse down outside the filter', () => {
+    render(<CategoryFilters label="Category" options={options} renderOption={renderOption} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Category' }));
 
-      for (let click = 0; click < clicks; click += 1) {
-        fireEvent.click(button);
-      }
+    fireEvent.mouseDown(document.body);
 
-      const event = new Event('beforetoggle');
-      Object.defineProperties(event, {
-        oldState: { value: clicks ? 'open' : 'closed' },
-        newState: { value: newState },
-      });
-      act(() => {
-        popover.dispatchEvent(event);
-      });
-
-      expect(button.classList.contains('active')).toBe(isActive);
-    },
-  );
+    expect(screen.getByText('Routers')).not.toBeVisible();
+  });
 
   it('calls the reset handler when Reset is clicked', () => {
     const onReset = vi.fn();

@@ -1,0 +1,42 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Hooks/useEventListener" />
+
+<Title>useEventListener</Title>
+
+`useEventListener` registers an event handler on `window` or on a supplied `HTMLElement` and removes
+the listener when its effect is cleaned up.
+
+## Usage
+
+```tsx
+import useEventListener from './useEventListener';
+
+function WindowSize() {
+  useEventListener('resize', () => {
+    console.log(window.innerWidth);
+  });
+
+  return <output>{window.innerWidth}</output>;
+}
+```
+
+To listen on an element, provide it as the third argument:
+
+```tsx
+useEventListener('scroll', handleScroll, document.body);
+```
+
+## API
+
+```ts
+useEventListener(
+  eventName: string,
+  handler: (event?: Event) => void,
+  element?: HTMLElement | Window,
+): void;
+```
+
+The target defaults to `window`. The most recent handler is called after rerenders without
+re-registering solely because the handler function changed. Changing `eventName` or `element`
+replaces the listener, and unmounting removes it.

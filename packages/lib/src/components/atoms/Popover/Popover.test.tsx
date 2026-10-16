@@ -1,125 +1,131 @@
-import { render, screen } from '@testing-library/react';
-import { createRef } from 'react';
-import { describe, expect, it, vi } from 'vitest';
-import Popover from './index';
-import type { IPopoverHandle } from './index';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import Popover, { type IPopover } from './index';
+
+type TAnchorBounds = Pick<DOMRect, 'x' | 'y' | 'width' | 'height'>;
+
+function mockAnchorBounds(...bounds: TAnchorBounds[]) {
+  let callCount = 0;
+
+  return vi
+    .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+    .mockImplementation(() => bounds[Math.min(callCount++, bounds.length - 1)] as DOMRect);
+}
+
+function renderPopover(props: Partial<IPopover> = {}) {
+  const {
+    anchor = <button type="button">Open popover</button>,
+    children = <span>Popover content</span>,
+    isContentVisible = true,
+    onOutsideClick = () => {},
+    ...otherProps
+  } = props;
+
+  return render(
+    <Popover
+      anchor={anchor}
+      isContentVisible={isContentVisible}
+      onOutsideClick={onOutsideClick}
+      {...otherProps}
+    >
+      {children}
+    </Popover>,
+  );
+}
+
+afterEach(() => {
+  vi.restoreAllMocks();
+});
 
 describe('Popover', () => {
   it('renders its anchor', () => {
-    render(
-      <Popover
-        ref={createRef<IPopoverHandle>()}
-        anchor={<button type="button">Open devices</button>}
-      >
-        <span>Device options</span>
-      </Popover>,
-    );
+    renderPopover();
 
-    expect(screen.getByRole('button', { name: 'Open devices' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Open popover' })).toBeInTheDocument();
   });
 
-  it('renders its children', () => {
-    render(
-      <Popover ref={createRef<IPopoverHandle>()} anchor={<button type="button">Open</button>}>
-        <span>Device options</span>
-      </Popover>,
-    );
+  it('renders visible content when isContentVisible is true', () => {
+    renderPopover({ isContentVisible: true });
 
-    expect(screen.getByText('Device options')).toBeTruthy();
+    expect(screen.getByText('Popover content')).toBeVisible();
+  });
+
+  it('hides content when isContentVisible is false', () => {
+    const props = {
+      anchor: <button type="button">Open popover</button>,
+      onOutsideClick: vi.fn(),
+      children: <span>Popover content</span>,
+    };
+    render(<Popover {...props} isContentVisible={false} />);
+
+    expect(screen.getByText('Popover content')).not.toBeVisible();
+  });
+
+  it('uses bottom-left as its default position', () => {
+    renderPopover();
+
+    expect(screen.getByText('Popover content').parentElement).toHaveClass('bottom-left');
   });
 
   it.each([
-    { label: 'default', height: undefined, expected: '320px' },
-    { label: 'custom', height: '120px', expected: '120px' },
-  ])('uses the $label maximum height', ({ height, expected }) => {
-    const ref = createRef<IPopoverHandle>();
-    const { getByTestId } = render(
-      <Popover ref={ref} anchor={<button type="button">Open</button>} popoverMaxHeight={height}>
-        <span>Options</span>
-      </Popover>,
-    );
+    { position: 'bottom-left', top: '60px' },
+    { position: 'bottom-right', top: '60px' },
+    { position: 'bottom-center', top: '60px' },
+  ] as const)('calculates top coordinate for $position', ({ position, top }) => {
+    mockAnchorBounds({ x: 10, y: 20, width: 100, height: 40 });
 
-    expect(getByTestId('popover-content').style.maxHeight).toBe(expected);
+    renderPopover({ position });
+
+    expect(screen.getByText('Popover content').parentElement?.style.top).toBe(top);
   });
 
-  it('applies the configured width', () => {
-    const { getByTestId } = render(
-      <Popover
-        ref={createRef<IPopoverHandle>()}
-        anchor={<button type="button">Open</button>}
-        popoverWidth="360px"
-      >
-        <span>Options</span>
-      </Popover>,
+  it('recalculates its top coordinate when the window scrolls', () => {
+    mockAnchorBounds(
+      { x: 10, y: 20, width: 100, height: 40 },
+      { x: 15, y: 25, width: 120, height: 30 },
     );
+    renderPopover({ position: 'bottom-right' });
+    fireEvent.scroll(window);
 
-    expect(getByTestId('popover-content').style.width).toBe('360px');
+    expect(screen.getByText('Popover content').parentElement?.style.top).toBe('55px');
   });
 
-  it('reports the current open state', () => {
-    const ref = createRef<IPopoverHandle>();
-    render(
-      <Popover ref={ref} anchor={<button type="button">Open</button>}>
-        Options
-      </Popover>,
+  it('recalculates its left coordinate when the window scrolls', () => {
+    mockAnchorBounds(
+      { x: 10, y: 20, width: 100, height: 40 },
+      { x: 15, y: 25, width: 120, height: 30 },
     );
-    const matches = vi.fn(() => false);
-    Object.defineProperty(screen.getByTestId('popover-content'), 'matches', {
-      configurable: true,
-      value: matches,
-    });
+    renderPopover({ position: 'bottom-right' });
+    fireEvent.scroll(window);
 
-    expect(ref.current?.isOpen()).toBe(false);
+    expect(screen.getByText('Popover content').parentElement?.style.left).toBe('135px');
   });
 
-  it('opens the popover through its ref', () => {
-    const ref = createRef<IPopoverHandle>();
-    render(
-      <Popover ref={ref} anchor={<button type="button">Open</button>}>
-        Options
-      </Popover>,
-    );
-    const showPopover = vi.fn();
-    Object.defineProperty(screen.getByTestId('popover-content'), 'showPopover', {
-      configurable: true,
-      value: showPopover,
-    });
-    ref.current?.open();
+  it('removes its scroll listener on unmount', () => {
+    const getBoundingClientRect = mockAnchorBounds({ x: 10, y: 20, width: 100, height: 40 });
+    const { unmount } = renderPopover();
 
-    expect(showPopover).toHaveBeenCalledOnce();
+    unmount();
+    fireEvent.scroll(window);
+
+    expect(getBoundingClientRect).toHaveBeenCalledOnce();
   });
 
-  it('hides the popover through its ref', () => {
-    const ref = createRef<IPopoverHandle>();
-    render(
-      <Popover ref={ref} anchor={<button type="button">Open</button>}>
-        Options
-      </Popover>,
-    );
-    const hidePopover = vi.fn();
-    Object.defineProperty(screen.getByTestId('popover-content'), 'hidePopover', {
-      configurable: true,
-      value: hidePopover,
-    });
-    ref.current?.hide();
+  it('does not call onOutsideClick for a mouse down inside', () => {
+    const onOutsideClick = vi.fn();
+    renderPopover({ onOutsideClick });
 
-    expect(hidePopover).toHaveBeenCalledOnce();
+    fireEvent.mouseDown(screen.getByText('Popover content'));
+
+    expect(onOutsideClick).not.toHaveBeenCalled();
   });
 
-  it('toggles the popover through its ref', () => {
-    const ref = createRef<IPopoverHandle>();
-    render(
-      <Popover ref={ref} anchor={<button type="button">Open</button>}>
-        Options
-      </Popover>,
-    );
-    const togglePopover = vi.fn();
-    Object.defineProperty(screen.getByTestId('popover-content'), 'togglePopover', {
-      configurable: true,
-      value: togglePopover,
-    });
-    ref.current?.toggle();
+  it('calls onOutsideClick for a mouse down outside', () => {
+    const onOutsideClick = vi.fn();
+    renderPopover({ onOutsideClick });
 
-    expect(togglePopover).toHaveBeenCalledOnce();
+    fireEvent.mouseDown(document.body);
+
+    expect(onOutsideClick).toHaveBeenCalledOnce();
   });
 });

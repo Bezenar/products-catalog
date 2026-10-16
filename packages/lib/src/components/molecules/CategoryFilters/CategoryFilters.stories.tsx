@@ -7,6 +7,17 @@ type CategoryOption = { id: React.Key; name: string };
 const meta = {
   title: 'Components/Molecules/CategoryFilters',
   component: CategoryFilters<CategoryOption>,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          '> **NOTE:** Storybook renders stories inside an iframe, whose viewport can produce different ' +
+          'fixed-position coordinates than the consuming application. This page intentionally documents the' +
+          'API without embedding a live preview. You can check component stories in storybook.',
+      },
+    },
+  },
   argTypes: {
     label: {
       control: 'text',
@@ -63,7 +74,7 @@ export const Default: Story = {
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeInTheDocument();
+      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {
@@ -95,7 +106,7 @@ export const WithListHeading: Story = {
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeInTheDocument();
+      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should render the heading', async () => {
@@ -130,7 +141,7 @@ export const WithActiveResetButton: Story = {
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeInTheDocument();
+      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {
@@ -171,7 +182,7 @@ export const WithDisabledResetButton: Story = {
     await step('On button click should open the popover', async () => {
       await userEvent.click(canvas.getByRole('button', { name: args.label }));
 
-      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeInTheDocument();
+      await expect(canvas.getAllByTestId('category-filter-option')[0]).toBeVisible();
     });
 
     await step('Should not render the heading', async () => {

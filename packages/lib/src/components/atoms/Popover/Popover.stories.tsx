@@ -1,167 +1,165 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useRef } from 'react';
-import { expect } from 'storybook/test';
-import Popover, { type IPopover, type IPopoverHandle } from './index';
-
-type PopoverExampleProps = {
-  popoverWidth?: React.CSSProperties['width'];
-  popoverMaxHeight?: React.CSSProperties['maxHeight'];
-} & Partial<IPopover>;
-
-function PopoverExample({ popoverWidth, popoverMaxHeight }: PopoverExampleProps) {
-  const popoverRef = useRef<IPopoverHandle>(null);
-
-  return (
-    <div style={{ width: '280px', padding: '16px' }}>
-      <Popover
-        ref={popoverRef}
-        anchor={
-          <button type="button" onClick={() => popoverRef.current?.toggle()}>
-            Open devices
-          </button>
-        }
-        popoverWidth={popoverWidth}
-        popoverMaxHeight={popoverMaxHeight}
-      >
-        <div style={{ display: 'grid', gap: '8px', padding: '12px' }}>
-          {['Dream Router', 'Switch 8', 'Access Point', 'Gateway'].map((device) => (
-            <div data-testid="device-item" key={device}>
-              {device}
-            </div>
-          ))}
-        </div>
-      </Popover>
-    </div>
-  );
-}
+import { fn, expect } from 'storybook/test';
+import Popover from './index';
 
 const meta = {
   title: 'Components/Atoms/Popover',
-  component: PopoverExample,
-  argTypes: {
-    ref: {
-      control: false,
-      description: 'Reference to the Popover handle',
-      type: { name: 'object', value: {}, required: true },
-      table: {
-        type: {
-          summary: 'React.Ref<IPopoverHandle>',
-          detail:
-            'export interface IPopoverHandle {\n' +
-            '  isOpen: () => boolean | undefined;\n' +
-            '  open: () => void | undefined;\n' +
-            '  hide: () => void | undefined;\n' +
-            '  toggle: () => boolean | undefined;\n' +
-            '}',
-        },
-      },
-    },
-    children: {
-      control: false,
-      description: 'Content of the Popover',
-      type: { name: 'object', value: {}, required: true },
-      table: {
-        type: { summary: 'React.ReactNode' },
-      },
-    },
-    anchor: {
-      control: false,
-      description: 'Anchor element for the Popover',
-      type: { name: 'object', value: {}, required: true },
-      table: {
-        type: { summary: 'React.ReactNode' },
-      },
-    },
-    popoverWidth: {
-      control: 'text',
-      description: 'Popover width; defaults to the anchor width.',
-      table: { type: { summary: 'React.CSSProperties["width"]' } },
-    },
-    popoverMaxHeight: {
-      control: 'text',
-      description: 'Maximum height before the popover content scrolls.',
-      table: {
-        type: { summary: 'React.CSSProperties["maxHeight"]' },
-        defaultValue: { summary: '320px' },
+  component: Popover,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          '> **NOTE:** Storybook renders stories inside an iframe, whose viewport can produce different ' +
+          'fixed-position coordinates than the consuming application. This page intentionally documents the' +
+          'API without embedding a live preview. You can check component stories in storybook.',
       },
     },
   },
-} satisfies Meta<typeof PopoverExample>;
+  argTypes: {
+    anchor: {
+      control: false,
+      description: 'Element the popover is anchored to.',
+      type: { name: 'other', value: '', required: true },
+      table: { type: { summary: 'React.ReactNode' } },
+    },
+    children: {
+      control: false,
+      description: 'Content displayed inside the popover.',
+      type: { name: 'other', value: '', required: true },
+      table: { type: { summary: 'React.ReactNode' } },
+    },
+    isContentVisible: {
+      control: 'boolean',
+      description: 'Controls whether the popover content is visible.',
+      type: { name: 'boolean', required: true },
+      table: { type: { summary: 'boolean' } },
+    },
+    position: {
+      control: 'select',
+      options: ['bottom-left', 'bottom-right', 'bottom-center'],
+      description: 'Popover position relative to its anchor.',
+      table: {
+        type: {
+          summary: 'bottom-left | bottom-right | bottom-center',
+        },
+        defaultValue: { summary: 'bottom-left' },
+      },
+    },
+    onOutsideClick: {
+      action: 'Clicked outside',
+      control: false,
+      description: 'Called when the user presses the mouse outside the popover.',
+      type: { name: 'function', required: true },
+      table: { type: { summary: '() => void' } },
+    },
+  },
+} satisfies Meta<typeof Popover>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  play: async ({ canvas, step, userEvent }) => {
-    await step('Should render anchor element', async () => {
-      const anchor = canvas.getByRole('button', { name: 'Open devices' });
-
-      expect(anchor).toBeInTheDocument();
+  args: {
+    anchor: <button type="button">Open Popover</button>,
+    children: <div className="pa-3">Popover Content</div>,
+    isContentVisible: false,
+    onOutsideClick: fn(),
+  },
+  play: async ({ step, canvas }) => {
+    await step('Should render anchor', async () => {
+      expect(canvas.getByRole('button', { name: 'Open Popover' })).toBeInTheDocument();
     });
 
-    await step('Should display the popover content, on popover open trigger', async () => {
-      await userEvent.click(canvas.getByRole('button', { name: 'Open devices' }));
-
-      expect(canvas.getAllByTestId('device-item')[0]).toBeVisible();
-    });
-
-    await step('should apply default max height', async () => {
-      const popover = canvas.getByTestId('popover-content');
-
-      expect(popover).toHaveStyle({ maxHeight: '320px' });
+    await step('Popover content should be hidden', async () => {
+      expect(canvas.queryByText('Popover Content')).not.toBeVisible();
     });
   },
 };
 
-export const WithCustomWidth: Story = {
-  args: { popoverWidth: '600px' },
-  play: async ({ canvas, step, userEvent }) => {
-    await step('Should render anchor element', async () => {
-      const anchor = canvas.getByRole('button', { name: 'Open devices' });
-
-      expect(anchor).toBeInTheDocument();
+export const VisiblePopover: Story = {
+  args: {
+    anchor: <button type="button">Open Popover</button>,
+    children: <div className="pa-3">Popover Content</div>,
+    isContentVisible: true,
+    onOutsideClick: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    await step('Should render anchor', async () => {
+      expect(canvas.getByRole('button', { name: 'Open Popover' })).toBeInTheDocument();
     });
 
-    await step('Should display the popover content, on popover open trigger', async () => {
-      await userEvent.click(canvas.getByRole('button', { name: 'Open devices' }));
-
-      expect(canvas.getAllByTestId('device-item')[0]).toBeVisible();
+    await step('Popover content should be visible', async () => {
+      expect(canvas.getByTestId('popover-content')).toBeVisible();
     });
 
-    await step('Should apply custom width', async () => {
-      const popover = canvas.getByTestId('popover-content');
-
-      expect(popover).toHaveStyle({ width: '600px' });
+    await step('By default should apply bottom-left position', async () => {
+      expect(canvas.getByTestId('popover-content')).toHaveClass('bottom-left');
     });
 
-    await step('should apply default max height', async () => {
-      const popover = canvas.getByTestId('popover-content');
+    await step('Should close popover when clicking outside', async () => {
+      await userEvent.click(document.body);
 
-      expect(popover).toHaveStyle({ maxHeight: '320px' });
+      expect(args.onOutsideClick).toHaveBeenCalled();
     });
   },
 };
 
-export const WithCustomMaxHeight: Story = {
-  args: { popoverMaxHeight: '100px' },
-  play: async ({ canvas, step, userEvent }) => {
-    await step('Should render anchor element', async () => {
-      const anchor = canvas.getByRole('button', { name: 'Open devices' });
-
-      expect(anchor).toBeInTheDocument();
+export const BottomRightPopover: Story = {
+  args: {
+    anchor: <button type="button">Open Popover</button>,
+    children: <div className="pa-3">Popover Content</div>,
+    isContentVisible: true,
+    position: 'bottom-right',
+    onOutsideClick: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    await step('Should render anchor', async () => {
+      expect(canvas.getByRole('button', { name: 'Open Popover' })).toBeInTheDocument();
     });
 
-    await step('Should display the popover content, on popover open trigger', async () => {
-      await userEvent.click(canvas.getByRole('button', { name: 'Open devices' }));
-
-      expect(canvas.getAllByTestId('device-item')[0]).toBeVisible();
+    await step('Popover content should be visible', async () => {
+      expect(canvas.getByTestId('popover-content')).toBeVisible();
     });
 
-    await step('Should apply custom max height', async () => {
-      const popover = canvas.getByTestId('popover-content');
+    await step('Should apply bottom-right position', async () => {
+      expect(canvas.getByTestId('popover-content')).toHaveClass('bottom-right');
+    });
 
-      expect(popover).toHaveStyle({ maxHeight: '100px' });
+    await step('Should close popover when clicking outside', async () => {
+      await userEvent.click(document.body);
+
+      expect(args.onOutsideClick).toHaveBeenCalled();
+    });
+  },
+};
+
+export const BottomCenterPopover: Story = {
+  args: {
+    anchor: <button type="button">Open Popover</button>,
+    children: <div className="pa-3">Popover Content</div>,
+    isContentVisible: true,
+    position: 'bottom-center',
+    onOutsideClick: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    await step('Should render anchor', async () => {
+      expect(canvas.getByRole('button', { name: 'Open Popover' })).toBeInTheDocument();
+    });
+
+    await step('Popover content should be visible', async () => {
+      expect(canvas.getByTestId('popover-content')).toBeVisible();
+    });
+
+    await step('Should apply bottom-center position', async () => {
+      expect(canvas.getByTestId('popover-content')).toHaveClass('bottom-center');
+    });
+
+    await step('Should close popover when clicking outside', async () => {
+      await userEvent.click(document.body);
+
+      expect(args.onOutsideClick).toHaveBeenCalled();
     });
   },
 };
