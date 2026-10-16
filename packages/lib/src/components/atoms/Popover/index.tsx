@@ -54,9 +54,11 @@ const Popover: React.FC<IPopover> = ({
     return () => {
       if (subscribeForToggleEvent)
         popoverRef.current?.removeEventListener('toggle', toggleCallback);
+
       if (subscribeForBeforeToggleEvent)
         popoverRef.current?.removeEventListener('beforetoggle', beforeToggleCallback);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useImperativeHandle(ref, () => {
