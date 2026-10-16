@@ -1,12 +1,17 @@
-.resetButton {
-  width: fit-content;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: var(--action-destructive);
-  transition: color 0.3s ease;
+.container {
+  width: max-content;
+  max-width: 200px;
 
-  &:disabled {
-    color: var(--action-destructive-muted);
+  .resetButton {
+    width: fit-content;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--action-destructive);
+    transition: color 0.3s ease;
+
+    &:disabled {
+      color: var(--action-destructive-muted);
+    }
   }
 }

@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
+import cn from '../../../utils/cn';
 import FilterButton from '../../atoms/FilterButton';
 import List from '../../atoms/List';
 import Popover from '../../atoms/Popover';
 import s from './CategoryFilters.module.scss';
 
-interface IFilters<T extends { id: React.Key }> {
+interface IFilters<T extends { id: string }> {
   label: string;
   listHeading?: string;
   options: T[];
@@ -15,7 +16,7 @@ interface IFilters<T extends { id: React.Key }> {
   };
 }
 
-function CategoryFilters<T extends { id: React.Key }>({
+function CategoryFilters<T extends { id: string }>({
   label,
   listHeading,
   options,
@@ -43,7 +44,7 @@ function CategoryFilters<T extends { id: React.Key }>({
       onOutsideClick={() => isBtnActive && setIsBtnActive(false)}
       position="bottom-right"
     >
-      <div className="flex dir-col gap-4 pa-4">
+      <div className={cn('flex dir-col gap-4 pa-4', s.container)}>
         {!!listHeading && (
           <h6 data-testid="category-filter-heading" className="ff fw--700 ts--md lh--md">
             {listHeading}

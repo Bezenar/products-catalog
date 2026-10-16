@@ -84,3 +84,14 @@ export interface I_AdaptedGetDevicesRes {
   devices: Array<T_AdaptedDeviceItem>;
   version: string;
 }
+
+export type T_AdaptedDeviceLine = Required<
+  Required<I_AdaptedGetDevicesRes['devices'][number]>['line']
+>;
+
+export type T_ProductsSlice = I_AdaptedGetDevicesRes & { isLoading: boolean; hasError: boolean };
+
+export interface I_FiltersSlice {
+  searchValue: string;
+  selectedCategories: Array<string>;
+}

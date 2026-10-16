@@ -12,6 +12,7 @@ import { Meta } from '@storybook/addon-docs/blocks';
 - `method`: `GET`, `POST`, `PUT`, or `DELETE`; defaults to `GET`.
 - `headers`: request headers forwarded to `fetch`.
 - `body`: optional value serialized with `JSON.stringify` when truthy.
+- `transformResponse`: optional function called with the parsed JSON response. Its return value becomes the resolved request value.
 
 `BaseApi` does not add headers automatically. Set `Content-Type: application/json` when sending a JSON body if the server expects it.
 
@@ -46,8 +47,21 @@ class ProductsApi extends BaseApi {
       body: input,
     });
   }
+
+  getProductLabel(id: number): Promise<{ id: number; label: string }> {
+    return this.request<Product, unknown, { id: number; label: string }>({
+      path: `/api/products/${id}`,
+      transformResponse: (product) => ({
+        id: product.id,
+        label: product.name.toUpperCase(),
+      }),
+    });
+  }
 }
 ```
+
+When `transformResponse` is provided, the promise resolves with its return value instead of the raw
+JSON. The first generic describes the parsed response; the third generic describes the adapted result.
 
 ## Response and errors
 

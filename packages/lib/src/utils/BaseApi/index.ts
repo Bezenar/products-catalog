@@ -1,12 +1,15 @@
-export interface I_Options<Body = unknown> {
+export interface I_Options<Res, Body = unknown, Adapted = null> {
   path: string;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
   headers?: Record<string, string>;
   body?: Body;
+  transformResponse?: (response: Res) => Adapted;
 }
 
 export default class BaseApi {
-  protected async request<Res, ReqBody = unknown>(options: I_Options<ReqBody>): Promise<Res> {
+  protected async request<Res, ReqBody = unknown, Adapted = null>(
+    options: I_Options<Res, ReqBody, Adapted>,
+  ): Promise<Adapted extends null ? Res : Adapted> {
     const { headers = {} } = options;
     const response = await fetch(options.path, {
       method: options.method || 'GET',
@@ -20,6 +23,12 @@ export default class BaseApi {
       throw new Error(`Request failed with status ${response.status}`);
     }
 
-    return response.json() as Res;
+    const data: Adapted extends null ? Res : Adapted = await response.json();
+
+    if (options.transformResponse) {
+      return options.transformResponse(data as Res) as Adapted extends null ? Res : Adapted;
+    }
+
+    return data;
   }
 }

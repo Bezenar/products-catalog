@@ -1,0 +1,62 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Utilities/createAppSlice" />
+
+<Title>createAppSlice</Title>
+
+`createAppSlice` is the application's configured Redux Toolkit slice factory. Use it to define a
+feature's state, synchronous reducers, and `create.asyncThunk` reducers together in one slice.
+
+Use this helper when a slice needs Redux Toolkit's async-thunk creator inside its reducer callback.
+For a simple slice without async thunks, Redux Toolkit's standard `createSlice` is sufficient.
+
+## Synchronous reducer
+
+```ts
+import { createAppSlice } from 'lib/utils/createAppSlice';
+
+const counterSlice = createAppSlice({
+  name: 'counter',
+  initialState: { value: 0 },
+  reducers: (create) => ({
+    increment: create.reducer<number>((state, action) => {
+      state.value += action.payload;
+    }),
+  }),
+});
+
+export const { increment } = counterSlice.actions;
+export default counterSlice.reducer;
+```
+
+## Async thunk
+
+Use `create.asyncThunk` when a feature needs to perform asynchronous work and update its state for
+pending, fulfilled, and rejected outcomes:
+
+```ts
+const productsSlice = createAppSlice({
+  name: 'products',
+  initialState: { items: [], isLoading: false, hasError: false },
+  reducers: (create) => ({
+    loadProducts: create.asyncThunk(async () => fetchProducts(), {
+      pending: (state) => {
+        state.isLoading = true;
+        state.hasError = false;
+      },
+      fulfilled: (state, action) => {
+        state.items = action.payload;
+        state.isLoading = false;
+      },
+      rejected: (state) => {
+        state.isLoading = false;
+        state.hasError = true;
+      },
+    }),
+  }),
+});
+```
+
+The `createAppSlice` helper is configured with Redux Toolkit's `asyncThunkCreator`; it does not
+implement request behavior itself. Put the async operation in the thunk payload creator and use the
+lifecycle reducers to update slice state.

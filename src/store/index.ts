@@ -1,15 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { productsApi } from './productsSlice';
+import filtersSlice from './filtersSlice';
+import productsSlice from './productsSlice';
 
 export const store = configureStore({
   reducer: {
-    // Add the generated reducer as a specific top-level slice
-    [productsApi.reducerPath]: productsApi.reducer,
+    [productsSlice.name]: productsSlice.reducer,
+    [filtersSlice.name]: filtersSlice.reducer,
   },
-  // Adding the api middleware enables caching, invalidation, polling,
-  // and other useful features of `rtk-query`.
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApi.middleware),
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export type T_RootState = ReturnType<typeof store.getState>;
+export type T_AppDispatch = typeof store.dispatch;

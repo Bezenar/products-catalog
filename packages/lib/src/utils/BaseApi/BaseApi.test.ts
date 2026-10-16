@@ -2,8 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import BaseApi, { type I_Options } from './index';
 
 class TestBaseApi extends BaseApi {
-  send<Response, Body = unknown>(options: I_Options<Body>): Promise<Response> {
-    return this.request<Response, Body>(options);
+  send<Response, Body = unknown, Adapted = null>(
+    options: I_Options<Response, Body, Adapted>,
+  ): Promise<Adapted extends null ? Response : Adapted> {
+    return this.request<Response, Body, Adapted>(options);
   }
 }
 
@@ -25,6 +27,25 @@ describe('BaseApi', () => {
     await expect(new TestBaseApi().send<typeof payload>({ path: '/products/7' })).resolves.toEqual(
       payload,
     );
+  });
+
+  it('returns transformed data when transformResponse is provided', async () => {
+    const payload = { id: 7, name: 'Router' };
+    const transformed = { id: payload.id, label: payload.name.toUpperCase() };
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue(payload),
+      }),
+    );
+
+    await expect(
+      new TestBaseApi().send<typeof payload, unknown, typeof transformed>({
+        path: '/products/7',
+        transformResponse: (response) => ({ id: response.id, label: response.name.toUpperCase() }),
+      }),
+    ).resolves.toEqual(transformed);
   });
 
   it('sends the configured method, headers, and serialized body', async () => {
