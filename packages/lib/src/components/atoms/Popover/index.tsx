@@ -1,4 +1,4 @@
-import { useImperativeHandle, useRef } from 'react';
+import { useEffect, useEffectEvent, useImperativeHandle, useRef } from 'react';
 import s from './Popover.module.scss';
 
 export interface IPopoverHandle {
@@ -13,6 +13,14 @@ export interface IPopover extends Required<React.PropsWithChildren> {
   ref: React.Ref<IPopoverHandle>;
   popoverWidth?: React.CSSProperties['width'];
   popoverMaxHeight?: React.CSSProperties['maxHeight'];
+  subscribeForToggleEvent?: (
+    oldState: ToggleEvent['oldState'],
+    newState: ToggleEvent['newState'],
+  ) => void;
+  subscribeForBeforeToggleEvent?: (
+    oldState: ToggleEvent['oldState'],
+    newState: ToggleEvent['newState'],
+  ) => void;
 }
 
 const Popover: React.FC<IPopover> = ({
@@ -21,8 +29,35 @@ const Popover: React.FC<IPopover> = ({
   anchor,
   popoverWidth,
   popoverMaxHeight = 320,
+  subscribeForToggleEvent,
+  subscribeForBeforeToggleEvent,
 }) => {
   const popoverRef = useRef<HTMLDivElement>(null);
+  const subscriptionEvents = useEffectEvent(() => ({
+    handleToggle: subscribeForToggleEvent,
+    handleBeforeToggle: subscribeForBeforeToggleEvent,
+  }));
+
+  useEffect(() => {
+    if (!popoverRef.current) return;
+
+    const toggleCallback = (e: ToggleEvent) =>
+      subscriptionEvents().handleToggle?.(e.oldState, e.newState);
+    const beforeToggleCallback = (e: ToggleEvent) =>
+      subscriptionEvents().handleBeforeToggle?.(e.oldState, e.newState);
+
+    if (subscribeForToggleEvent)
+      popoverRef.current?.addEventListener('toggle', (e) => toggleCallback(e));
+    if (subscribeForBeforeToggleEvent)
+      popoverRef.current?.addEventListener('beforetoggle', (e) => beforeToggleCallback(e));
+
+    return () => {
+      if (subscribeForToggleEvent)
+        popoverRef.current?.removeEventListener('toggle', toggleCallback);
+      if (subscribeForBeforeToggleEvent)
+        popoverRef.current?.removeEventListener('beforetoggle', beforeToggleCallback);
+    };
+  }, []);
 
   useImperativeHandle(ref, () => {
     return {
