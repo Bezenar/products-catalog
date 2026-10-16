@@ -9,6 +9,9 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{ts,tsx}', 'packages/**/*.{test,spec}.{ts,tsx}'],
     setupFiles: './testUtils/setup.ts',
+    coverage: {
+      exclude: ['**/*.module.scss'],
+    },
   },
   build: {
     cssMinify: 'lightningcss',

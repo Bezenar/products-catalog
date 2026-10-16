@@ -1,3 +1,5 @@
+import type { T_DeepPartial } from '../packages/lib/utilityTypes';
+
 export interface I_DeviceCompliance {
   fcc: string;
   ic: string;
@@ -18,7 +20,7 @@ export interface I_DeviceIcon {
 }
 
 export interface I_DeviceImages {
-  defaul: string;
+  default: string;
   nopadding: string;
   topology: string;
 }
@@ -69,6 +71,16 @@ export interface I_DeviceItem {
 }
 
 export interface I_GetDevicesRes {
-  devices: Array<I_DeviceItem>;
+  devices: Array<T_DeepPartial<I_DeviceItem>>;
+  version: string;
+}
+
+export type T_AdaptedDeviceItem = Omit<T_DeepPartial<I_DeviceItem>, 'id' | 'product'> & {
+  id: string;
+  product: Omit<T_DeepPartial<I_DeviceProduct>, 'name'> & { name: string };
+};
+
+export interface I_AdaptedGetDevicesRes {
+  devices: Array<T_AdaptedDeviceItem>;
   version: string;
 }
