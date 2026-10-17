@@ -1,5 +1,5 @@
 import type { I_AdaptedGetDevicesRes, I_GetDevicesRes } from '../../types';
-// TODO : MISSED TESTS
+
 export default function adaptGetDevicesResponse(response: I_GetDevicesRes): I_AdaptedGetDevicesRes {
   return {
     devices: response.devices.map((d) => ({
@@ -9,6 +9,9 @@ export default function adaptGetDevicesResponse(response: I_GetDevicesRes): I_Ad
         ...d.product,
         name: d.product?.name ?? '---',
       },
+      shortnames: d.shortnames?.filter(
+        (shortname): shortname is string => typeof shortname === 'string',
+      ),
     })),
     version: response.version,
   };

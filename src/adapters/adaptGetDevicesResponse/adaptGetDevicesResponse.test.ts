@@ -32,14 +32,16 @@ describe('adaptGetDevicesResponse', () => {
   });
 
   it('generates an ID when the device ID is missing', () => {
-    vi.spyOn(globalThis.crypto, 'randomUUID').mockReturnValue('generated-device-id');
+    vi.spyOn(globalThis.crypto, 'randomUUID').mockReturnValue(
+      '00000000-0000-4000-8000-000000000001',
+    );
 
     const result = adaptGetDevicesResponse({
       version: '1',
       devices: [{ product: { name: 'Switch 8' } }],
     });
 
-    expect(result.devices[0].id).toBe('generated-device-id');
+    expect(result.devices[0].id).toBe('00000000-0000-4000-8000-000000000001');
   });
 
   it('uses a fallback product name when the product name is missing', () => {

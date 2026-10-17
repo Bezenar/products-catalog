@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from 'vitest';
 import CategoryFilters from './index';
 
 const options = [
-  { id: 1, name: 'Routers' },
-  { id: 2, name: 'Switches' },
+  { id: 'routers', name: 'Routers' },
+  { id: 'switches', name: 'Switches' },
 ];
 const renderOption = (option: (typeof options)[number]) => <span>{option.name}</span>;
 

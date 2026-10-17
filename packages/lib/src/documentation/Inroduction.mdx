@@ -1,5 +1,103 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 <Meta title="Introduction" />
 
-# Introduction page
+<Title>UI Library</Title>
+
+This package contains shared React components, hooks, icons, styles, and utilities used by the
+application. Components are grouped into **atoms** for focused controls and **molecules** for
+composed interface patterns. The Storybook sidebar contains interactive examples and API details.
+
+## Getting started
+
+Import components from their package subpaths:
+
+```tsx
+import Checkbox from 'lib/atoms/Checkbox';
+import Search from 'lib/molecules/Search';
+
+function CategoryOption() {
+  return <Checkbox label="Network" isChecked={false} onChange={() => {}} />;
+}
+```
+
+Import the shared stylesheet once from the application entry point to load global tokens and
+utility classes:
+
+```ts
+import 'lib/assets/styles/index.scss';
+```
+
+The package uses subpath exports rather than a single root barrel. Available import groups are
+`lib/atoms/*`, `lib/molecules/*`, `lib/hooks/*`, `lib/icons/*`, `lib/utils/*`, and
+`lib/utilityTypes`. Global styles are available at `lib/assets/styles/index.scss`; CSS module tokens
+are available at `lib/tokens.module.scss`.
+
+## Components
+
+### Atoms
+
+- **Checkbox**: labeled binary input.
+- **FilterButton**: button used to open category filters.
+- **GhostButton**: low-emphasis action button.
+- **IconButton**: icon-only button with an accessible label.
+- **List**: keyed list rendered from items and a render callback.
+- **Logo** and **LogoButton**: brand mark and navigable logo control.
+- **Popover**: positioned content associated with an anchor.
+- **SearchListItem**: selectable primary/secondary text row.
+- **Spinner**: loading indicator with an accessible status label.
+- **TextField**: labeled text input with optional icon and debounced changes.
+
+### Molecules
+
+- **CategoryFilters**: category selection list with an optional heading and reset action.
+- **Header**: application header composition.
+- **Search**: product-name search with matching results.
+
+Browse **Components → Atoms** and **Components → Molecules** in the Storybook sidebar for props,
+controls, and examples.
+
+## Utilities
+
+Utilities are imported from their individual package subpaths:
+
+```ts
+import BaseApi from 'lib/utils/BaseApi';
+import cn from 'lib/utils/cn';
+import { createAppSlice } from 'lib/utils/createAppSlice';
+```
+
+The package also provides `createServiceFn` for callback-based async service handling, `TypeGuard`
+for narrowing common JavaScript values, and shared types from `lib/utilityTypes`.
+
+Open **Utilities** in the Storybook sidebar for detailed guides on `BaseApi`, `cn`,
+`createAppSlice`, `createServiceFn`, and `TypeGuard`. The **Iconography** and **Utility class names**
+pages document the shared icons and CSS utility classes.
+
+## Hooks
+
+The public hooks are imported from `lib/hooks/<hook-name>`:
+
+- **useClickOutside**: calls a callback when a `mousedown` occurs outside a referenced element.
+- **useEventListener**: registers an event listener on `window` or a supplied element and removes it
+  during cleanup.
+
+```tsx
+import { useRef } from 'react';
+import useClickOutside from 'lib/hooks/useClickOutside';
+
+function Menu({ onDismiss }: { onDismiss: () => void }) {
+  const menuRef = useRef<HTMLDivElement>(null);
+  useClickOutside(menuRef, onDismiss);
+
+  return <div ref={menuRef}>Menu content</div>;
+}
+```
+
+Open **Hooks** in the Storybook sidebar for usage and lifecycle details.
+
+## Icons and tokens
+
+Icons have individual subpath exports, such as `lib/icons/SearchIcon`, `lib/icons/GridIcon`, and
+`lib/icons/ListIcon`. Use `lib/tokens.module.scss` for the exported Sass token module, and import the
+global stylesheet once to make the shared CSS variables and utility classes available.
