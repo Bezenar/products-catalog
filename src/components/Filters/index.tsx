@@ -1,5 +1,5 @@
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useMatch, useNavigate } from 'react-router';
 import Checkbox from 'lib/atoms/Checkbox';
 import IconButton from 'lib/atoms/IconButton';
 import CategoryFilters from 'lib/molecules/CategoryFilters';
@@ -14,12 +14,16 @@ import {
 } from '../../store/filtersSlice';
 import { selectFiltersData } from '../../store/selectors';
 import type { T_AdaptedDeviceItem, T_AdaptedDeviceLine } from '../../types';
+import s from './Filters.module.scss';
 
 const Filters: React.FC = () => {
   const { selectedCategories, categories, totalDevices, devices, searchValue } = useSelector(
     selectFiltersData,
     shallowEqual,
   );
+
+  const isListActive = !!useMatch(APP_ROUTE.ROOT);
+  const isGridActive = !!useMatch(APP_ROUTE.GRID_VIEW);
 
   const navigate = useNavigate();
 
@@ -41,10 +45,21 @@ const Filters: React.FC = () => {
       </div>
 
       <div className="flex ai-center">
-        <IconButton ariaLabel="Switch to list view" onClick={() => navigate(APP_ROUTE.ROOT)}>
+        <IconButton
+          ariaLabel="Switch to list view"
+          activeClass={s.listIconBtn}
+          isActive={isListActive}
+          onClick={() => navigate(APP_ROUTE.ROOT)}
+        >
           <ListIcon />
         </IconButton>
-        <IconButton ariaLabel="Switch to grid view" onClick={() => navigate(APP_ROUTE.GRID_VIEW)}>
+
+        <IconButton
+          ariaLabel="Switch to grid view"
+          activeClass={s.gridIconBtn}
+          isActive={isGridActive}
+          onClick={() => navigate(APP_ROUTE.GRID_VIEW)}
+        >
           <GridIcon />
         </IconButton>
 

@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import filtersSlice from '../../store/filtersSlice';
 import productsSlice from '../../store/productsSlice';
 import type { T_AdaptedDeviceItem } from '../../types';
+import s from './Filters.module.scss';
 import Filters from './index';
 
 function CurrentPath() {
@@ -100,6 +101,18 @@ describe('Filters', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Switch to grid view' }));
 
     expect(screen.getByTestId('current-path')).toHaveTextContent('/grid-view');
+  });
+
+  it('marks the list view button active on the list route', () => {
+    renderFilters([], '/');
+
+    expect(screen.getByRole('button', { name: 'Switch to list view' })).toHaveClass(s.listIconBtn);
+  });
+
+  it('marks the grid view button active on the grid route', () => {
+    renderFilters([], '/grid-view');
+
+    expect(screen.getByRole('button', { name: 'Switch to grid view' })).toHaveClass(s.gridIconBtn);
   });
 
   it('renders each unique product category once', () => {
