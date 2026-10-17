@@ -25,6 +25,10 @@
       "types": "./src/components/molecules/*/index.tsx",
       "import": "./src/components/molecules/*/index.tsx"
     },
+    "./organisms/*": {
+      "types": "./src/components/organisms/*/index.tsx",
+      "import": "./src/components/organisms/*/index.tsx"
+    },
     "./utilityTypes": {
       "types": "./src/utilityTypes.ts",
       "import": "./src/utilityTypes.ts"
