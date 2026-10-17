@@ -31,13 +31,13 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: APP_ROUTE.PRODUCT,
+        path: APP_ROUTE.PRODUCTS,
         element: <Product />,
       },
     ],
   },
   {
-    path: APP_ROUTE.ERROR,
+    path: APP_ROUTE.ERRORS,
     element: <ErrorView />,
   },
 ]);

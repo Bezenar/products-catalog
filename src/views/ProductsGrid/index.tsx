@@ -16,7 +16,7 @@ const ProductsGrid: React.FC = () => {
         return (
           <ProductCard
             key={device.id}
-            onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCT}`, { id: device.id }))}
+            onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: device.id }))}
           >
             <ProductCard.Image
               src={generateDeviceImageUrl(device, 84)}

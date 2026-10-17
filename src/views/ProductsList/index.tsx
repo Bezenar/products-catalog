@@ -1,12 +1,14 @@
 import { useSelector } from 'react-redux';
+import { useNavigate, generatePath  } from 'react-router';
 import Table from 'lib/organisms/Table';
-import { PRODUCT_LIST_SCHEMA } from '../../constants';
+import { APP_ROUTE, PRODUCT_LIST_SCHEMA } from '../../constants';
 import { selectFilteredDevices } from '../../store/selectors';
 import type { T_AdaptedDeviceItem } from '../../types';
 import generateDeviceImageUrl from '../../utils/generateDeviceImageUrl';
 
 const ProductsList: React.FC = () => {
   const devices = useSelector(selectFilteredDevices);
+  const navigate = useNavigate();
 
   return (
     <Table<T_AdaptedDeviceItem>
@@ -14,7 +16,10 @@ const ProductsList: React.FC = () => {
       items={devices}
       emptyView={<Table.EmptyView colspan={PRODUCT_LIST_SCHEMA.length} />}
       rowRender={(item) => (
-        <Table.InteractiveRow key={item.id} onClick={() => console.log(item.id)}>
+        <Table.InteractiveRow
+          key={item.id}
+          onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: item.id }))}
+        >
           <Table.Cell>
             <figure className="flex ai-center jc-center">
               <img
