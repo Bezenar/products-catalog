@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useNavigate, generatePath  } from 'react-router';
+import { useNavigate, generatePath } from 'react-router';
 import Table from 'lib/organisms/Table';
 import { APP_ROUTE, PRODUCT_LIST_SCHEMA } from '../../constants';
 import { selectFilteredDevices } from '../../store/selectors';

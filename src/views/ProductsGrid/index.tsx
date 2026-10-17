@@ -18,6 +18,7 @@ const ProductsGrid: React.FC = () => {
             key={device.id}
             onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: device.id }))}
           >
+            <ProductCard.Badge value="New" />
             <ProductCard.Image
               src={generateDeviceImageUrl(device, 84)}
               alt={`${device.product.name} image`}
