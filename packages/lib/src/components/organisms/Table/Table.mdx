@@ -1,0 +1,208 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/Organisms/Table/Usage" />
+
+<Title>Table</Title>
+
+`Table` renders a header row from a column schema and a body from a list of items. You decide how each row looks by returning compound components from `rowRender`.
+
+## Import
+
+```tsx
+import Table, { type I_ColSchemaItem } from 'lib/organisms/Table';
+```
+
+## Usage
+
+```tsx
+type Device = { id: string; line: string; name: string };
+
+const colSchema: I_ColSchemaItem[] = [
+  { id: 'line', label: 'Product line' },
+  { id: 'name', label: 'Name', width: '50%' },
+];
+
+function DevicesTable({ devices }: { devices: Device[] }) {
+  return (
+    <Table<Device>
+      colSchema={colSchema}
+      items={devices}
+      emptyView={<Table.EmptyView colspan={colSchema.length} />}
+      rowRender={(device) => (
+        <Table.Row key={device.id}>
+          <Table.Cell>{device.line}</Table.Cell>
+          <Table.Cell>{device.name}</Table.Cell>
+        </Table.Row>
+      )}
+    />
+  );
+}
+```
+
+## Props
+
+<table>
+  <thead>
+    <tr>
+      <th>Prop</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>colSchema</code>
+      </td>
+      <td>
+        <code>I_ColSchemaItem[]</code>
+      </td>
+      <td>Column definitions. One header cell is rendered per entry.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>items</code>
+      </td>
+      <td>
+        <code>T[]</code>
+      </td>
+      <td>
+        Items to render, where <code>T extends {'{ id: string }'}</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>rowRender</code>
+      </td>
+      <td>
+        <code>(item: T) =&gt; React.ReactNode</code>
+      </td>
+      <td>
+        Called once per item to render its row. The returned element needs a <code>key</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>emptyView</code>
+      </td>
+      <td>
+        <code>React.ReactNode</code>
+      </td>
+      <td>
+        Optional. Rendered in the table body instead of rows when <code>items</code> is empty.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Column schema
+
+```ts
+interface I_ColSchemaItem {
+  id: string;
+  label: string;
+  width?: React.CSSProperties['width'];
+}
+```
+
+`id` is used as the header cell key, so it must be unique. `width` is set on the header cell, which sizes the whole column; leave it out for columns that should fill the remaining space. Use an empty `label` for a column that has no heading, such as an icon column.
+
+## Compound components
+
+The compounds are attached to `Table` and are used inside `rowRender` and `emptyView`.
+
+<table>
+  <thead>
+    <tr>
+      <th>Compound</th>
+      <th>Renders</th>
+      <th>Props</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>Table.Row</code>
+      </td>
+      <td>
+        A plain <code>tr</code>.
+      </td>
+      <td>
+        <code>children</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Table.InteractiveRow</code>
+      </td>
+      <td>A focusable, clickable row.</td>
+      <td>
+        <code>onClick</code>, <code>children</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Table.Cell</code>
+      </td>
+      <td>
+        A <code>td</code> with the table's cell padding and border.
+      </td>
+      <td>
+        <code>children</code>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>Table.EmptyView</code>
+      </td>
+      <td>A single full-width row that reads "No data available".</td>
+      <td>
+        <code>colspan</code>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+The header row and header cells are generated from `colSchema` and are not exposed as compounds.
+
+### Interactive rows
+
+Use `Table.InteractiveRow` when selecting a row should do something, such as opening a details page:
+
+```tsx
+<Table<Device>
+  colSchema={colSchema}
+  items={devices}
+  rowRender={(device) => (
+    <Table.InteractiveRow key={device.id} onClick={() => navigate(`/product/${device.id}`)}>
+      <Table.Cell>{device.line}</Table.Cell>
+      <Table.Cell>{device.name}</Table.Cell>
+    </Table.InteractiveRow>
+  )}
+/>
+```
+
+An interactive row has `tabIndex={0}`, so it can be reached with the keyboard. `onClick` is called when the row is clicked, and when **Enter** is pressed while the row itself has focus.
+
+- Space does not activate the row.
+- Key presses are ignored when they come from a control inside a cell, so a button or input in the row keeps its own behavior.
+- Mouse clicks on those inner controls still bubble to the row. Call `event.stopPropagation()` in the control's click handler if the row should not react.
+
+### Empty state
+
+`emptyView` is only rendered when `items` is empty. Pass `Table.EmptyView` with the number of columns so the message spans the full width:
+
+```tsx
+<Table<Device>
+  colSchema={colSchema}
+  items={[]}
+  emptyView={<Table.EmptyView colspan={colSchema.length} />}
+  rowRender={renderRow}
+/>
+```
+
+The header stays visible. If `emptyView` is omitted, an empty table body is rendered.
+
+## Stories
+
+Interactive examples with the table, interactive rows, and the empty state are listed under **Components → Organisms → Table**.

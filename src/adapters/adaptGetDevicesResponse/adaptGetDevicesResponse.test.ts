@@ -61,4 +61,40 @@ describe('adaptGetDevicesResponse', () => {
 
     expect(result.devices[0].product.name).toBe('---');
   });
+
+  it('keeps the shortnames of a device', () => {
+    const result = adaptGetDevicesResponse({
+      version: '1',
+      devices: [{ id: 'device-1', shortnames: ['UDR', 'UDM'] }],
+    });
+
+    expect(result.devices[0].shortnames).toEqual(['UDR', 'UDM']);
+  });
+
+  it('removes undefined entries from the shortnames', () => {
+    const result = adaptGetDevicesResponse({
+      version: '1',
+      devices: [{ id: 'device-1', shortnames: ['UDR', undefined, 'UDM'] }],
+    });
+
+    expect(result.devices[0].shortnames).toEqual(['UDR', 'UDM']);
+  });
+
+  it('returns an empty list when every shortname is undefined', () => {
+    const result = adaptGetDevicesResponse({
+      version: '1',
+      devices: [{ id: 'device-1', shortnames: [undefined] }],
+    });
+
+    expect(result.devices[0].shortnames).toEqual([]);
+  });
+
+  it('leaves the shortnames undefined when the device has none', () => {
+    const result = adaptGetDevicesResponse({
+      version: '1',
+      devices: [{ id: 'device-1' }],
+    });
+
+    expect(result.devices[0].shortnames).toBeUndefined();
+  });
 });
