@@ -26,27 +26,36 @@ describe('lib/components/atoms/IconButton', () => {
     expect(onClick).toHaveBeenCalledOnce();
   });
 
-  it('applies activeClass when isActive is true', () => {
+  it('renders disabled when disabled is true', () => {
     render(
-      <IconButton ariaLabel="Grid view" activeClass="is-active" isActive onClick={() => {}}>
+      <IconButton ariaLabel="Grid view" onClick={() => {}} disabled>
         Grid
       </IconButton>,
     );
 
-    expect(screen.getByRole('button', { name: 'Grid view' }).classList.contains('is-active')).toBe(
-      true,
-    );
+    expect(screen.getByRole('button', { name: 'Grid view' })).toBeDisabled();
   });
 
-  it('does not apply activeClass when isActive is false', () => {
+  it('does not call onClick when disabled', () => {
+    const onClick = vi.fn();
     render(
-      <IconButton ariaLabel="Grid view" activeClass="is-active" isActive={false} onClick={() => {}}>
+      <IconButton ariaLabel="Grid view" onClick={onClick} disabled>
         Grid
       </IconButton>,
     );
 
-    expect(screen.getByRole('button', { name: 'Grid view' }).classList.contains('is-active')).toBe(
-      false,
+    fireEvent.click(screen.getByRole('button', { name: 'Grid view' }));
+
+    expect(onClick).not.toHaveBeenCalled();
+  });
+
+  it('applies a custom className', () => {
+    render(
+      <IconButton ariaLabel="Grid view" className="custom-button" onClick={() => {}}>
+        Grid
+      </IconButton>,
     );
+
+    expect(screen.getByRole('button', { name: 'Grid view' })).toHaveClass('custom-button');
   });
 });

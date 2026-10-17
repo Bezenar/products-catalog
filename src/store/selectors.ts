@@ -43,3 +43,16 @@ export const selectFilteredDevices = createSelector(
     }, []);
   },
 );
+
+export const selectProductsNavigationData = createSelector(
+  [selectDevices, (_, id) => id],
+  (devices, id: string) => {
+    const index = devices.findIndex((device) => device.id === id);
+
+    return {
+      prev: devices[index - 1] ?? null,
+      current: devices[index],
+      next: devices[index + 1] ?? null,
+    };
+  },
+);

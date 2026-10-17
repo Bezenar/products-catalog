@@ -15,22 +15,21 @@ const meta = {
         type: { summary: 'String' },
       },
     },
-    isActive: {
-      control: 'boolean',
-      type: { name: 'boolean', required: false },
-      description: 'Controls whether the button is active.',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'undefined' },
-      },
-    },
-    activeClass: {
+    className: {
       control: 'text',
       type: { name: 'string', required: false },
-      description: 'Class added to the button when isActive is true.',
+      description: 'Additional class name applied to the button.',
       table: {
         type: { summary: 'string' },
-        defaultValue: { summary: 'Empty string' },
+      },
+    },
+    disabled: {
+      control: 'boolean',
+      type: { name: 'boolean', required: false },
+      description: 'Prevents the button from receiving interaction.',
+      table: {
+        type: { summary: 'boolean' },
+        defaultValue: { summary: 'false' },
       },
     },
     children: {
@@ -64,7 +63,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     ariaLabel: 'Grid icon label',
-    activeClass: 'not-visible',
     children: 'Grid icon',
     onClick: fn(),
   },
@@ -74,38 +72,44 @@ export const Default: Story = {
 
       expect(args.onClick).toHaveBeenCalledOnce();
     });
+  },
+};
 
-    await step('Does not apply activeClass when isActive is falsy', async () => {
-      if (args.activeClass) {
-        const button = canvas.getByRole('button', { name: 'Grid icon label' });
+export const Disabled: Story = {
+  args: {
+    ariaLabel: 'Disabled grid view',
+    children: 'Grid icon',
+    disabled: true,
+    onClick: fn(),
+  },
+  play: async ({ args, canvas, step, userEvent }) => {
+    await step('Renders disabled', async () => {
+      expect(canvas.getByRole('button', { name: args.ariaLabel })).toBeDisabled();
+    });
 
-        expect(button.classList.contains(args.activeClass)).toBeFalsy();
-      }
+    await step('Does not call onClick when clicked', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: args.ariaLabel }));
+
+      expect(args.onClick).not.toHaveBeenCalled();
     });
   },
 };
 
-export const Active: Story = {
+export const WithCustomClass: Story = {
   args: {
-    ariaLabel: 'List icon label',
+    ariaLabel: 'Custom grid view',
+    children: 'Grid icon',
+    className: 'custom-icon-button',
     isActive: true,
     activeClass: 'active-class',
-    children: 'List icon',
     onClick: fn(),
   },
-  play: async ({ args, canvas, step, userEvent }) => {
-    await step('Calls onClick when the button is clicked', async () => {
-      await userEvent.click(canvas.getByRole('button', { name: 'List icon label' }));
-
-      expect(args.onClick).toHaveBeenCalledOnce();
-    });
-
-    await step('Applies activeClass when isActive is true', async () => {
-      if (args.activeClass) {
-        const button = canvas.getByRole('button', { name: 'List icon label' });
-
-        expect(button.classList.contains(args.activeClass)).toBeTruthy();
-      }
+  play: async ({ canvas, step, args }) => {
+    await step('Applies the custom and active classes', async () => {
+      expect(canvas.getByRole('button', { name: args.ariaLabel })).toHaveClass(
+        args.className!,
+        args.activeClass!,
+      );
     });
   },
 };

@@ -4,7 +4,9 @@ import s from './IconButton.module.scss';
 export interface IIconButton extends Required<React.PropsWithChildren> {
   ariaLabel: string;
   isActive?: boolean;
+  disabled?: boolean;
   activeClass?: string;
+  className?: string;
   onClick: () => void;
 }
 
@@ -12,14 +14,15 @@ const IconButton: React.FC<IIconButton> = ({
   ariaLabel,
   onClick,
   children,
-  isActive,
-  activeClass = '',
+  disabled,
+  className,
 }) => {
   return (
     <button
       aria-label={ariaLabel}
       onClick={onClick}
-      className={cn(s.button, { [activeClass]: isActive })}
+      className={cn(s.button, className)}
+      disabled={disabled}
     >
       {children}
     </button>

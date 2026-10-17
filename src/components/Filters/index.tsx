@@ -47,8 +47,7 @@ const Filters: React.FC = () => {
       <div className="flex ai-center">
         <IconButton
           ariaLabel="Switch to list view"
-          activeClass={s.listIconBtn}
-          isActive={isListActive}
+          className={cn({ [s.listIconBtn]: isListActive })}
           onClick={() => navigate(APP_ROUTE.ROOT)}
         >
           <ListIcon />
@@ -56,8 +55,7 @@ const Filters: React.FC = () => {
 
         <IconButton
           ariaLabel="Switch to grid view"
-          activeClass={s.gridIconBtn}
-          isActive={isGridActive}
+          className={cn({ [s.gridIconBtn]: isGridActive })}
           onClick={() => navigate(APP_ROUTE.GRID_VIEW)}
         >
           <GridIcon />

@@ -1,6 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { T_AdaptedDeviceItem } from '../types';
-import { selectFilteredDevices, selectFiltersData } from './selectors';
+import {
+  selectFilteredDevices,
+  selectFiltersData,
+  selectProductsNavigationData,
+} from './selectors';
 import type { T_RootState } from './index';
 
 function createState(
@@ -110,5 +114,49 @@ describe('selectFilteredDevices', () => {
     const state = createState(devices, 'switch', ['network']);
 
     expect(selectFilteredDevices(state).map((device) => device.id)).toEqual(['switch']);
+  });
+});
+
+describe('selectProductsNavigationData', () => {
+  const devices = [createDevice('router'), createDevice('switch'), createDevice('camera')];
+
+  it('returns the previous, current, and next devices for a middle device', () => {
+    const state = createState(devices);
+
+    expect(selectProductsNavigationData(state, 'switch')).toEqual({
+      prev: devices[0],
+      current: devices[1],
+      next: devices[2],
+    });
+  });
+
+  it('returns null for the previous device at the start of the list', () => {
+    const state = createState(devices);
+
+    expect(selectProductsNavigationData(state, 'router')).toEqual({
+      prev: null,
+      current: devices[0],
+      next: devices[1],
+    });
+  });
+
+  it('returns null for the next device at the end of the list', () => {
+    const state = createState(devices);
+
+    expect(selectProductsNavigationData(state, 'camera')).toEqual({
+      prev: devices[1],
+      current: devices[2],
+      next: null,
+    });
+  });
+
+  it('returns null neighbors for an empty device list', () => {
+    const state = createState([]);
+
+    expect(selectProductsNavigationData(state, 'missing')).toEqual({
+      prev: null,
+      current: undefined,
+      next: null,
+    });
   });
 });
