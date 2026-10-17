@@ -71,7 +71,17 @@ const meta = {
         type: { summary: '(value: string) => void' },
       },
     },
+    onClear: {
+      action: 'cleared',
+      control: false,
+      description: 'Callback function when the clear button is clicked',
+      type: { name: 'function', required: false },
+      table: {
+        type: { summary: '() => void' },
+      },
+    },
   },
+  args: { onClear: undefined },
 } satisfies Meta<typeof TextField>;
 
 export default meta;
@@ -106,6 +116,13 @@ export const Default: Story = {
 
       expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
+
+    await step(
+      'without provided onClear callback reset button should not be displayed',
+      async () => {
+        expect(canvas.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+      },
+    );
   },
 };
 
@@ -138,6 +155,13 @@ export const WithPlaceholder: Story = {
 
       expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
+
+    await step(
+      'without provided onClear callback reset button should not be displayed',
+      async () => {
+        expect(canvas.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+      },
+    );
   },
 };
 
@@ -164,6 +188,56 @@ export const WithIcon: Story = {
 
     await step('should display icon', () => {
       expect(canvas.getByTestId('text-field-icon')).toContainHTML('<svg');
+    });
+
+    await step('On change should trigger onChange callback', async () => {
+      await userEvent.type(canvas.getByRole('textbox'), 'Hello');
+
+      expect(args.onChange).toHaveBeenCalledWith('Hello');
+    });
+
+    await step(
+      'without provided onClear callback reset button should not be displayed',
+      async () => {
+        expect(canvas.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+      },
+    );
+  },
+};
+
+export const WithResetButton: Story = {
+  args: {
+    value: 'value',
+    label: 'Search devices',
+    placeholder: 'Enter text',
+    onChange: fn(),
+    onClear: fn(),
+  },
+  play: async ({ args, canvas, userEvent, step }) => {
+    await step('should expose the provided accessible label', async () => {
+      expect(canvas.getByRole('textbox', { name: args.label })).toBeTruthy();
+    });
+
+    await step('should use value prop correctly', async () => {
+      expect(canvas.getByRole('textbox')).toHaveValue(args.value);
+    });
+
+    await step('should display placeholder', () => {
+      expect(canvas.getByRole('textbox')).toHaveAttribute('placeholder', args.placeholder);
+    });
+
+    await step('should not display icon', () => {
+      expect(canvas.queryByTestId('text-field-icon')).not.toBeInTheDocument();
+    });
+
+    await step('with provided onClear callback reset button should be displayed', async () => {
+      expect(canvas.getByRole('button', { name: /Clear/i })).toBeInTheDocument();
+    });
+
+    await step('Click the reset button should trigger onClear callback', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: /Clear/i }));
+
+      expect(args.onClear).toHaveBeenCalled();
     });
 
     await step('On change should trigger onChange callback', async () => {
@@ -208,6 +282,13 @@ export const WithCustomWidth: Story = {
 
       expect(args.onChange).toHaveBeenCalledWith('Hello');
     });
+
+    await step(
+      'without provided onClear callback reset button should not be displayed',
+      async () => {
+        expect(canvas.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+      },
+    );
   },
 };
 
@@ -243,5 +324,12 @@ export const Debounced: Story = {
         expect(args.onChange).toHaveBeenCalledWith('Hello');
       });
     });
+
+    await step(
+      'without provided onClear callback reset button should not be displayed',
+      async () => {
+        expect(canvas.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+      },
+    );
   },
 };

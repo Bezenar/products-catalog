@@ -26,7 +26,7 @@ const Filters: React.FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className={cn('flex ai-center jc-sb gap-4')}>
+    <div className={cn('flex ai-center jc-sb gap-4 pb-4')}>
       <div className="flex ai-center gap-4">
         <Search<T_AdaptedDeviceItem>
           value={searchValue}
@@ -56,7 +56,9 @@ const Filters: React.FC = () => {
             <Checkbox
               label={option.name}
               isChecked={selectedCategories.includes(option.id)}
-              onChange={(checked) => dispatch(setSelectedCategories({ id: option.id, checked }))}
+              onChange={(checked) => {
+                dispatch(setSelectedCategories({ id: option.id, checked }));
+              }}
             />
           )}
           onReset={{

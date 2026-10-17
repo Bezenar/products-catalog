@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import cn from '../../../utils/cn';
+import GhostButton from '../GhostButton';
 import s from './TextField.module.scss';
 
 interface ITextField {
@@ -10,6 +11,7 @@ interface ITextField {
   debounceMs?: number;
   width?: React.CSSProperties['width'];
   onChange: (value: string) => void;
+  onClear?: () => void;
 }
 
 const TextField: React.FC<ITextField> = ({
@@ -19,6 +21,7 @@ const TextField: React.FC<ITextField> = ({
   onChange,
   icon,
   debounceMs,
+  onClear,
   width = '100%',
 }) => {
   const id = useId();
@@ -61,6 +64,8 @@ const TextField: React.FC<ITextField> = ({
     }
   };
 
+  const isClearBtnVisible = !!onClear && inputValue.length > 0;
+
   return (
     <div
       data-testid="text-field"
@@ -90,6 +95,17 @@ const TextField: React.FC<ITextField> = ({
         onBlur={() => setIsFocused(false)}
         autoComplete="off"
       />
+
+      {isClearBtnVisible && (
+        <GhostButton
+          label="Clear"
+          className={s.resetBtn}
+          onClick={() => {
+            setInputValue('');
+            onClear();
+          }}
+        />
+      )}
     </div>
   );
 };

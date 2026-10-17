@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import type { T_AdaptedDeviceItem } from '../types';
-import { selectFiltersData } from './selectors';
+import { selectFilteredDevices, selectFiltersData } from './selectors';
 import type { T_RootState } from './index';
 
 function createState(
@@ -77,5 +77,38 @@ describe('selectFiltersData', () => {
     expect(selectFiltersData(state).categories).toEqual([
       { id: 'generated-line-id-2-2', name: '---' },
     ]);
+  });
+});
+
+describe('selectFilteredDevices', () => {
+  const devices = [
+    createDevice('router', { id: 'network', name: 'Network' }),
+    createDevice('switch', { id: 'network', name: 'Network' }),
+    createDevice('camera', { id: 'protect', name: 'Protect' }),
+    createDevice('unknown'),
+  ];
+
+  it('returns the original devices when no filters are active', () => {
+    const state = createState(devices);
+
+    expect(selectFilteredDevices(state)).toBe(devices);
+  });
+
+  it('filters devices by product name', () => {
+    const state = createState(devices, 'switch');
+
+    expect(selectFilteredDevices(state).map((device) => device.id)).toEqual(['switch']);
+  });
+
+  it('filters devices by selected category', () => {
+    const state = createState(devices, '', ['network']);
+
+    expect(selectFilteredDevices(state).map((device) => device.id)).toEqual(['router', 'switch']);
+  });
+
+  it('applies product name and category filters together', () => {
+    const state = createState(devices, 'switch', ['network']);
+
+    expect(selectFilteredDevices(state).map((device) => device.id)).toEqual(['switch']);
   });
 });

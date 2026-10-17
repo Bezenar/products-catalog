@@ -159,4 +159,62 @@ describe('TextField', () => {
 
     expect(screen.getByText('Search icon')).toBeTruthy();
   });
+
+  it('by default, the reset button is not displayed', () => {
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+      />,
+    );
+
+    expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+  });
+
+  it('does not display the reset button when value is empty and onClear is provided', () => {
+    render(
+      <TextField
+        value=""
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    expect(screen.queryByRole('button', { name: 'Clear' })).not.toBeInTheDocument();
+  });
+
+  it('displays the reset button when onClear is provided and value are not empty', () => {
+    render(
+      <TextField
+        value="value"
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+        onClear={() => {}}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'Clear' })).toBeInTheDocument();
+  });
+
+  it('click onClear button should trigger onClear callback', () => {
+    const onClear = vi.fn();
+    render(
+      <TextField
+        value="value"
+        label="Search devices"
+        placeholder="Search devices"
+        onChange={() => {}}
+        onClear={onClear}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Clear' }));
+
+    expect(onClear).toHaveBeenCalled();
+  });
 });

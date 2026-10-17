@@ -77,7 +77,8 @@ export const Default: Story = {
     placeholder: 'Search...',
     options: [
       { id: '1', name: 'Router', product: { name: 'Dream Router' }, shortnames: ['UDR'] },
-      { id: '2', name: 'Switch', product: { name: 'Switch 8' } },
+      { id: '2', name: 'Router Pro', product: { name: 'Dream Router Pro' }, shortnames: ['UDRP'] },
+      { id: '3', name: 'Switch', product: { name: 'Switch 8' } },
     ],
     onChange: fn(),
   },
@@ -101,20 +102,30 @@ export const Default: Story = {
       expect(canvas.getByTestId('popover-content')).not.toBeVisible();
     });
 
-    await step('With non-empty value should show options', async () => {
+    await step('With several matches should show options', async () => {
       await userEvent.type(canvas.getByRole('textbox', { name: args.label }), 'dream');
 
       await waitFor(() => expect(canvas.getByTestId('popover-content')).toBeVisible());
     });
 
-    await step('Should show matching product name and shortname', async () => {
-      expect(canvas.getByTestId('primary-text')).toHaveTextContent('Dream Router');
+    await step('Should list every matching product name', async () => {
+      expect(canvas.getAllByTestId('primary-text').map((item) => item.textContent)).toEqual([
+        'Dream Router',
+        'Dream Router Pro',
+      ]);
+    });
+
+    await step('Should show the shortname of each match', async () => {
+      expect(canvas.getAllByTestId('secondary-text').map((item) => item.textContent)).toEqual([
+        'UDR',
+        'UDRP',
+      ]);
     });
 
     await step('Should notify when a result is selected', async () => {
-      await userEvent.click(canvas.getByTestId('primary-text'));
+      await userEvent.click(canvas.getByText('Dream Router Pro'));
 
-      expect(args.onChange).toHaveBeenCalledWith('Dream Router');
+      expect(args.onChange).toHaveBeenCalledWith('Dream Router Pro');
     });
 
     await step('Should close the results after selection', async () => {

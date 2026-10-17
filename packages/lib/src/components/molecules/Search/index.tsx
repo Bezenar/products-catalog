@@ -25,37 +25,37 @@ function Search<T extends { id: string; product: { name: string }; shortnames?: 
   options,
   onChange,
 }: ISearch<T>): React.ReactElement {
-  const [searchValue, setSearchValue] = useState<string>(value);
   const [isListVisible, setIsListVisible] = useState<boolean>(false);
   const filteredOptions = useMemo<Array<T>>(() => {
-    if (!searchValue || value === searchValue) return [];
+    if (!value) return [];
 
     return options.filter((option) =>
-      option.product.name.toLowerCase().includes(searchValue.toLowerCase()),
+      option.product.name.toLowerCase().includes(value.toLowerCase()),
     );
-  }, [searchValue, options]);
+  }, [value, options]);
 
   useEffect(() => {
-    if (filteredOptions.length >= 1 && value !== searchValue) {
+    if (filteredOptions.length >= 1 && value !== '') {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsListVisible(true);
     }
-  }, [filteredOptions.length, value, searchValue]);
+  }, [filteredOptions.length, value]);
 
   return (
     <>
       <Popover
-        isContentVisible={isListVisible}
+        isContentVisible={filteredOptions.length > 1 && isListVisible}
         onOutsideClick={() => setIsListVisible(false)}
         anchor={
           <TextField
             icon={<SearchIcon />}
             width="20rem"
-            value={searchValue}
+            value={value}
             label={label}
             placeholder={placeholder}
             debounceMs={debounceMs}
-            onChange={setSearchValue}
+            onChange={onChange}
+            onClear={() => onChange('')}
           />
         }
       >
@@ -67,7 +67,6 @@ function Search<T extends { id: string; product: { name: string }; shortnames?: 
                 primaryText={option.product.name}
                 secondaryText={option.shortnames?.[0] ?? '---'}
                 onClick={() => {
-                  setSearchValue(option.product.name);
                   setIsListVisible(false);
                   onChange(option.product.name);
                 }}

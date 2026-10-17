@@ -14,6 +14,14 @@ const meta = {
         type: { summary: 'string' },
       },
     },
+    className: {
+      control: 'text',
+      description: 'The className of the GhostButton',
+      type: { name: 'string', required: false },
+      table: {
+        type: { summary: 'string' },
+      },
+    },
     onClick: {
       action: 'clicked',
       control: false,
@@ -38,6 +46,29 @@ export const Default: Story = {
   play: async ({ args, userEvent, canvas, step }) => {
     await step('Should render button label', async () => {
       expect(canvas.getByRole('button', { name: args.label })).toBeInTheDocument();
+    });
+
+    await step('Click the GhostButton', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: args.label }));
+
+      expect(args.onClick).toHaveBeenCalled();
+    });
+  },
+};
+
+export const WithClassName: Story = {
+  args: {
+    label: 'Click me',
+    className: 'custom-class',
+    onClick: fn(),
+  },
+  play: async ({ args, userEvent, canvas, step }) => {
+    await step('Should render button label', async () => {
+      expect(canvas.getByRole('button', { name: args.label })).toBeInTheDocument();
+    });
+
+    await step('Should have the custom class', async () => {
+      expect(canvas.getByRole('button', { name: args.label })).toHaveClass(args.className);
     });
 
     await step('Click the GhostButton', async () => {
