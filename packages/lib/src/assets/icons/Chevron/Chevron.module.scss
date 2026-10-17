@@ -1,0 +1,5 @@
+.chevron {
+  &:global(.right) {
+    transform: rotate(-180deg);
+  }
+}
