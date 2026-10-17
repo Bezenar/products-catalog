@@ -1,11 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import filtersSlice from '../../store/filtersSlice';
 import productsSlice from '../../store/productsSlice';
 import type { T_AdaptedDeviceItem } from '../../types';
 import Filters from './index';
+
+function CurrentPath() {
+  const { pathname } = useLocation();
+
+  return <output data-testid="current-path">{pathname}</output>;
+}
 
 const devices: T_AdaptedDeviceItem[] = [
   {
@@ -27,7 +34,7 @@ const devices: T_AdaptedDeviceItem[] = [
   },
 ];
 
-function renderFilters(selectedCategories: string[] = []) {
+function renderFilters(selectedCategories: string[] = [], initialPath = '/') {
   const store = configureStore({
     reducer: {
       products: productsSlice.reducer,
@@ -49,7 +56,19 @@ function renderFilters(selectedCategories: string[] = []) {
 
   render(
     <Provider store={store}>
-      <Filters />
+      <MemoryRouter initialEntries={[initialPath]}>
+        <Routes>
+          <Route
+            path="*"
+            element={
+              <>
+                <Filters />
+                <CurrentPath />
+              </>
+            }
+          />
+        </Routes>
+      </MemoryRouter>
     </Provider>,
   );
 
@@ -68,11 +87,11 @@ describe('Filters', () => {
   });
 
   it('handles clicking the list view button', () => {
-    renderFilters();
+    renderFilters([], '/grid-view');
 
     fireEvent.click(screen.getByRole('button', { name: 'Switch to list view' }));
 
-    expect(screen.getByRole('button', { name: 'Switch to list view' })).toBeInTheDocument();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/');
   });
 
   it('handles clicking the grid view button', () => {
@@ -80,12 +99,14 @@ describe('Filters', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Switch to grid view' }));
 
-    expect(screen.getByRole('button', { name: 'Switch to grid view' })).toBeInTheDocument();
+    expect(screen.getByTestId('current-path')).toHaveTextContent('/grid-view');
   });
 
   it('renders each unique product category once', () => {
     renderFilters();
     fireEvent.click(screen.getByRole('button', { name: 'Filter' }));
+
+    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
   });
 
   it('dispatches selected category changes', () => {

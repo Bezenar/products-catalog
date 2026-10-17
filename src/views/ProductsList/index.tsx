@@ -1,10 +1,4 @@
-import { useGetProductsQuery } from '../../store/productsSlice';
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface IProductsList {}
-
-const ProductsList: React.FC<IProductsList> = () => {
-  useGetProductsQuery();
-
+const ProductsList: React.FC = () => {
   return <div>Products List</div>;
 };
 

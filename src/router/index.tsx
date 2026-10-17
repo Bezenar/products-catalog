@@ -1,8 +1,10 @@
 import { createBrowserRouter, Outlet } from 'react-router';
+import FiltersContainer from '../components/FiltersContainer';
 import PageTemplate from '../components/PageTemplate';
 import { APP_ROUTE } from '../constants';
 import ErrorView from '../views/ErrorView';
 import Product from '../views/Product';
+import ProductsGrid from '../views/ProductsGrid';
 import ProductsList from '../views/ProductsList';
 
 const router = createBrowserRouter([
@@ -15,8 +17,18 @@ const router = createBrowserRouter([
     ),
     children: [
       {
-        index: true,
-        element: <ProductsList />,
+        path: APP_ROUTE.ROOT,
+        element: <FiltersContainer />,
+        children: [
+          {
+            index: true,
+            element: <ProductsList />,
+          },
+          {
+            path: APP_ROUTE.GRID_VIEW,
+            element: <ProductsGrid />,
+          },
+        ],
       },
       {
         path: APP_ROUTE.PRODUCT,

@@ -1,10 +1,12 @@
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useNavigate } from 'react-router';
 import Checkbox from 'lib/atoms/Checkbox';
 import IconButton from 'lib/atoms/IconButton';
 import CategoryFilters from 'lib/molecules/CategoryFilters';
 import Search from 'lib/molecules/Search';
 import cn from 'lib/utils/cn';
 import { ListIcon, GridIcon } from '../../../packages/lib/src/assets/icons';
+import { APP_ROUTE } from '../../constants';
 import {
   setSearchValue,
   setSelectedCategories,
@@ -18,6 +20,8 @@ const Filters: React.FC = () => {
     selectFiltersData,
     shallowEqual,
   );
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
@@ -37,10 +41,10 @@ const Filters: React.FC = () => {
       </div>
 
       <div className="flex ai-center">
-        <IconButton ariaLabel="Switch to list view" onClick={() => {}}>
+        <IconButton ariaLabel="Switch to list view" onClick={() => navigate(APP_ROUTE.ROOT)}>
           <ListIcon />
         </IconButton>
-        <IconButton ariaLabel="Switch to grid view" onClick={() => {}}>
+        <IconButton ariaLabel="Switch to grid view" onClick={() => navigate(APP_ROUTE.GRID_VIEW)}>
           <GridIcon />
         </IconButton>
 
