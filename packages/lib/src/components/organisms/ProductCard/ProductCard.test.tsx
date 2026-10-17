@@ -34,4 +34,14 @@ describe('ProductCard', () => {
 
     expect(screen.getByRole('heading', { level: 4, name: 'Dream Router' })).toBeInTheDocument();
   });
+
+  it('renders the Badge compound inside the card', () => {
+    render(
+      <ProductCard>
+        <ProductCard.Badge value="New" />
+      </ProductCard>,
+    );
+
+    expect(screen.getByText('New')).toBeInTheDocument();
+  });
 });

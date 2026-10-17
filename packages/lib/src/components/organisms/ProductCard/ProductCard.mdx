@@ -4,7 +4,7 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 
 <Title>ProductCard</Title>
 
-`ProductCard` composes a product image, heading, content area, and secondary text. It is a visual container by default. Supplying `onClick` renders the card as a native button, so it can be activated with a mouse, Enter, or Space.
+`ProductCard` composes a product image, heading, content area, secondary text, and an optional badge. It is a visual container by default. Supplying `onClick` renders the card as a native button, so it can be activated with a mouse, Enter, or Space.
 
 ## Import
 
@@ -16,6 +16,7 @@ import ProductCard from 'lib/organisms/ProductCard';
 
 ```tsx
 <ProductCard>
+  <ProductCard.Badge value="New" />
   <ProductCard.Image src={imageUrl} alt="" />
   <ProductCard.Content>
     <ProductCard.Heading>Dream Router</ProductCard.Heading>
@@ -30,6 +31,7 @@ Use `onClick` for an action, such as opening a details view. The card becomes a 
 
 ```tsx
 <ProductCard onClick={() => openDevice(device.id)}>
+  <ProductCard.Badge value="New" />
   <ProductCard.Image src={imageUrl} alt="" />
   <ProductCard.Content>
     <ProductCard.Heading>{device.product.name}</ProductCard.Heading>
@@ -63,6 +65,15 @@ Don't put another button, link, input, or other interactive control inside a cli
       <td>
         Card container. Renders as a button when <code>onClick</code> is supplied.
       </td>
+    </tr>
+    <tr>
+      <td>
+        <code>ProductCard.Badge</code>
+      </td>
+      <td>
+        <code>value: React.ReactNode</code>
+      </td>
+      <td>Optional label positioned at the card's upper-right corner.</td>
     </tr>
     <tr>
       <td>

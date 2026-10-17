@@ -42,6 +42,7 @@ export const DisplayOnly: Story = {
     onClick: undefined,
     children: (
       <>
+        <ProductCard.Badge value="New" />
         <ProductCard.Image
           src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=320"
           alt=""
@@ -69,6 +70,7 @@ export const Clickable: Story = {
     onClick,
     children: (
       <>
+        <ProductCard.Badge value="Popular" />
         <ProductCard.Image
           src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=320"
           alt=""

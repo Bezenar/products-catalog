@@ -1,4 +1,6 @@
 import { createElement } from 'react';
+import cn from '../../../utils/cn';
+import Badge from './compounds/Badge';
 import Content from './compounds/Content';
 import Heading from './compounds/Heading';
 import Image from './compounds/Image';
@@ -10,6 +12,7 @@ interface I_Compounds {
   Heading: typeof Heading;
   Content: typeof Content;
   SecondaryText: typeof SecondaryText;
+  Badge: typeof Badge;
 }
 
 interface I_ProductCard {
@@ -23,7 +26,7 @@ const ProductCard: React.FC<I_ProductCard> & I_Compounds = ({ children, onClick 
   return createElement(
     isClickable ? 'button' : 'div',
     {
-      className: s.card,
+      className: cn(s.card, { [s.clickable]: isClickable }),
       onClick: isClickable ? onClick : undefined,
     },
     children,
@@ -34,6 +37,7 @@ ProductCard.Image = Image;
 ProductCard.Heading = Heading;
 ProductCard.Content = Content;
 ProductCard.SecondaryText = SecondaryText;
+ProductCard.Badge = Badge;
 
 ProductCard.displayName = 'ProductCard';
 
