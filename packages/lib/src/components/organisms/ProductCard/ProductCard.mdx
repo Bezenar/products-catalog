@@ -1,0 +1,110 @@
+import { Meta, Title } from '@storybook/addon-docs/blocks';
+
+<Meta title="Components/Organisms/ProductCard/Usage" />
+
+<Title>ProductCard</Title>
+
+`ProductCard` composes a product image, heading, content area, and secondary text. It is a visual container by default. Supplying `onClick` renders the card as a native button, so it can be activated with a mouse, Enter, or Space.
+
+## Import
+
+```tsx
+import ProductCard from 'lib/organisms/ProductCard';
+```
+
+## Display-only card
+
+```tsx
+<ProductCard>
+  <ProductCard.Image src={imageUrl} alt="" />
+  <ProductCard.Content>
+    <ProductCard.Heading>Dream Router</ProductCard.Heading>
+    <ProductCard.SecondaryText>UDR</ProductCard.SecondaryText>
+  </ProductCard.Content>
+</ProductCard>
+```
+
+## Clickable card
+
+Use `onClick` for an action, such as opening a details view. The card becomes a button, and its accessible name is derived from its text content.
+
+```tsx
+<ProductCard onClick={() => openDevice(device.id)}>
+  <ProductCard.Image src={imageUrl} alt="" />
+  <ProductCard.Content>
+    <ProductCard.Heading>{device.product.name}</ProductCard.Heading>
+    <ProductCard.SecondaryText>{device.shortnames.join(' ')}</ProductCard.SecondaryText>
+  </ProductCard.Content>
+</ProductCard>
+```
+
+Don't put another button, link, input, or other interactive control inside a clickable card. If the entire card represents navigation, prefer a link as the interactive root rather than nesting a link inside the button.
+
+## Props
+
+<table>
+  <thead>
+    <tr>
+      <th>Component</th>
+      <th>Props</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <code>ProductCard</code>
+      </td>
+      <td>
+        <code>children: React.ReactNode</code>
+        <br />
+        <code>onClick?: () =&gt; void</code>
+      </td>
+      <td>
+        Card container. Renders as a button when <code>onClick</code> is supplied.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>ProductCard.Image</code>
+      </td>
+      <td>
+        <code>src: string</code>
+        <br />
+        <code>alt: string</code>
+      </td>
+      <td>Product image with required alternative text.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ProductCard.Content</code>
+      </td>
+      <td>
+        <code>children: React.ReactNode</code>
+      </td>
+      <td>Layout container for the card's text.</td>
+    </tr>
+    <tr>
+      <td>
+        <code>ProductCard.Heading</code>
+      </td>
+      <td>
+        <code>children: React.ReactNode</code>
+      </td>
+      <td>
+        Product name rendered as an <code>h4</code>.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <code>ProductCard.SecondaryText</code>
+      </td>
+      <td>
+        <code>children: React.ReactNode</code>
+      </td>
+      <td>Supporting text rendered as a paragraph.</td>
+    </tr>
+  </tbody>
+</table>
+
+Explore **Components → Organisms → ProductCard** for isolated stories of the card and its compounds.

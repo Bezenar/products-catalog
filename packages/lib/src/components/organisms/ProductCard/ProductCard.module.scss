@@ -1,0 +1,10 @@
+.card {
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--border-default);
+  transition: border-color 0.3s ease;
+
+  &:focus-visible {
+    border-color: var(--brand-primary);
+  }
+}
