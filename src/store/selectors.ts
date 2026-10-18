@@ -58,6 +58,15 @@ export const selectProductsNavigationData = createSelector(
 );
 
 export const selectActiveDevice = createSelector(
-  [selectDevices, (_, id) => id],
-  (devices, id: string) => devices.find((device) => device.id === id) ?? null,
+  [
+    selectDevices,
+    (_, id) => {
+      console.log('SELECTOR', id);
+      return id;
+    },
+  ],
+  (devices, id: string) => ({
+    activeDevice: devices.find((device) => device.id === id) ?? null,
+    isLoading: !devices.length,
+  }),
 );

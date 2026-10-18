@@ -163,16 +163,31 @@ describe('selectProductsNavigationData', () => {
 });
 
 describe('selectActiveDevice', () => {
-  it('returns the device matching the requested ID', () => {
+  it('returns the matching device and a loaded state', () => {
     const devices = [createDevice('router'), createDevice('switch')];
     const state = createState(devices);
 
-    expect(selectActiveDevice(state, 'switch')).toBe(devices[1]);
+    expect(selectActiveDevice(state, 'switch')).toEqual({
+      activeDevice: devices[1],
+      isLoading: false,
+    });
   });
 
-  it('returns null when the requested device does not exist', () => {
+  it('returns a null active device when the requested ID does not exist', () => {
     const state = createState([createDevice('router')]);
 
-    expect(selectActiveDevice(state, 'missing')).toBeNull();
+    expect(selectActiveDevice(state, 'missing')).toEqual({
+      activeDevice: null,
+      isLoading: false,
+    });
+  });
+
+  it('reports loading while the device list is empty', () => {
+    const state = createState([]);
+
+    expect(selectActiveDevice(state, 'router')).toEqual({
+      activeDevice: null,
+      isLoading: true,
+    });
   });
 });

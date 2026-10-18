@@ -1,10 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter, Route, Routes } from 'react-router';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import filtersSlice from '../../store/filtersSlice';
 import productsSlice from '../../store/productsSlice';
+import * as selectors from '../../store/selectors';
 import type { T_AdaptedDeviceItem } from '../../types';
 import ErrorView from '../../views/ErrorView';
 import ProductDetails from './index';
@@ -58,6 +59,27 @@ function renderProductDetails(id: string, devices: T_AdaptedDeviceItem[] = [devi
 }
 
 describe('ProductDetails', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('renders nothing while product data is loading', () => {
+    const { container } = renderProductDetails('router-1', []);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
+  it('renders nothing while loading when an active device is present', () => {
+    vi.spyOn(selectors, 'selectActiveDevice').mockReturnValue({
+      activeDevice: device,
+      isLoading: true,
+    });
+
+    const { container } = renderProductDetails('router-1');
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('shows a not-found message when the route ID is not in the store', () => {
     renderProductDetails('missing');
 
@@ -95,6 +117,22 @@ describe('ProductDetails', () => {
       screen.getByText('Speed').nextElementSibling?.textContent,
       screen.getByText('Number of ports').nextElementSibling?.textContent,
     ]).toEqual(['Network', 'router-1', '20 W', '1200 Mbps', '4']);
+  });
+
+  it('toggles the full product JSON details', () => {
+    renderProductDetails('router-1');
+
+    const jsonButton = screen.getByRole('button', { name: 'See All Details as JSON' });
+
+    expect(screen.queryByText(/"id": "router-1"/)).not.toBeInTheDocument();
+
+    fireEvent.click(jsonButton);
+
+    expect(screen.getByText(/"id": "router-1"/)).toBeInTheDocument();
+
+    fireEvent.click(jsonButton);
+
+    expect(screen.queryByText(/"id": "router-1"/)).not.toBeInTheDocument();
   });
 
   it('renders fallback shortname text when the active product has no shortnames', () => {
