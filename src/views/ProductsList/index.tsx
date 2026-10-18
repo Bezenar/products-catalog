@@ -18,7 +18,11 @@ const ProductsList: React.FC = () => {
       rowRender={(item) => (
         <Table.InteractiveRow
           key={item.id}
-          onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: item.id }))}
+          onClick={() =>
+            navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: item.id }), {
+              state: { from: 'list' },
+            })
+          }
         >
           <Table.Cell>
             <figure className="flex ai-center jc-center">

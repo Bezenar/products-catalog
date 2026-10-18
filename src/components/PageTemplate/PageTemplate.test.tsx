@@ -1,7 +1,18 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import { describe, expect, it } from 'vitest';
 import PageTemplate from './index';
+
+function MainPage() {
+  const { state } = useLocation();
+
+  return (
+    <>
+      <h1>Main page</h1>
+      <output data-testid="navigation-source">{state?.from}</output>
+    </>
+  );
+}
 
 describe('PageTemplate', () => {
   it('renders the page title', () => {
@@ -52,13 +63,16 @@ describe('PageTemplate', () => {
               </PageTemplate>
             }
           />
-          <Route path="/" element={<h1>Main page</h1>} />
+          <Route path="/" element={<MainPage />} />
         </Routes>
       </MemoryRouter>,
     );
 
     fireEvent.click(screen.getByRole('button', { name: 'Go to main page' }));
 
-    expect(screen.getByRole('heading', { name: 'Main page' })).toBeInTheDocument();
+    expect({
+      heading: screen.getByRole('heading', { name: 'Main page' }).textContent,
+      navigationSource: screen.getByTestId('navigation-source').textContent,
+    }).toEqual({ heading: 'Main page', navigationSource: 'logo' });
   });
 });

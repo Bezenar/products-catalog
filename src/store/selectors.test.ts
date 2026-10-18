@@ -3,6 +3,7 @@ import type { T_AdaptedDeviceItem } from '../types';
 import {
   selectFilteredDevices,
   selectFiltersData,
+  selectActiveDevice,
   selectProductsNavigationData,
 } from './selectors';
 import type { T_RootState } from './index';
@@ -158,5 +159,20 @@ describe('selectProductsNavigationData', () => {
       current: undefined,
       next: null,
     });
+  });
+});
+
+describe('selectActiveDevice', () => {
+  it('returns the device matching the requested ID', () => {
+    const devices = [createDevice('router'), createDevice('switch')];
+    const state = createState(devices);
+
+    expect(selectActiveDevice(state, 'switch')).toBe(devices[1]);
+  });
+
+  it('returns null when the requested device does not exist', () => {
+    const state = createState([createDevice('router')]);
+
+    expect(selectActiveDevice(state, 'missing')).toBeNull();
   });
 });

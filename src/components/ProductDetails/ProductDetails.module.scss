@@ -1,0 +1,22 @@
+.detailsContainer {
+  margin: 0 auto;
+  width: clamp(768px, 55%, 1200px);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imageContainer {
+  flex: 1 0 clamp(292px, 3%, 400px);
+  border-radius: 8px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
+
+.details {
+  flex: 1 0 clamp(444px, 50%, 600px);
+}

@@ -48,7 +48,7 @@ const Filters: React.FC = () => {
         <IconButton
           ariaLabel="Switch to list view"
           className={cn({ [s.listIconBtn]: isListActive })}
-          onClick={() => navigate(APP_ROUTE.ROOT)}
+          onClick={() => navigate(APP_ROUTE.ROOT, { state: { from: 'list' } })}
         >
           <ListIcon />
         </IconButton>
@@ -56,7 +56,7 @@ const Filters: React.FC = () => {
         <IconButton
           ariaLabel="Switch to grid view"
           className={cn({ [s.gridIconBtn]: isGridActive })}
-          onClick={() => navigate(APP_ROUTE.GRID_VIEW)}
+          onClick={() => navigate(APP_ROUTE.GRID_VIEW, { state: { from: 'grid' } })}
         >
           <GridIcon />
         </IconButton>

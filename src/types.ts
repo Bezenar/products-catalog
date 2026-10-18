@@ -51,6 +51,46 @@ export interface I_DeviceUISP {
   nameLegacy: Array<string>;
 }
 
+export interface I_Network {
+  chipset: string;
+  deviceCapabilities: Array<string>;
+  ethernetMaxSpeedMegabitsPerSecond: number;
+  features: {
+    atfDisabled: boolean;
+    ax: boolean;
+    bandsteer: boolean;
+    be: boolean;
+    gen: number;
+  };
+  minimumFirmwareRequired: string;
+  model: string;
+  numberOfPorts: number;
+  radios: {
+    '6e': {
+      gain: number;
+      maxPower: number;
+      maxSpeedMegabitsPerSecond: number;
+    };
+    na: {
+      gain: number;
+      maxPower: number;
+      maxSpeedMegabitsPerSecond: number;
+    };
+    ng: {
+      gain: number;
+      maxPower: number;
+      maxSpeedMegabitsPerSecond: number;
+    };
+  };
+  systemIdHexadecimal: string;
+  type: string;
+}
+
+export interface I_Unifi {
+  adoptability: string;
+  network: I_Network;
+}
+
 export interface I_DeviceItem {
   compliance: I_DeviceCompliance;
   deviceType: string;
@@ -68,6 +108,7 @@ export interface I_DeviceItem {
   triplets: Array<I_DeviceTriplet>;
   uisp: I_DeviceUISP;
   videos: Record<PropertyKey, unknown>;
+  unifi: I_Unifi;
 }
 
 export interface I_GetDevicesRes {

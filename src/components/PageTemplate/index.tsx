@@ -18,7 +18,7 @@ const PageTemplate: React.FC<React.PropsWithChildren<IPageTemplate>> = ({
       <Header
         title={title}
         author={author}
-        onLogoClick={() => navigate('/')}
+        onLogoClick={() => navigate('/', { state: { from: 'logo' } })}
         logoAriaLabel="Go to main page"
       />
 

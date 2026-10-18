@@ -56,3 +56,8 @@ export const selectProductsNavigationData = createSelector(
     };
   },
 );
+
+export const selectActiveDevice = createSelector(
+  [selectDevices, (_, id) => id],
+  (devices, id: string) => devices.find((device) => device.id === id) ?? null,
+);

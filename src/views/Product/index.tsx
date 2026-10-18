@@ -4,6 +4,7 @@ import { Navigate } from 'react-router';
 import Spinner from 'lib/atoms/Spinner';
 import cn from 'lib/utils/cn';
 import NavigationBar from '../../components/NavigationBar';
+import ProductDetails from '../../components/ProductDetails';
 import type { T_RootState, T_AppDispatch } from '../../store';
 import { getDevices } from '../../store/productsSlice';
 import s from './Product.module.scss';
@@ -37,7 +38,7 @@ const Product: React.FC = () => {
     <>
       <NavigationBar />
 
-      <h1>Product Page</h1>
+      <ProductDetails />
     </>
   );
 };

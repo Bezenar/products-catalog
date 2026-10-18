@@ -10,9 +10,13 @@ import s from './Filters.module.scss';
 import Filters from './index';
 
 function CurrentPath() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
 
-  return <output data-testid="current-path">{pathname}</output>;
+  return (
+    <output data-testid="current-path" data-from={state?.from}>
+      {pathname}
+    </output>
+  );
 }
 
 const devices: T_AdaptedDeviceItem[] = [
@@ -93,6 +97,7 @@ describe('Filters', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Switch to list view' }));
 
     expect(screen.getByTestId('current-path')).toHaveTextContent('/');
+    expect(screen.getByTestId('current-path')).toHaveAttribute('data-from', 'list');
   });
 
   it('handles clicking the grid view button', () => {
@@ -101,6 +106,7 @@ describe('Filters', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Switch to grid view' }));
 
     expect(screen.getByTestId('current-path')).toHaveTextContent('/grid-view');
+    expect(screen.getByTestId('current-path')).toHaveAttribute('data-from', 'grid');
   });
 
   it('marks the list view button active on the list route', () => {

@@ -16,9 +16,13 @@ const ProductsGrid: React.FC = () => {
         return (
           <ProductCard
             key={device.id}
-            onClick={() => navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: device.id }))}
+            onClick={() =>
+              navigate(generatePath(`/${APP_ROUTE.PRODUCTS}`, { id: device.id }), {
+                state: { from: 'grid' },
+              })
+            }
           >
-            <ProductCard.Badge value="New" />
+            {!!device.line?.name && <ProductCard.Badge value={device.line?.name} />}
             <ProductCard.Image
               src={generateDeviceImageUrl(device, 84)}
               alt={`${device.product.name} image`}
