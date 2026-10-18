@@ -68,7 +68,9 @@ export const WithClassName: Story = {
     });
 
     await step('Should have the custom class', async () => {
-      expect(canvas.getByRole('button', { name: args.label })).toHaveClass(args.className);
+      expect(canvas.getByRole('button', { name: args.label })).toHaveClass(
+        args.className as string,
+      );
     });
 
     await step('Click the GhostButton', async () => {

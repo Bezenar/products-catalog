@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router';
+import { generatePath, Navigate, useParams } from 'react-router';
 import List from 'lib/atoms/List';
 import cn from 'lib/utils/cn';
+import { APP_ROUTE } from '../../constants';
 import type { T_RootState } from '../../store';
 import { selectActiveDevice } from '../../store/selectors';
 import collectDeviceDetails from '../../utils/collectDeviceDetails';
@@ -13,7 +14,7 @@ const ProductDetails: React.FC = () => {
   const activeDevice = useSelector((state: T_RootState) => selectActiveDevice(state, id));
 
   if (!activeDevice) {
-    return 'Device not found';
+    return <Navigate to={generatePath(APP_ROUTE.ERRORS, { code: '404' })} />;
   }
 
   const listItems = collectDeviceDetails(activeDevice);

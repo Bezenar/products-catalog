@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router';
 import Spinner from 'lib/atoms/Spinner';
 import cn from 'lib/utils/cn';
+import { APP_ROUTE } from '../../constants';
 import type { T_RootState, T_AppDispatch } from '../../store';
 import { getDevices } from '../../store/productsSlice';
 import Filters from '../Filters';
@@ -26,7 +27,7 @@ const FiltersContainer: React.FC = () => {
   }
 
   if (hasError) {
-    return <Navigate to="/error" />;
+    return <Navigate to={APP_ROUTE.ERRORS} />;
   }
 
   return (

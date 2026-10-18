@@ -5,6 +5,7 @@ import Spinner from 'lib/atoms/Spinner';
 import cn from 'lib/utils/cn';
 import NavigationBar from '../../components/NavigationBar';
 import ProductDetails from '../../components/ProductDetails';
+import { APP_ROUTE } from '../../constants';
 import type { T_RootState, T_AppDispatch } from '../../store';
 import { getDevices } from '../../store/productsSlice';
 import s from './Product.module.scss';
@@ -31,7 +32,7 @@ const Product: React.FC = () => {
   }
 
   if (hasError) {
-    return <Navigate to="/error" />;
+    return <Navigate to={APP_ROUTE.ERRORS} />;
   }
 
   return (

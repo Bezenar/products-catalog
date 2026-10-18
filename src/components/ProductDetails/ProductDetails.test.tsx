@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 import filtersSlice from '../../store/filtersSlice';
 import productsSlice from '../../store/productsSlice';
 import type { T_AdaptedDeviceItem } from '../../types';
+import ErrorView from '../../views/ErrorView';
 import ProductDetails from './index';
 
 const device: T_AdaptedDeviceItem = {
@@ -49,6 +50,7 @@ function renderProductDetails(id: string, devices: T_AdaptedDeviceItem[] = [devi
       <MemoryRouter initialEntries={[`/product/${id}`]}>
         <Routes>
           <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/errors/:code?" element={<ErrorView />} />
         </Routes>
       </MemoryRouter>
     </Provider>,
@@ -59,7 +61,7 @@ describe('ProductDetails', () => {
   it('shows a not-found message when the route ID is not in the store', () => {
     renderProductDetails('missing');
 
-    expect(screen.getByText('Device not found')).toBeInTheDocument();
+    expect(screen.getByText('404 not found')).toBeInTheDocument();
   });
 
   it('renders the active product name and shortnames', () => {

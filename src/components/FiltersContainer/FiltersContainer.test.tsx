@@ -37,7 +37,7 @@ function renderFiltersContainer({
           <Route path="/products" element={<FiltersContainer />}>
             <Route index element={<p>Products outlet</p>} />
           </Route>
-          <Route path="/error" element={<p>Error route</p>} />
+          <Route path="/errors/:code?" element={<p>Error route</p>} />
         </Routes>
       </MemoryRouter>
     </Provider>,
