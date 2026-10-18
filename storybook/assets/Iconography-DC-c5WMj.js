@@ -1,3 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{i as t,r as n}from"./react-xI6yO-mC.js";import{t as r}from"./jsx-runtime-DeHZSEgm.js";import{a as i,l as a,o,s}from"./blocks-BjpBE4zH.js";import{n as c,t as l}from"./icons-Dpk8DDn3.js";function u(e){let n={h1:`h1`,...t(),...e.components};return(0,f.jsxs)(f.Fragment,{children:[(0,f.jsx)(s,{title:`Iconography`}),`
-`,(0,f.jsx)(n.h1,{id:`iconography`,children:`Iconography`}),`
-`,(0,f.jsx)(i,{children:Object.entries(l).map(([e,t])=>(0,f.jsx)(o,{name:e,children:(0,f.jsx)(t,{})},e))})]})}function d(e={}){let{wrapper:n}={...t(),...e.components};return n?(0,f.jsx)(n,{...e,children:(0,f.jsx)(u,{...e})}):u(e)}var f;function p(){return(p=e((()=>{f=r(),n(),a(),c()})))()}p();export{d as default};
