@@ -57,4 +57,28 @@ describe('Header', () => {
 
     expect(onLogoClick).toHaveBeenCalledOnce();
   });
+
+  it.each([
+    ['development', '/storybook/index.html'],
+    ['production', '/products-catalog/storybook/index.html'],
+  ])('opens the %s Storybook URL', (mode, expectedUrl) => {
+    vi.stubEnv('MODE', mode);
+    const openWindow = vi.spyOn(window, 'open').mockImplementation(() => null);
+
+    render(
+      <Header
+        title="Product catalog"
+        author="Ubiquiti"
+        logoAriaLabel="Go to home"
+        onLogoClick={() => {}}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Visit storybook' }));
+
+    expect(openWindow).toHaveBeenCalledWith(expectedUrl, '_blank');
+
+    vi.restoreAllMocks();
+    vi.unstubAllEnvs();
+  });
 });
