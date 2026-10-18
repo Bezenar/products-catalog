@@ -18,7 +18,6 @@ const NavigationBar: React.FC = () => {
   );
 
   const handleGoBack = () => {
-    console.log('STATE', state);
     if (state?.from) {
       navigate(-1);
     } else {

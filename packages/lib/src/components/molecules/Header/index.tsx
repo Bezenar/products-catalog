@@ -9,6 +9,14 @@ interface IHeader {
 }
 
 const Header: React.FC<IHeader> = ({ title, author, onLogoClick, logoAriaLabel }) => {
+  const handleVisitStorybook = () => {
+    const route =
+      import.meta.env.MODE === 'production'
+        ? '/products-catalog/storybook/index.html'
+        : '/storybook/index.html';
+
+    window.open(route, '_blank');
+  };
   return (
     <header className="flex ai-center jc-sb bg--muted pa-1">
       <div className="flex ai-center gap-3">
@@ -20,10 +28,7 @@ const Header: React.FC<IHeader> = ({ title, author, onLogoClick, logoAriaLabel }
       <div className="flex ai-center gap-2">
         <h2 className="text--md text--muted">{author}</h2>
 
-        <IconButton
-          ariaLabel="Visit storybook"
-          onClick={() => window.open('/storybook/index.html', '_blank')}
-        >
+        <IconButton ariaLabel="Visit storybook" onClick={handleVisitStorybook}>
           <svg
             fill="none"
             height="20"

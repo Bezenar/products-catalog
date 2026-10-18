@@ -1,5 +1,6 @@
 {
   "name": "product list",
+  "homepage": "https://Bezenar.github.io/products-catalog/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -21,7 +22,8 @@
     "sb:build": "npm run sb:build -w packages/lib",
     "build:prod": "vite build --mode production && npm run sb:prod -w packages/lib",
     "husky:init": "husky init && git checkout origin/main ./.husky",
-    "prepare": "husky"
+    "predeploy": "npm run build:prod",
+    "deploy": "gh-pages -d dist"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -51,6 +53,7 @@
     "eslint-plugin-import-x": "^4.17.1",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.6",
+    "gh-pages": "^6.3.0",
     "globals": "^17.12.0",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
