@@ -1,0 +1,5 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t,t as n}from"./Chevron-dM4h7Eeh.js";var r,i,a,o;function s(){return(s=e((()=>{t(),r={title:`Icons/ChevronIcon`,component:n,argTypes:{direction:{control:{type:`radio`},options:[`left`,`right`],description:`Direction of the chevron icon`,type:{name:`string`,required:!1},table:{type:{summary:`"left" | "right"`},defaultValue:{summary:`right`}}}}},i={},a={args:{direction:`left`}},o=[`Default`,`Left`],i.parameters={...i.parameters,docs:{...i.parameters?.docs,source:{originalSource:`{}`,...i.parameters?.docs?.source}}},a.parameters={...a.parameters,docs:{...a.parameters?.docs,source:{originalSource:`{
+  args: {
+    direction: 'left'
+  }
+}`,...a.parameters?.docs?.source}}}})))()}s();export{i as Default,a as Left,o as __namedExportsOrder,r as default};

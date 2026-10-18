@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";var n,r;function i(){return(i=e((()=>{n=t(),r=({children:e})=>(0,n.jsx)(`tr`,{children:e}),r.displayName=`Table.Row`,r.__docgenInfo={description:``,methods:[],displayName:`Table.Row`}})))()}export{i as n,r as t};

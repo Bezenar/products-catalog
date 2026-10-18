@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./jsx-runtime-DeHZSEgm.js";var n,r;function i(){return(i=e((()=>{n=t(),r=({children:e})=>(0,n.jsx)(`p`,{className:`text--sm text--secondary`,children:e}),r.displayName=`ProductCard.SecondaryText`,r.__docgenInfo={description:``,methods:[],displayName:`ProductCard.SecondaryText`}})))()}export{i as n,r as t};

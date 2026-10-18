@@ -1,0 +1,2 @@
+printf '\n[pre-push] Running tests...\n'
+npm test

@@ -1,0 +1,2 @@
+printf '\n[pre-commit] Formatting and linting staged files...\n'
+npm run lint:stage
