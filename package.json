@@ -19,6 +19,7 @@
     "format:check": "prettier --check .",
     "sb": "npm run sb -w packages/lib",
     "sb:build": "npm run sb:build -w packages/lib",
+    "build:prod": "vite build --mode production && npm run sb:prod -w packages/lib",
     "husky:init": "husky init && git checkout origin/main ./.husky",
     "prepare": "husky"
   },
