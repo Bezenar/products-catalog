@@ -2,7 +2,7 @@
 
 ## Project status
 
-The application fetches the public device dataset, adapts incomplete device records, and provides search, product-line filters, and list/grid navigation. The `ProductsList`, `ProductsGrid`, and `Product` route views are currently placeholders; the catalog presentation and product-detail experience are not yet implemented.
+The application fetches the public device dataset, adapts incomplete device records, and provides search, product-line filters, and list/grid navigation. The catalog is available as a table or a product-card grid, and both views link to product details.
 
 ## Requirements
 
@@ -49,7 +49,8 @@ src/
   views/          Route-level screens
 packages/lib/
   src/assets/     Shared icons, styles, and tokens
-  src/components/ Reusable atoms and molecules
+  src/components/ Reusable atoms, molecules and
+                  Reusable organisms
   src/hooks/      Reusable React hooks
   src/utils/      Shared utilities
   src/documentation/ Storybook documentation pages

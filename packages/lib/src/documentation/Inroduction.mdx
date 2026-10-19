@@ -5,8 +5,9 @@ import { Meta, Title } from '@storybook/addon-docs/blocks';
 <Title>UI Library</Title>
 
 This package contains shared React components, hooks, icons, styles, and utilities used by the
-application. Components are grouped into **atoms** for focused controls and **molecules** for
-composed interface patterns. The Storybook sidebar contains interactive examples and API details.
+application. Components are grouped into **atoms** for focused controls, **molecules** for composed
+interface patterns, and **organisms** for larger interface components. The Storybook sidebar
+contains interactive examples and API details.
 
 ## Getting started
 
@@ -29,7 +30,7 @@ import 'lib/assets/styles/index.scss';
 ```
 
 The package uses subpath exports rather than a single root barrel. Available import groups are
-`lib/atoms/*`, `lib/molecules/*`, `lib/hooks/*`, `lib/icons/*`, `lib/utils/*`, and
+`lib/atoms/*`, `lib/molecules/*`, `lib/organisms/*`, `lib/hooks/*`, `lib/icons/*`, `lib/utils/*`, and
 `lib/utilityTypes`. Global styles are available at `lib/assets/styles/index.scss`; CSS module tokens
 are available at `lib/tokens.module.scss`.
 
@@ -54,8 +55,13 @@ are available at `lib/tokens.module.scss`.
 - **Header**: application header composition.
 - **Search**: product-name search with matching results.
 
-Browse **Components → Atoms** and **Components → Molecules** in the Storybook sidebar for props,
-controls, and examples.
+### Organisms
+
+- **ProductCard**: composable product card with image, heading, secondary text, and badge elements.
+- **Table**: data table with composable rows, cells, and an empty state.
+
+Browse **Components → Atoms**, **Components → Molecules**, and **Components → Organisms** in the
+Storybook sidebar for props, controls, and examples.
 
 ## Utilities
 
